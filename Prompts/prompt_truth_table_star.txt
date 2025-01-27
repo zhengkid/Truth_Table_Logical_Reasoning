@@ -158,8 +158,8 @@ Truth Table(All Validated Rows):
 
 | Politician(WilliamDickinson) | AttendedHighSchool(WilliamDickinson, WestminsterSchool) | LocatedIn(WestminsterSchool, UK) | AttendedUniversity(WilliamDickinson, UnivOfEdinburgh) | LocatedIn(UnivOfEdinburgh, UK) | Supports(WilliamDickinson, PortlandWhigs) | SeatInParliament(WilliamDickinson) | Valid |
 |------------------------------|---------------------------------------------------------|-----------------------------------|-------------------------------------------------------|---------------------------------|-------------------------------------------|------------------------------------|-------|
-| True                         | True                                                    | True                              | True                                                  | True                            | True                                      | False                              | Yes   |
-| True                         | True                                                    | False                             | True                                                  | True                            | True                                      | False                              | Yes   |
+| Yes                         | Yes                                                    | Yes                              | Yes                                                  | Yes                            | Yes                                      | No                              | Yes   |
+| Yes                         | Yes                                                    | No                             | Yes                                                  | Yes                            | Yes                                      | No                              | Yes   |
 
 The statement "William Dickinson went to schools located in the United Kingdom for both high school and university." can be expressed as: AttendedHighSchool(WilliamDickinson,WestminsterSchool) ∧ LocatedIn(WestminsterSchool,UK) ∧ AttendedUniversity(WilliamDickinson,UnivOfEdinburgh) ∧ LocatedIn(UnivOfEdinburgh,UK)
 
