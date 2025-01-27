@@ -4,107 +4,68 @@ from datasets import load_dataset
 import json
 import argparse
 import time
+import tqdm
 
-def get_prompt_rational():
+##########################################################Begin: Formating Prompts##########################################################################
+# Prompting Truth Table 
+def get_sys_prompt_rational_truth_table():
+    file_path = os.path.join('../prompts', 'sys_prompt_truth_table_star.txt')
+    with open(file_path) as f:
+        sys_prompt = f.read()
+    return sys_prompt
+
+def get_few_shot_prompt_rational_truth_table():
     file_path = os.path.join('../prompts', 'prompt_truth_table_star.txt')
     with open(file_path) as f:
         in_context_examples = f.read()
     return in_context_examples
 
-def get_prompt_rational_add_hint():
-    file_path = os.path.join('../prompts', 'prompt_truth_table_star_add_hint.txt')
+def get_prompt_rational_truth_table():
+    fewshot_example = get_few_shot_prompt_rational_truth_table()
+    sys_prompt = get_sys_prompt_rational_truth_table()
+    full_prompt = sys_prompt + "\n\n" + fewshot_example
+    return full_prompt
+
+# Prompting Code
+def get_sys_prompt_rational_code():
+    file_path = os.path.join('../prompts', 'sys_prompt_truth_table_star.txt')
+    with open(file_path) as f:
+        sys_prompt = f.read()
+    return sys_prompt
+
+def get_few_shot_prompt_rational_code():
+    file_path = os.path.join('../prompts', 'prompt_truth_table_star.txt')
     with open(file_path) as f:
         in_context_examples = f.read()
     return in_context_examples
 
-def convert_to_custom_format(input_data):
-    """
-    Convert the data into a custom format.
-    Args:
-        input_data (list): A list of data points, each containing premises, conclusions, rationale, and label.
-    Returns:
-        list: Converted data in the required format.
-    """
-    converted_data = []
-    
-    for item in input_data:
-        messages = [
-            {
-                "content": (
-                    f"<Premises>\n"
-                    f"{item['premises']}\n"
-                    f"</Premises>\n"
-                    f"<Question>\n"
-                    f"Is the following statement true, false, or uncertain? {item['conclusions']}\n"
-                    f"</Question>\n"
-                    f"<Options>\n"
-                    f"(A) True\n"
-                    f"(B) False\n"
-                    f"(C) Uncertain\n"
-                    f"</Options>\n"
-                    f"<Answer>"
-                ),
-                "role": "user"
-            },
-            {
-                "content": item["rationale"],
-                "role": "assistant"
-            }
-        ]
-        converted_data.append({"messages": messages})
-    
-    return converted_data
+def get_prompt_rational_code():
+    fewshot_example = get_few_shot_prompt_rational_code()
+    sys_prompt = get_sys_prompt_rational_code()
+    full_prompt = sys_prompt + "\n\n" + fewshot_example
+    return full_prompt
 
-def format_test_example(premises, conclusions, label):
-    if label == "True":
-        template = (
-            f"<Premises>\n"
-            f"{premises}\n"
-            f"</Premises>\n"
-            f"<Question>\n"
-            f"Is the following statement true, false, or uncertain? {conclusions}.\n"
-            f"</Question>\n"
-            f"<Options>\n"
-            f"(A) True (Correct)\n"
-            f"(B) False\n"
-            f"(C) Uncertain\n"
-            f"</Options>\n"
-            f"<Answer>"
-        )
-    elif label == "False":
-        template = (
-            f"<Premises>\n"
-            f"{premises}\n"
-            f"</Premises>\n"
-            f"<Question>\n"
-            f"Is the following statement true, false, or uncertain? {conclusions}.\n"
-            f"</Question>\n"
-            f"<Options>\n"
-            f"(A) True\n"
-            f"(B) False (Correct)\n"
-            f"(C) Uncertain\n"
-            f"</Options>\n"
-            f"<Answer>"
-        )
-    elif label == "Uncertain":
-        template = (
-            f"<Premises>\n"
-            f"{premises}\n"
-            f"</Premises>\n"
-            f"<Question>\n"
-            f"Is the following statement true, false, or uncertain? {conclusions}.\n"
-            f"</Question>\n"
-            f"<Options>\n"
-            f"(A) True\n"
-            f"(B) False\n"
-            f"(C) Uncertain (Correct)\n"
-            f"</Options>\n"
-            f"<Answer>"
-        )
-    else:
-        raise ValueError(f"Unexpected label value: {label}")
-    return template
 
+# Prompting Code
+def get_sys_prompt_rational_nl():
+    file_path = os.path.join('../prompts', 'sys_prompt_truth_table_star.txt')
+    with open(file_path) as f:
+        sys_prompt = f.read()
+    return sys_prompt
+
+def get_few_shot_prompt_rational_nl():
+    file_path = os.path.join('../prompts', 'prompt_truth_table_star.txt')
+    with open(file_path) as f:
+        in_context_examples = f.read()
+    return in_context_examples
+
+def get_prompt_rational_nl():
+    fewshot_example = get_few_shot_prompt_rational_nl()
+    sys_prompt = get_sys_prompt_rational_nl()
+    full_prompt = sys_prompt + "\n\n" + fewshot_example
+    return full_prompt
+
+##########################################################Code for Sampling Data##########################################################################
 def obtain_seed_dataset(dataset_name, num_samples, seed=42):
     """
     Load a seed dataset from a Hugging Face dataset.
@@ -120,14 +81,42 @@ def obtain_seed_dataset(dataset_name, num_samples, seed=42):
     # Load the dataset
     print(f"Loading dataset '{dataset_name}'...")
     dataset = load_dataset(dataset_name, split='train')
+    test_dataset = load_dataset(dataset_name, split='validation')
 
     # Shuffle and select a subset
     print(f"Selecting {num_samples} samples from the dataset...")
     seed_dataset = dataset.shuffle(seed=seed).select(range(num_samples))
 
     print(f"Seed dataset obtained with {len(seed_dataset)} samples.")
-    return seed_dataset
+    return seed_dataset,test_dataset
 
+##########################################################Code for Training Data Preparation##########################################################################
+def convert_to_custom_format(input_data):
+    """
+    Convert the data into a custom format.
+    Args:
+        input_data (list): A list of data points, each containing premises, conclusions, rationale, and label.
+    Returns:
+        list: Converted data in the required format.
+    """
+    converted_data = []
+    
+    for item in input_data:
+        messages = [
+            {
+                "content": item['user_prompt'],
+                "role": "user"
+            },
+            {
+                "content": item["rationale"],
+                "role": "assistant"
+            }
+        ]
+        converted_data.append({"messages": messages})
+    
+    return converted_data
+
+##########################################################Code for Training##########################################################################
 def finetune(client, file_resp, output_dir, model="meta-llama/Meta-Llama-3.1-8B-Instruct-Reference",
              validation_file=None, suffix="custom-ft", n_epochs=4, n_evals=0, n_checkpoints=1,
              batch_size=16, learning_rate=1e-5, min_lr_ratio=0.0, warmup_ratio=0.0, 
@@ -161,35 +150,36 @@ def finetune(client, file_resp, output_dir, model="meta-llama/Meta-Llama-3.1-8B-
     
     # Trigger the fine-tuning job
     try:
-        response = client.fine_tuning.create(
-            suffix = suffix,
-            model= model,
-            training_file=file_resp.id,
-            n_checkpoints=1,
-            n_epochs=1,
-            batch_size=16,
-            learning_rate=1e-5,
-            # wandb_api_key=os.environ.get("WANDB_API_KEY"),
-        )
-
         # response = client.fine_tuning.create(
+        #     suffix = suffix,
+        #     model= model,
         #     training_file=file_resp.id,
-        #     # validation_file=validation_file_id,
-        #     model=model,
-        #     suffix=suffix,
-        #     n_epochs=n_epochs,
-        #     # n_evals=n_evals,
-        #     n_checkpoints=n_checkpoints,
-        #     batch_size=batch_size,
-        #     learning_rate=learning_rate,
-        #     min_lr_ratio=min_lr_ratio,
-        #     warmup_ratio=warmup_ratio,
-        #     lora=lora,
-        #     lora_r=lora_r,
-        #     lora_alpha=lora_alpha,
-        #     lora_dropout=lora_dropout,
-        #     lora_trainable_modules=lora_trainable_modules,
+        #     n_checkpoints=1,
+        #     n_epochs=1,
+        #     batch_size=16,
+        #     learning_rate=1e-5,
+        #     # wandb_api_key=os.environ.get("WANDB_API_KEY"),
         # )
+
+        response = client.fine_tuning.create(
+            training_file=file_resp.id,
+            # validation_file=validation_file_id,
+            model=model,
+            suffix=suffix,
+            n_epochs=n_epochs,
+            # n_evals=n_evals,
+            # n_checkpoints=n_checkpoints,
+            batch_size=batch_size,
+            learning_rate=learning_rate,
+            # min_lr_ratio=min_lr_ratio,
+            # warmup_ratio=warmup_ratio,
+            lora=lora,
+            # lora_r=lora_r,
+            # lora_alpha=lora_alpha,
+            # lora_dropout=lora_dropout,
+            # lora_trainable_modules=lora_trainable_modules,
+            wandb_api_key=os.environ.get("WANDB_API_KEY"),
+        )
         print("Fine-tuning job created successfully!")
 
         # Block until the fine-tuning job is finished
@@ -210,6 +200,94 @@ def finetune(client, file_resp, output_dir, model="meta-llama/Meta-Llama-3.1-8B-
         print("Error creating fine-tuning job:", e)
         return {"error": str(e)}
 
+##########################################################Code for Evaluation##########################################################################
+
+
+
+def evaluation(client, model, dataset, output_dir, raw_data_path, accuracy_path, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table'):
+    # Prepare a list to store rationales
+    rationales = []
+    correct_num = 0
+    total_num = 0
+    if mode == 'truth_table':
+        rationale_prompt = get_prompt_rational_truth_table()
+    elif mode == 'code':
+        rationale_prompt = get_prompt_rational_code()
+    elif mode == 'nl':
+        rationale_prompt = get_prompt_rational_nl()
+    # rationale_add_hint_prompt = get_prompt_rational_add_hint()
+    # Generate rationale for each data point
+    for i, item in enumerate(dataset):
+        premises = item.get("premises", "")
+        conclusions=item.get("conclusion", "")
+        label = item.get("label", "")  
+        
+        # Construct the prompt for this data point
+        prompt = rationale_prompt.format(Premises=premises, Conclusions=conclusions)
+        # print("prompt", prompt)
+        try:
+            # Generate rationale using the Together API
+            rationale_response = generate_response(
+                client=client,
+                model=model,
+                user_prompt=prompt,
+                max_tokens=max_tokens,
+                temperature=temperature, top_p=top_p, top_k=top_k, stop=stop
+            )
+            rationale_response = rationale_response.split("<Answer>")[-1]
+
+            if "(A)" in rationale_response:
+                predict = "True"
+            elif "(B)" in rationale_response:
+                predict = 'False'
+            elif "(C)" in rationale_response:
+                predict = 'Uncertain'
+            else:
+                predict = 'Unknown'
+
+            rationales.append({
+                    "premises": premises,
+                    "conclusions": conclusions,
+                    "rationale": rationale_response.strip(),
+                    'label': label,
+                    'predict': predict,
+                    'user_prompt': prompt,
+                })
+            
+            if predict == label:
+                # Add the generated rationale to the output list
+                correct_num += 1
+                total_num += 1
+            else:
+                total_num += 1
+
+            print(f"{correct_num} out of {total_num} is correct!")
+        except Exception as e:
+            print(f"Error generating rationale for data point {i + 1}: {e}")
+            continue
+
+
+    accuracy = correct_num / total_num if total_num > 0 else 0.0
+
+    # Save rationales to a file
+    with open(os.path.join(output_dir, raw_data_path), 'w') as f:
+        json.dump(rationales, f, indent=4)
+    print(f"Rationales saved to {os.path.join(output_dir, raw_data_path)}")
+
+    # Save accuracy to a text file
+    with open(os.path.join(output_dir, accuracy_path), 'w') as f:
+        f.write(f"Accuracy: {accuracy:.4f}\n")
+        f.write(f"Total samples: {total_num}\n")
+        f.write(f"Correct predictions: {correct_num}\n")
+
+    print(f"Accuracy: {accuracy:.4f}")
+    print(f"Total samples: {total_num}")
+    print(f"Correct predictions: {correct_num}")
+    print(f"Rationales saved to {raw_data_path}")
+    print(f"Accuracy report saved to {accuracy_path}")
+
+
+##########################################################Code for Generating Response##########################################################################
 def generate_response(client, model, user_prompt, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None):
     """
     Function to generate a response from a model using Together API with advanced parameters including stop tokens.
@@ -252,7 +330,7 @@ def generate_response(client, model, user_prompt, max_tokens=512, temperature=0.
         print(f"Error generating response: {e}")
         return ""
 
-def generate_rationales(client, base_model, dataset, output_dir, output_file, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None):
+def generate_rationales(client, base_model, dataset, output_dir, output_file, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', eval=False):
     """
     Generate rationales for each data point in the dataset.
 
@@ -269,8 +347,14 @@ def generate_rationales(client, base_model, dataset, output_dir, output_file, ma
 
     # Prepare a list to store rationales
     rationales = []
-    rationale_prompt = get_prompt_rational()
-    rationale_add_hint_prompt = get_prompt_rational_add_hint()
+
+    if mode == 'truth_table':
+        rationale_prompt = get_prompt_rational_truth_table()
+    elif mode == 'code':
+        rationale_prompt = get_prompt_rational_code()
+    elif mode == 'nl':
+        rationale_prompt = get_prompt_rational_nl()
+    # rationale_add_hint_prompt = get_prompt_rational_add_hint()
     # Generate rationale for each data point
     for i, item in enumerate(dataset):
         premises = item.get("premises", "")
@@ -290,11 +374,11 @@ def generate_rationales(client, base_model, dataset, output_dir, output_file, ma
                 temperature=temperature, top_p=top_p, top_k=top_k, stop=stop
             )
             rationale_response = rationale_response.split("<Answer>")[-1]
-            if "(A)" in rationale_response or 'true' in rationale_response.lower():
+            if "(A)" in rationale_response:
                 predict = "True"
-            elif "(B)" in rationale_response or 'false' in rationale_response.lower():
+            elif "(B)" in rationale_response:
                 predict = 'False'
-            elif "(C)" in rationale_response or 'uncertain' in rationale_response.lower():
+            elif "(C)" in rationale_response:
                 predict = 'Uncertain'
 
             if predict == label:
@@ -303,31 +387,13 @@ def generate_rationales(client, base_model, dataset, output_dir, output_file, ma
                     "premises": premises,
                     "conclusions": conclusions,
                     "rationale": rationale_response.strip(),
-                    'label': label
+                    'label': label,
+                    'user_prompt': prompt,
                 })
                 print(f"Generated rationale for data point {i + 1}/{len(dataset)}")
                 print(rationale_response)
             else:
-                # add hint generation
-                new_sample = format_test_example(premises, conclusions, label)
-                prompt_add_hint = rationale_add_hint_prompt + new_sample
-                # print("prompt_add_hint", prompt_add_hint)
-                rationale_response_add_hint = generate_response(
-                    client=client,
-                    model=base_model,
-                    user_prompt=prompt_add_hint,
-                    max_tokens=max_tokens,
-                    temperature=temperature, top_p=top_p, top_k=top_k, stop=stop
-                )
-                rationale_response_add_hint = rationale_response_add_hint.split("<Answer>")[-1]
-                print(rationale_response_add_hint)
-                rationales.append({
-                    "premises": premises,
-                    "conclusions": conclusions,
-                    "rationale": rationale_response_add_hint.strip(),
-                    'label': label
-                })
-                print(f"Generated rationale (add hint) for data point {i + 1}/{len(dataset)}")
+                print(f"Filter out the data point as the poor quality.")
         except Exception as e:
             print(f"Error generating rationale for data point {i + 1}: {e}")
             continue
@@ -338,20 +404,21 @@ def generate_rationales(client, base_model, dataset, output_dir, output_file, ma
         json.dump(rationales, f, indent=4)
     print(f"Rationales saved to {os.path.join(output_dir, output_file)}")
 
-    # Convert the data format
-    converted_data = convert_to_custom_format(rationales)
-
-    # Save the converted data as a JSON file
-    output_file = output_file.split('.')[0] + '_train' + "." + output_file.split('.')[1]
-    with open(os.path.join(output_dir, output_file), 'w', encoding='utf-8') as f:
-        for item in converted_data:
-            json.dump(item, f, ensure_ascii=False)
-            f.write('\n')  # Add a newline after each JSON object
-    print(f"Data successfully converted and saved to {os.path.join(output_dir, output_file)}")
+    if not eval:
+        # Convert the data format
+        converted_data = convert_to_custom_format(rationales)
+        
+        # Save the converted data as a JSON file
+        output_file = output_file.split('.')[0] + '_train' + "." + output_file.split('.')[1]
+        with open(os.path.join(output_dir, output_file), 'w', encoding='utf-8') as f:
+            for item in converted_data:
+                json.dump(item, f, ensure_ascii=False)
+                f.write('\n')  # Add a newline after each JSON object
+        print(f"Data successfully converted and saved to {os.path.join(output_dir, output_file)}")
 
 
 def star_pipeline_base_reset(client, base_model, dataset_name, output_dir, n_samples=200, n_outer_loops=10, n_epochs=4,
-                             batch_size=16, learning_rate=1e-5, lora=False, lora_params=None, seed=42, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None):
+                             batch_size=16, learning_rate=1e-5, lora=False, lora_params=None, seed=42, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table'):
     """
     Implements the STaR pipeline where each fine-tuning starts from the initial base model.
 
@@ -378,15 +445,17 @@ def star_pipeline_base_reset(client, base_model, dataset_name, output_dir, n_sam
     
     # print(f"Fine-tuning response saved to {response_file_path}")
     # Step 0: Obtain Seed Dataset 
-    dataset = obtain_seed_dataset(dataset_name, n_samples, seed)
+    dataset, test_dataset = obtain_seed_dataset(dataset_name, n_samples, seed)
     model = base_model
-    for n in range(3, 4):
+    for n in range(0, n_outer_loops):
         print(f"--- Outer Loop {n} ---")
         
         # Step 1: Perform rationale generation
         print("Generating rationales...")
-        rationale_file = f"rationales_{n}.jsonl"
-        finetune_response_save_path = f"fine_tuning_round_{n}.jsonl"
+        rationale_file = f"rationales_{mode}_{n}.jsonl"
+        test_rationale_file = base_model.split('/')[-1] + f"-{mode}-r{n}-Raw.jsonl"
+        test_accuracy_file = base_model.split('/')[-1] + f"-{mode}-r{n}-Result.jsonl"
+        finetune_response_save_path = f"fine_tuning_{mode}_{batch_size}_{learning_rate}_round_{n}.jsonl"
         generate_rationales(
             client=client,
             base_model=model,  # Always use the base model
@@ -406,7 +475,6 @@ def star_pipeline_base_reset(client, base_model, dataset_name, output_dir, n_sam
         file_resp = client.files.upload(file=os.path.join(output_dir, trainin_data_path), check=True)
         print(file_resp.model_dump())
 
-
         # Step 3: Fine-tune the base model with rationalized datasets
         print("Fine-tuning base model...")
         lora_params = lora_params or {}
@@ -422,7 +490,24 @@ def star_pipeline_base_reset(client, base_model, dataset_name, output_dir, n_sam
             **lora_params
         )
         outer_loop_responses.append(fine_tune_response)
-        model = fine_tune_response['output_name']
+        model = fine_tune_response.output_name
+
+        # Step 4: Fine-tune the base model with rationalized datasets
+        # To do 
+        evaluation(
+            client=client,
+            base_model=model,  # Always use the base model
+            dataset=test_dataset,
+            output_dir=output_dir,
+            output_file=rationale_file,
+            raw_data_path=test_rationale_file, 
+            accuracy_path=test_accuracy_file,
+            max_tokens=max_tokens,
+            temperature=temperature,
+            top_p=top_p,
+            top_k=top_k,
+            stop=stop,
+        )
     return outer_loop_responses
 
 
@@ -433,6 +518,8 @@ def main():
     # Add arguments
     parser.add_argument("--base_model", type=str, required=True, 
                         help="Base pre-trained model (e.g., 'meta-llama/Meta-Llama-3.1-8B').")
+    parser.add_argument("--mode", type=str, required=True, 
+                        help="truth_table, code, nl")
     parser.add_argument("--dataset_name", type=str, required=True, 
                         help="Name of the Hugging Face dataset to use (e.g., 'glue').")
     parser.add_argument("--output_dir", type=str, default="outputs", 
@@ -498,6 +585,7 @@ def main():
         temperature=args.temperature,
         top_p=args.top_p,
         top_k=args.top_k,
+        mode=args.mode,
     )
 
 if __name__ == "__main__":
