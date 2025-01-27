@@ -31,14 +31,59 @@ Definitions:
 	9. BreakBridge(Thor): Thor breaks a bridge.
 	10. WearsUniform(PeterParker): Peter Parker wears a uniform.
 
-Truth Table (Only Validated Rows):
+Truth Table (All Validated Rows):
 | Superhero(PeterParker) | Civilian(PeterParker) | Destroyer(TheHulk) | Angry(TheHulk) | WakeUp(TheHulk) | BreakBridge(TheHulk) | God(Thor) | Happy(Thor) | BreakBridge(Thor) | WearsUniform(PeterParker) | Valid |
 |-------------------------|-----------------------|---------------------|----------------|-----------------|----------------------|-----------|-------------|-------------------|--------------------------|-------|
-| Yes                     | No                   | Yes                 | No             | No              | No                   | Yes       | No          | No                | Yes                      | Yes   |
-| Yes                     | No                   | Yes                 | Yes            | Yes             | Yes                  | Yes       | No          | No                | Yes                      | Yes   |
-| Yes                     | No                   | Yes                 | Yes            | Yes             | Yes                  | Yes       | Yes         | Yes               | Yes                      | Yes   |
-| No                      | Yes                  | Yes                 | No             | No              | No                   | Yes       | No          | No                | No                       | Yes   |
-| No                      | Yes                  | Yes                 | Yes            | Yes             | Yes                  | Yes       | Yes         | Yes               | No                       | No    |
+| No                     | Yes                 | No                 | No             | No              | No                   | No        | No          | No                | No                      | Yes   |
+| No                     | Yes                 | No                 | No             | No              | No                   | No        | No          | No                | Yes                     | Yes   |
+| No                     | Yes                 | No                 | No             | No              | No                   | Yes       | No          | No                | No                      | Yes   |
+| No                     | Yes                 | No                 | No             | No              | No                   | Yes       | No          | No                | Yes                     | Yes   |
+| No                     | Yes                 | Yes                | No             | No              | No                   | No        | No          | No                | No                      | Yes   |
+| No                     | Yes                 | Yes                | No             | No              | No                   | No        | No          | No                | Yes                     | Yes   |
+| No                     | Yes                 | Yes                | No             | No              | No                   | Yes       | No          | No                | No                      | Yes   |
+| No                     | Yes                 | Yes                | No             | No              | No                   | Yes       | No          | No                | Yes                     | Yes   |
+| Yes                    | No                  | No                 | No             | No              | No                   | No        | No          | No                | Yes                     | Yes   |
+| Yes                    | No                  | No                 | No             | No              | No                   | No        | No          | Yes               | Yes                     | Yes   |
+| Yes                    | No                  | No                 | No             | No              | No                   | Yes       | No          | No                | Yes                     | Yes   |
+| Yes                    | No                  | No                 | No             | No              | No                   | Yes       | No          | Yes               | Yes                     | Yes   |
+| Yes                    | No                  | No                 | No             | No              | Yes                  | No        | No          | No                | Yes                     | Yes   |
+| Yes                    | No                  | No                 | No             | No              | Yes                  | No        | No          | Yes               | Yes                     | Yes   |
+| Yes                    | No                  | No                 | No             | No              | Yes                  | Yes       | No          | No                | Yes                     | Yes   |
+| Yes                    | No                  | No                 | No             | No              | Yes                  | Yes       | No          | Yes               | Yes                     | Yes   |
+| Yes                    | No                  | No                 | No             | Yes             | Yes                  | No        | No          | No                | Yes                     | Yes   |
+| Yes                    | No                  | No                 | No             | Yes             | Yes                  | No        | No          | Yes               | Yes                     | Yes   |
+| Yes                    | No                  | No                 | No             | Yes             | Yes                  | Yes       | No          | No                | Yes                     | Yes   |
+| Yes                    | No                  | No                 | No             | Yes             | Yes                  | Yes       | No          | Yes               | Yes                     | Yes   |
+| Yes                    | No                  | No                 | Yes            | Yes             | Yes                  | No        | No          | No                | Yes                     | Yes   |
+| Yes                    | No                  | No                 | Yes            | Yes             | Yes                  | No        | No          | Yes               | Yes                     | Yes   |
+| Yes                    | No                  | No                 | Yes            | Yes             | Yes                  | No        | Yes         | Yes               | Yes                     | Yes   |
+| Yes                    | No                  | No                 | Yes            | Yes             | Yes                  | Yes       | No          | No                | Yes                     | Yes   |
+| Yes                    | No                  | No                 | Yes            | Yes             | Yes                  | Yes       | No          | Yes               | Yes                     | Yes   |
+| Yes                    | No                  | No                 | Yes            | Yes             | Yes                  | Yes       | Yes         | Yes               | Yes                     | Yes   |
+| Yes                    | No                  | Yes                | No             | No              | No                   | No        | No          | No                | Yes                     | Yes   |
+| Yes                    | No                  | Yes                | No             | No              | No                   | No        | No          | Yes               | Yes                     | Yes   |
+| Yes                    | No                  | Yes                | No             | No              | No                   | Yes       | No          | No                | Yes                     | Yes   |
+| Yes                    | No                  | Yes                | No             | No              | No                   | Yes       | No          | Yes               | Yes                     | Yes   |
+| Yes                    | No                  | Yes                | No             | No              | Yes                  | No        | No          | No                | Yes                     | Yes   |
+| Yes                    | No                  | Yes                | No             | No              | Yes                  | No        | No          | Yes               | Yes                     | Yes   |
+| Yes                    | No                  | Yes                | No             | No              | Yes                  | Yes       | No          | No                | Yes                     | Yes   |
+| Yes                    | No                  | Yes                | No             | No              | Yes                  | Yes       | No          | Yes               | Yes                     | Yes   |
+| Yes                    | No                  | Yes                | No             | Yes             | Yes                  | No        | No          | No                | Yes                     | Yes   |
+| Yes                    | No                  | Yes                | No             | Yes             | Yes                  | No        | No          | Yes               | Yes                     | Yes   |
+| Yes                    | No                  | Yes                | No             | Yes             | Yes                  | Yes       | No          | No                | Yes                     | Yes   |
+| Yes                    | No                  | Yes                | No             | Yes             | Yes                  | Yes       | No          | Yes               | Yes                     | Yes   |
+| Yes                    | No                  | Yes                | Yes            | Yes             | Yes                  | No        | No          | No                | Yes                     | Yes   |
+| Yes                    | No                  | Yes                | Yes            | Yes             | Yes                  | No        | No          | Yes               | Yes                     | Yes   |
+| Yes                    | No                  | Yes                | Yes            | Yes             | Yes                  | No        | Yes         | Yes               | Yes                     | Yes   |
+| Yes                    | No                  | Yes                | Yes            | Yes             | Yes                  | Yes       | No          | No                | Yes                     | Yes   |
+| Yes                    | No                  | Yes                | Yes            | Yes             | Yes                  | Yes       | No          | Yes               | Yes                     | Yes   |
+| Yes                    | No                  | Yes                | Yes            | Yes             | Yes                  | Yes       | Yes         | Yes               | Yes                     | Yes   |
+
+The statement "If Thor is happy, then Peter Parker wears a uniform." can be expressed as: Happy(Thor) → WearsUniform(PeterParker)
+
+Checking the Truth Table:
+	1. For all validated rows where Happy(Thor) = Yes, we observe that WearsUniform(PeterParker) = Yes.
+	2. For rows where Happy(Thor) = No, the implication holds true because the premise is false, making the statement valid by definition.
 
 Therefore, the Answer is (A).
 </Answer>
@@ -68,13 +113,18 @@ Definitions:
 	5. MorallyPerfect(x): x is morally perfect.
 	6. TheisticGod(x): x is the theistic God.
 
-Truth Table(Only Validated Rows):
+Truth Table(All Validated Rows):
 
 | Philosopher(x) | Sophist(x) | Reason(x) | DistinguishTruthFalsehood(x) | MorallyPerfect(x) | TheisticGod(x) | Valid |
 |----------------|------------|-----------|------------------------------|-------------------|----------------|-------|
-| Yes            | No         | Yes       | Yes                          | No                | No             | Yes   |
-| Yes            | Yes        | Yes       | Yes                          | No                | No             | Yes   |
-| No             | Yes        | Yes       | Yes                          | No                | No             | Yes   |
+| No             | Yes        | No       | Yes                          | No                | Yes            | Yes   |
+
+
+The statement "The theistic God is a sophist and a philosopher." can be expressed as: ∀x TheisticGod(x) → Sophist(x) ∧ Philosopher(x)
+
+Checking the Truth Table:
+	1. For all validated rows where TheisticGod(x) = Yes, we observe that Philosopher(x) = No.
+	2. For rows where TheisticGod(x) = No, the implication holds true because the premise is false, making the statement valid by definition.
 
 Therefore, the Answer is (B).
 </Answer>
@@ -104,19 +154,17 @@ Definitions:
 	7. Supports(WilliamDickinson, PortlandWhigs): William Dickinson supports the Portland Whigs.
 	8. SeatInParliament(WilliamDickinson): William Dickinson has a seat in Parliament.
 
-Truth Table(Only Validated Rows):
+Truth Table(All Validated Rows):
 
 | Politician(WilliamDickinson) | AttendedHighSchool(WilliamDickinson, WestminsterSchool) | LocatedIn(WestminsterSchool, UK) | AttendedUniversity(WilliamDickinson, UnivOfEdinburgh) | LocatedIn(UnivOfEdinburgh, UK) | Supports(WilliamDickinson, PortlandWhigs) | SeatInParliament(WilliamDickinson) | Valid |
 |------------------------------|---------------------------------------------------------|-----------------------------------|-------------------------------------------------------|---------------------------------|-------------------------------------------|------------------------------------|-------|
 | True                         | True                                                    | True                              | True                                                  | True                            | True                                      | False                              | Yes   |
 | True                         | True                                                    | False                             | True                                                  | True                            | True                                      | False                              | Yes   |
-| True                         | True                                                    | Uncertain                         | True                                                  | True                            | True                                      | False                              | Yes   |
 
-Reasoning:
-1. Premises confirm that William Dickinson is a politician and attended Westminster School for high school and the University of Edinburgh for university.
-2. LocatedIn(UnivOfEdinburgh, UK) is explicitly True.
-3. However, there is no explicit premise confirming LocatedIn(WestminsterSchool, UK). This variable remains uncertain, even though common knowledge might suggest otherwise.
-4. As LocatedIn(WestminsterSchool, UK) is uncertain, the overall truth of whether William Dickinson attended schools located in the UK is also uncertain.
+The statement "William Dickinson went to schools located in the United Kingdom for both high school and university." can be expressed as: AttendedHighSchool(WilliamDickinson,WestminsterSchool) ∧ LocatedIn(WestminsterSchool,UK) ∧ AttendedUniversity(WilliamDickinson,UnivOfEdinburgh) ∧ LocatedIn(UnivOfEdinburgh,UK)
+
+Checking the Truth Table:
+	1. For all validated rows, we cannot determine whether Westminster school located in UK.
 
 Therefore, the Answer is (C).
 </Answer>
@@ -133,3 +181,4 @@ Is the following statement true, false, or uncertain? {Conclusions}
 (C) Uncertain
 </Options>
 <Answer>
+
