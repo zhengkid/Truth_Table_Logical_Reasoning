@@ -28,13 +28,13 @@ def get_prompt_rational_truth_table():
 
 # Prompting Code
 def get_sys_prompt_rational_code():
-    file_path = os.path.join('../prompts', 'sys_prompt_truth_table_star.txt')
+    file_path = os.path.join('../prompts', 'sys_prompt_code_star.txt')
     with open(file_path) as f:
         sys_prompt = f.read()
     return sys_prompt
 
 def get_few_shot_prompt_rational_code():
-    file_path = os.path.join('../prompts', 'prompt_truth_table_star.txt')
+    file_path = os.path.join('../prompts', 'prompt_code_star.txt')
     with open(file_path) as f:
         in_context_examples = f.read()
     return in_context_examples
@@ -46,15 +46,15 @@ def get_prompt_rational_code():
     return full_prompt
 
 
-# Prompting Code
+# Prompting nl
 def get_sys_prompt_rational_nl():
-    file_path = os.path.join('../prompts', 'sys_prompt_truth_table_star.txt')
+    file_path = os.path.join('../prompts', 'sys_prompt_nl_star.txt')
     with open(file_path) as f:
         sys_prompt = f.read()
     return sys_prompt
 
 def get_few_shot_prompt_rational_nl():
-    file_path = os.path.join('../prompts', 'prompt_truth_table_star.txt')
+    file_path = os.path.join('../prompts', 'prompt_nl_star.txt')
     with open(file_path) as f:
         in_context_examples = f.read()
     return in_context_examples
