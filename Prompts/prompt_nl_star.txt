@@ -23,71 +23,13 @@ Is the following statement true, false, or uncertain? If Thor is happy, then Pet
 (C) Uncertain
 </Options>
 <Reasoning>
-<Definitions>
-	1. Superhero(PeterParker): Peter Parker is a superhero.
-	2. Civilian(PeterParker): Peter Parker is a civilian.
-	3. Destroyer(TheHulk): The Hulk is a destroyer.
-	4. Angry(TheHulk): The Hulk is angry.
-	5. WakeUp(TheHulk): The Hulk wakes up.
-	6. BreakBridge(TheHulk): The Hulk breaks a bridge.
-	7. God(Thor): Thor is a god.
-	8. Happy(Thor): Thor is happy.
-	9. BreakBridge(Thor): Thor breaks a bridge.
-	10. WearsUniform(PeterParker): Peter Parker wears a uniform.
-</Definitions>
-<Truth Table>
-| Superhero(PeterParker) | Civilian(PeterParker) | Destroyer(TheHulk) | Angry(TheHulk) | WakeUp(TheHulk) | BreakBridge(TheHulk) | God(Thor) | Happy(Thor) | BreakBridge(Thor) | WearsUniform(PeterParker) | Valid |
-|-------------------------|-----------------------|---------------------|----------------|-----------------|----------------------|-----------|-------------|-------------------|--------------------------|-------|
-| No                     | Yes                 | No                 | No             | No              | No                   | No        | No          | No                | No                      | Yes   |
-| No                     | Yes                 | No                 | No             | No              | No                   | No        | No          | No                | Yes                     | Yes   |
-| No                     | Yes                 | No                 | No             | No              | No                   | Yes       | No          | No                | No                      | Yes   |
-| No                     | Yes                 | No                 | No             | No              | No                   | Yes       | No          | No                | Yes                     | Yes   |
-| No                     | Yes                 | Yes                | No             | No              | No                   | No        | No          | No                | No                      | Yes   |
-| No                     | Yes                 | Yes                | No             | No              | No                   | No        | No          | No                | Yes                     | Yes   |
-| No                     | Yes                 | Yes                | No             | No              | No                   | Yes       | No          | No                | No                      | Yes   |
-| No                     | Yes                 | Yes                | No             | No              | No                   | Yes       | No          | No                | Yes                     | Yes   |
-| Yes                    | No                  | No                 | No             | No              | No                   | No        | No          | No                | Yes                     | Yes   |
-| Yes                    | No                  | No                 | No             | No              | No                   | No        | No          | Yes               | Yes                     | Yes   |
-| Yes                    | No                  | No                 | No             | No              | No                   | Yes       | No          | No                | Yes                     | Yes   |
-| Yes                    | No                  | No                 | No             | No              | No                   | Yes       | No          | Yes               | Yes                     | Yes   |
-| Yes                    | No                  | No                 | No             | No              | Yes                  | No        | No          | No                | Yes                     | Yes   |
-| Yes                    | No                  | No                 | No             | No              | Yes                  | No        | No          | Yes               | Yes                     | Yes   |
-| Yes                    | No                  | No                 | No             | No              | Yes                  | Yes       | No          | No                | Yes                     | Yes   |
-| Yes                    | No                  | No                 | No             | No              | Yes                  | Yes       | No          | Yes               | Yes                     | Yes   |
-| Yes                    | No                  | No                 | No             | Yes             | Yes                  | No        | No          | No                | Yes                     | Yes   |
-| Yes                    | No                  | No                 | No             | Yes             | Yes                  | No        | No          | Yes               | Yes                     | Yes   |
-| Yes                    | No                  | No                 | No             | Yes             | Yes                  | Yes       | No          | No                | Yes                     | Yes   |
-| Yes                    | No                  | No                 | No             | Yes             | Yes                  | Yes       | No          | Yes               | Yes                     | Yes   |
-| Yes                    | No                  | No                 | Yes            | Yes             | Yes                  | No        | No          | No                | Yes                     | Yes   |
-| Yes                    | No                  | No                 | Yes            | Yes             | Yes                  | No        | No          | Yes               | Yes                     | Yes   |
-| Yes                    | No                  | No                 | Yes            | Yes             | Yes                  | No        | Yes         | Yes               | Yes                     | Yes   |
-| Yes                    | No                  | No                 | Yes            | Yes             | Yes                  | Yes       | No          | No                | Yes                     | Yes   |
-| Yes                    | No                  | No                 | Yes            | Yes             | Yes                  | Yes       | No          | Yes               | Yes                     | Yes   |
-| Yes                    | No                  | No                 | Yes            | Yes             | Yes                  | Yes       | Yes         | Yes               | Yes                     | Yes   |
-| Yes                    | No                  | Yes                | No             | No              | No                   | No        | No          | No                | Yes                     | Yes   |
-| Yes                    | No                  | Yes                | No             | No              | No                   | No        | No          | Yes               | Yes                     | Yes   |
-| Yes                    | No                  | Yes                | No             | No              | No                   | Yes       | No          | No                | Yes                     | Yes   |
-| Yes                    | No                  | Yes                | No             | No              | No                   | Yes       | No          | Yes               | Yes                     | Yes   |
-| Yes                    | No                  | Yes                | No             | No              | Yes                  | No        | No          | No                | Yes                     | Yes   |
-| Yes                    | No                  | Yes                | No             | No              | Yes                  | No        | No          | Yes               | Yes                     | Yes   |
-| Yes                    | No                  | Yes                | No             | No              | Yes                  | Yes       | No          | No                | Yes                     | Yes   |
-| Yes                    | No                  | Yes                | No             | No              | Yes                  | Yes       | No          | Yes               | Yes                     | Yes   |
-| Yes                    | No                  | Yes                | No             | Yes             | Yes                  | No        | No          | No                | Yes                     | Yes   |
-| Yes                    | No                  | Yes                | No             | Yes             | Yes                  | No        | No          | Yes               | Yes                     | Yes   |
-| Yes                    | No                  | Yes                | No             | Yes             | Yes                  | Yes       | No          | No                | Yes                     | Yes   |
-| Yes                    | No                  | Yes                | No             | Yes             | Yes                  | Yes       | No          | Yes               | Yes                     | Yes   |
-| Yes                    | No                  | Yes                | Yes            | Yes             | Yes                  | No        | No          | No                | Yes                     | Yes   |
-| Yes                    | No                  | Yes                | Yes            | Yes             | Yes                  | No        | No          | Yes               | Yes                     | Yes   |
-| Yes                    | No                  | Yes                | Yes            | Yes             | Yes                  | No        | Yes         | Yes               | Yes                     | Yes   |
-| Yes                    | No                  | Yes                | Yes            | Yes             | Yes                  | Yes       | No          | No                | Yes                     | Yes   |
-| Yes                    | No                  | Yes                | Yes            | Yes             | Yes                  | Yes       | No          | Yes               | Yes                     | Yes   |
-| Yes                    | No                  | Yes                | Yes            | Yes             | Yes                  | Yes       | Yes         | Yes               | Yes                     | Yes   |
-</Truth Table>
-The statement "If Thor is happy, then Peter Parker wears a uniform." can be expressed as: Happy(Thor) → WearsUniform(PeterParker)
-Checking the Truth Table:
-	1. For all validated rows where Happy(Thor) = Yes, we observe that WearsUniform(PeterParker) = Yes.
-	2. For rows where Happy(Thor) = No, the implication holds true because the premise is false, making the statement valid by definition.
-Therefore, the Answer is (A).
+Step 1: given premises "If Thor is happy, the Hulk is angry." and "The Hulk wakes up when he is angry.", we can know "If Thor is happy, then hulk wakes up."
+Step 2: given premise "If the Hulk wakes up, then he will break a bridge." and derivation "If Thor is happy, then hulk wakes up.", we can know "If Thor is happy, then hulk will break a bridge."
+Step 3: given premise "The Hulk is a destroyer." and derivation "If Thor is happy, then hulk will break a bridge.", we can know "If Thor is happy, then a destroyer will break a bridge."
+Step 4: given premise "Peter Parker is not a civilian if a destroyer is breaking a bridge." and derivation "If Thor is happy, then a destroyer will break a bridge.", we can know "If Thor is happy, then Peter Parker is not a civilian"
+Step 5: given premise "Peter Parker is either a superhero or a civilian." and derivation "If Thor is happy, then Peter Parker is not a civilian", we can know "If Thor is happy, then Peter Parker is a superhero."
+Step 6: given premise "Peter Parker wears a uniform when he is a superhero." and derivation "If Thor is happy, then Peter Parker is a superhero.", we can know "If Thor is happy, then Peter Parker wears a uniform"
+Therefore, the answer is (A).
 </Reasoning>
 <Answer>
 The final answer is (A).
@@ -115,24 +57,13 @@ Is the following statement true, false, or uncertain? The theistic God is a soph
 (C) Uncertain
 </Options>
 <Reasoning>
-<Definitions>
-	1. Philosopher(x): x is a philosopher.
-	2. Sophist(x): x is a sophist.
-	3. Reason(x): x can reason.
-	4. DistinguishTruthFalsehood(x): x can distinguish truth from falsehood.
-	5. MorallyPerfect(x): x is morally perfect.
-	6. TheisticGod(x): x is the theistic God.
-</Definitions>
-<Truth Table>
-| Philosopher(x) | Sophist(x) | Reason(x) | DistinguishTruthFalsehood(x) | MorallyPerfect(x) | TheisticGod(x) | Valid |
-|----------------|------------|-----------|------------------------------|-------------------|----------------|-------|
-| No             | Yes        | No       | Yes                          | No                | Yes            | Yes   |
-</Truth Table>
-The statement "The theistic God is a sophist and a philosopher." can be expressed as: ∀x TheisticGod(x) → Sophist(x) ∧ Philosopher(x)
-Checking the Truth Table:
-	1. For all validated rows where TheisticGod(x) = Yes, we observe that Philosopher(x) = No.
-	2. For rows where TheisticGod(x) = No, the implication holds true because the premise is false, making the statement valid by definition.
-Therefore, the Answer is (B).
+Step 1: From the premise “All philosophers reason,” we know that if someone is a philosopher, then that individual necessarily has the ability to reason.
+Step 2: From the premise “All who can reason can distinguish truth from falsehood,” we conclude that if someone reasons, they will also distinguish truth from falsehood.
+Step 3: The premise “Nobody who can distinguish truth from falsehood is morally perfect” implies that if one does indeed distinguish truth from falsehood, they cannot be morally perfect.
+Step 4: Since the theistic God is stated to be “morally perfect,” if the theistic God were a philosopher, He would have to reason (by Step 1), which would lead to distinguishing truth from falsehood (by Step 2), thereby making Him not morally perfect (by Step 3). This contradicts the premise that the theistic God is morally perfect, so He cannot be a philosopher.
+Step 5: Separately, the premise says “The theistic God is a sophist.” We also know “Some sophists reason,” which does not imply that every sophist necessarily reasons. Hence, there is no guaranteed contradiction in being a sophist while remaining morally perfect—He could be the sort of sophist who does not reason.
+Step 6: Because the theistic God cannot be both morally perfect and a philosopher, the statement “The theistic God is a sophist and a philosopher” is false.
+Therefore, the answer is (B). 
 </Reasoning>
 <Answer>
 The final answer is (B).
@@ -158,26 +89,13 @@ Is the following statement true, false, or uncertain? William Dickinson went to 
 (C) Uncertain
 </Options>
 <Reasoning>
-<Definitions>
-	1. Politician(WilliamDickinson): William Dickinson is a politician.
-	2. AttendedHighSchool(WilliamDickinson, School): William Dickinson attended high school School.
-	3. AttendedUniversity(WilliamDickinson, University): William Dickinson attended university University.
-	4. LocatedIn(School/University, UK): School/University is located in the United Kingdom.
-	5. WestminsterSchool: A specific high school attended by William Dickinson.
-	6. UnivOfEdinburgh: A specific university attended by William Dickinson.
-	7. Supports(WilliamDickinson, PortlandWhigs): William Dickinson supports the Portland Whigs.
-	8. SeatInParliament(WilliamDickinson): William Dickinson has a seat in Parliament.
-</Definitions>
-<Truth Table>
-| Politician(WilliamDickinson) | AttendedHighSchool(WilliamDickinson, WestminsterSchool) | LocatedIn(WestminsterSchool, UK) | AttendedUniversity(WilliamDickinson, UnivOfEdinburgh) | LocatedIn(UnivOfEdinburgh, UK) | Supports(WilliamDickinson, PortlandWhigs) | SeatInParliament(WilliamDickinson) | Valid |
-|------------------------------|---------------------------------------------------------|-----------------------------------|-------------------------------------------------------|---------------------------------|-------------------------------------------|------------------------------------|-------|
-| Yes                         | Yes                                                    | Yes                              | Yes                                                  | Yes                            | Yes                                      | No                              | Yes   |
-| Yes                         | Yes                                                    | No                             | Yes                                                  | Yes                            | Yes                                      | No                              | Yes   |
-</Truth Table>
-The statement "William Dickinson went to schools located in the United Kingdom for both high school and university." can be expressed as: AttendedHighSchool(WilliamDickinson,WestminsterSchool) ∧ LocatedIn(WestminsterSchool,UK) ∧ AttendedUniversity(WilliamDickinson,UnivOfEdinburgh) ∧ LocatedIn(UnivOfEdinburgh,UK)
-Checking the Truth Table:
-	1. For all validated rows, we cannot determine whether Westminster school located in UK.
-Therefore, the Answer is (C).
+Step 1: The premise states that “William Dickinson attended Westminster school for high school and then the University of Edinburgh.” We also know that “The University of Edinburgh is a university located in the United Kingdom,” so we can confirm that William Dickinson’s university education took place in the UK.
+Step 2: However, the premise does not explicitly state that Westminster School is located in the UK. Although many readers might know from general knowledge that Westminster School is in London, the text itself does not provide this information.
+Step 3: Since the conclusion claims that “William Dickinson went to schools located in the United Kingdom for both high school and university,” we can confirm the university part is in the UK but have insufficient information about the high school (Westminster School).
+Step 4: Because the premise does not definitively place Westminster School in the UK, it is impossible to conclude with certainty that both schools he attended were in the UK. We therefore lack enough textual evidence to deem the conclusion strictly true.
+Step 5: There is also no premise suggesting that Westminster School is outside of the UK, so we cannot declare the conclusion false. The conclusion could be true in reality, but the text does not confirm it.
+Step 6: As a result, the statement “William Dickinson went to schools located in the United Kingdom for both high school and university” remains unverified by the given premises and is thus uncertain.
+Therefore, the answer is (C). 
 </Reasoning>
 <Answer>
 The final answer is (C).
