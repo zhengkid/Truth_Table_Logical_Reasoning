@@ -5,17 +5,18 @@ import json
 import argparse
 import time
 import tqdm
+import re
 
 ##########################################################Begin: Formating Prompts##########################################################################
 # Prompting Truth Table 
 def get_sys_prompt_rational_truth_table():
-    file_path = os.path.join('../prompts', 'sys_prompt_truth_table_star.txt')
+    file_path = os.path.join('./prompts', 'sys_prompt_truth_table_star.txt')
     with open(file_path) as f:
         sys_prompt = f.read()
     return sys_prompt
 
 def get_few_shot_prompt_rational_truth_table():
-    file_path = os.path.join('../prompts', 'prompt_truth_table_star.txt')
+    file_path = os.path.join('./prompts', 'prompt_truth_table_star.txt')
     with open(file_path) as f:
         in_context_examples = f.read()
     return in_context_examples
@@ -28,13 +29,13 @@ def get_prompt_rational_truth_table():
 
 # Prompting Code
 def get_sys_prompt_rational_code():
-    file_path = os.path.join('../prompts', 'sys_prompt_code_star.txt')
+    file_path = os.path.join('./prompts', 'sys_prompt_code_star.txt')
     with open(file_path) as f:
         sys_prompt = f.read()
     return sys_prompt
 
 def get_few_shot_prompt_rational_code():
-    file_path = os.path.join('../prompts', 'prompt_code_star.txt')
+    file_path = os.path.join('./prompts', 'prompt_code_star.txt')
     with open(file_path) as f:
         in_context_examples = f.read()
     return in_context_examples
@@ -48,13 +49,13 @@ def get_prompt_rational_code():
 
 # Prompting nl
 def get_sys_prompt_rational_nl():
-    file_path = os.path.join('../prompts', 'sys_prompt_nl_star.txt')
+    file_path = os.path.join('./prompts', 'sys_prompt_nl_star.txt')
     with open(file_path) as f:
         sys_prompt = f.read()
     return sys_prompt
 
 def get_few_shot_prompt_rational_nl():
-    file_path = os.path.join('../prompts', 'prompt_nl_star.txt')
+    file_path = os.path.join('./prompts', 'prompt_nl_star.txt')
     with open(file_path) as f:
         in_context_examples = f.read()
     return in_context_examples
@@ -80,13 +81,13 @@ def obtain_seed_dataset(dataset_name, num_samples, seed=42):
     """
     # Load the dataset
     print(f"Loading dataset '{dataset_name}'...")
-    dataset = load_dataset(dataset_name, split='train')
-    test_dataset = load_dataset(dataset_name, split='validation')
+    dataset = load_dataset(dataset_name)
+    train_dataset = dataset['train']
+    test_dataset = dataset['validation'] 
 
     # Shuffle and select a subset
     print(f"Selecting {num_samples} samples from the dataset...")
-    seed_dataset = dataset.shuffle(seed=seed).select(range(num_samples))
-
+    seed_dataset = train_dataset.shuffle(seed=seed).select(range(num_samples))
     print(f"Seed dataset obtained with {len(seed_dataset)} samples.")
     return seed_dataset,test_dataset
 
@@ -180,19 +181,23 @@ def finetune(client, file_resp, output_dir, model="meta-llama/Meta-Llama-3.1-8B-
             # lora_trainable_modules=lora_trainable_modules,
             wandb_api_key=os.environ.get("WANDB_API_KEY"),
         )
-        print("Fine-tuning job created successfully!")
-
+        print(f"Fine-tuning job {response.id} created successfully!")
+        print(response)
         # Block until the fine-tuning job is finished
         ft_id = response.id
         ft_status = client.fine_tuning.retrieve(ft_id)
-        while not ft_status.status == "Completed":
+        while not ft_status.status._value_ == "completed":
             time.sleep(10)  # Poll every 10 seconds
             ft_status = client.fine_tuning.retrieve(ft_id)
-        print("Fine-tuning job completed!")
+        print(f"Fine-tuning job {response.id} completed!")
         
         response_file_path = output_dir
         with open(response_file_path, 'w') as f:
-            json.dump(response, f, indent=4)
+            data_to_save = {
+                "job_id": response.id,
+                "model_name": response.output_name
+            }
+            json.dump(data_to_save, f, indent=4)
         
         print(f"Fine-tuning response saved to {response_file_path}")
         return response
@@ -215,9 +220,10 @@ def evaluation(client, model, dataset, output_dir, raw_data_path, accuracy_path,
         rationale_prompt = get_prompt_rational_code()
     elif mode == 'nl':
         rationale_prompt = get_prompt_rational_nl()
-    # rationale_add_hint_prompt = get_prompt_rational_add_hint()
+
+    # print(rationale_prompt)
     # Generate rationale for each data point
-    for i, item in enumerate(dataset):
+    for i, item in tqdm.tqdm(enumerate(dataset)):
         premises = item.get("premises", "")
         conclusions=item.get("conclusion", "")
         label = item.get("label", "")  
@@ -235,7 +241,7 @@ def evaluation(client, model, dataset, output_dir, raw_data_path, accuracy_path,
                 temperature=temperature, top_p=top_p, top_k=top_k, stop=stop
             )
             rationale_response = rationale_response.split("<Answer>")[-1]
-
+            
             if "(A)" in rationale_response:
                 predict = "True"
             elif "(B)" in rationale_response:
@@ -373,12 +379,14 @@ def generate_rationales(client, base_model, dataset, output_dir, output_file, ma
                 max_tokens=max_tokens,
                 temperature=temperature, top_p=top_p, top_k=top_k, stop=stop
             )
-            rationale_response = rationale_response.split("<Answer>")[-1]
-            if "(A)" in rationale_response:
+            rationale_process = rationale_response.split("<Reasoning>")[-1]
+            answer_response = rationale_response.split("<Answer>")[-1]
+            predict = 'None'
+            if "(A)" in answer_response:
                 predict = "True"
-            elif "(B)" in rationale_response:
+            elif "(B)" in answer_response:
                 predict = 'False'
-            elif "(C)" in rationale_response:
+            elif "(C)" in answer_response:
                 predict = 'Uncertain'
 
             if predict == label:
@@ -386,12 +394,11 @@ def generate_rationales(client, base_model, dataset, output_dir, output_file, ma
                 rationales.append({
                     "premises": premises,
                     "conclusions": conclusions,
-                    "rationale": rationale_response.strip(),
+                    "rationale": rationale_process.strip(),
                     'label': label,
                     'user_prompt': prompt,
                 })
                 print(f"Generated rationale for data point {i + 1}/{len(dataset)}")
-                print(rationale_response)
             else:
                 print(f"Filter out the data point as the poor quality.")
         except Exception as e:
@@ -439,15 +446,31 @@ def star_pipeline_base_reset(client, base_model, dataset_name, output_dir, n_sam
     """
     outer_loop_responses = []
     os.makedirs(output_dir, exist_ok=True)  # Ensure output directory exists
-    # # response_file_path = os.path.join(output_dir, f"{suffix}_fine_tune_response.json")
-    # # with open(response_file_path, 'w') as f:
-    # #     json.dump(response, f, indent=4)
     
-    # print(f"Fine-tuning response saved to {response_file_path}")
-    # Step 0: Obtain Seed Dataset 
     dataset, test_dataset = obtain_seed_dataset(dataset_name, n_samples, seed)
+    
+    # Step -1: Evaluate few-shot perfomrnace with different ideas
+
+    rationale_file = f"rationales_{mode}_{0}.jsonl"
+    test_rationale_file = base_model.split('/')[-1] + f"-{mode}-r{0}-Raw.jsonl"
+    test_accuracy_file = base_model.split('/')[-1] + f"-{mode}-r{0}-Result.jsonl"
+    
+    evaluation(
+            client=client,
+            model=base_model,  # Always use the base model
+            dataset=test_dataset,
+            output_dir=output_dir,
+            raw_data_path=test_rationale_file, 
+            accuracy_path=test_accuracy_file,
+            max_tokens=max_tokens,
+            temperature=temperature,
+            top_p=top_p,
+            top_k=top_k,
+            stop=stop,
+    )
+    # Step 0: Obtain Seed Dataset 
     model = base_model
-    for n in range(0, n_outer_loops):
+    for n in range(1, n_outer_loops+1):
         print(f"--- Outer Loop {n} ---")
         
         # Step 1: Perform rationale generation
@@ -480,7 +503,7 @@ def star_pipeline_base_reset(client, base_model, dataset_name, output_dir, n_sam
         lora_params = lora_params or {}
         fine_tune_response = finetune(
             client=client,
-            file_resp=file_resp.id,
+            file_resp=file_resp,
             output_dir=os.path.join(output_dir, finetune_response_save_path),
             model="meta-llama/Meta-Llama-3.1-8B-Instruct-Reference",  # Reset to base model every time
             n_epochs=n_epochs,
@@ -496,10 +519,9 @@ def star_pipeline_base_reset(client, base_model, dataset_name, output_dir, n_sam
         # To do 
         evaluation(
             client=client,
-            base_model=model,  # Always use the base model
+            model=model,  # Always use the base model
             dataset=test_dataset,
             output_dir=output_dir,
-            output_file=rationale_file,
             raw_data_path=test_rationale_file, 
             accuracy_path=test_accuracy_file,
             max_tokens=max_tokens,
