@@ -229,6 +229,7 @@ def evaluation(client, model, dataset, output_dir, raw_data_path, accuracy_path,
         label = item.get("label", "")  
         
         # Construct the prompt for this data point
+        # print(rationale_prompt)
         prompt = rationale_prompt.format(Premises=premises, Conclusions=conclusions)
         # print("prompt", prompt)
         try:
@@ -454,20 +455,23 @@ def star_pipeline_base_reset(client, base_model, dataset_name, output_dir, n_sam
     rationale_file = f"rationales_{mode}_{0}.jsonl"
     test_rationale_file = base_model.split('/')[-1] + f"-{mode}-r{0}-Raw.jsonl"
     test_accuracy_file = base_model.split('/')[-1] + f"-{mode}-r{0}-Result.jsonl"
-    
-    evaluation(
-            client=client,
-            model=base_model,  # Always use the base model
-            dataset=test_dataset,
-            output_dir=output_dir,
-            raw_data_path=test_rationale_file, 
-            accuracy_path=test_accuracy_file,
-            max_tokens=max_tokens,
-            temperature=temperature,
-            top_p=top_p,
-            top_k=top_k,
-            stop=stop,
-    )
+    if os.path.exists(os.path.join(output_dir, test_rationale_file)):
+            pass
+    else:
+        evaluation(
+                client=client,
+                model=base_model,  # Always use the base model
+                dataset=test_dataset,
+                output_dir=output_dir,
+                raw_data_path=test_rationale_file, 
+                accuracy_path=test_accuracy_file,
+                max_tokens=max_tokens,
+                temperature=temperature,
+                top_p=top_p,
+                top_k=top_k,
+                stop=stop,
+                mode=mode,
+        )
     # Step 0: Obtain Seed Dataset 
     model = base_model
     for n in range(1, n_outer_loops+1):
@@ -479,18 +483,22 @@ def star_pipeline_base_reset(client, base_model, dataset_name, output_dir, n_sam
         test_rationale_file = base_model.split('/')[-1] + f"-{mode}-r{n}-Raw.jsonl"
         test_accuracy_file = base_model.split('/')[-1] + f"-{mode}-r{n}-Result.jsonl"
         finetune_response_save_path = f"fine_tuning_{mode}_{batch_size}_{learning_rate}_round_{n}.jsonl"
-        generate_rationales(
-            client=client,
-            base_model=model,  # Always use the base model
-            dataset=dataset,
-            output_dir=output_dir,
-            output_file=rationale_file,
-            max_tokens=max_tokens,
-            temperature=temperature,
-            top_p=top_p,
-            top_k=top_k,
-            stop=stop,
-        )
+        if os.path.exists(os.path.join(output_dir, rationale_file)):
+            pass
+        else:
+            generate_rationales(
+                client=client,
+                base_model=model,  # Always use the base model
+                dataset=dataset,
+                output_dir=output_dir,
+                output_file=rationale_file,
+                max_tokens=max_tokens,
+                temperature=temperature,
+                top_p=top_p,
+                top_k=top_k,
+                stop=stop,
+                mode=mode,
+            )
 
         # Step 2: Prepare Data for Together AI training
         trainin_data_path = rationale_file.split('.')[0] + "_train." +  rationale_file.split('.')[1]
@@ -500,20 +508,26 @@ def star_pipeline_base_reset(client, base_model, dataset_name, output_dir, n_sam
 
         # Step 3: Fine-tune the base model with rationalized datasets
         print("Fine-tuning base model...")
-        lora_params = lora_params or {}
-        fine_tune_response = finetune(
-            client=client,
-            file_resp=file_resp,
-            output_dir=os.path.join(output_dir, finetune_response_save_path),
-            model="meta-llama/Meta-Llama-3.1-8B-Instruct-Reference",  # Reset to base model every time
-            n_epochs=n_epochs,
-            batch_size=batch_size,
-            learning_rate=learning_rate,
-            lora=lora,
-            **lora_params
-        )
-        outer_loop_responses.append(fine_tune_response)
-        model = fine_tune_response.output_name
+        if os.path.exists(os.path.join(output_dir, finetune_response_save_path)):
+            with open(os.path.join(output_dir, finetune_response_save_path), 'r') as file:
+                fine_tune_response = json.loads(file.read().strip())
+                model = fine_tune_response['model_name']
+                print(model)
+        else:
+            lora_params = lora_params or {}
+            fine_tune_response = finetune(
+                client=client,
+                file_resp=file_resp,
+                output_dir=os.path.join(output_dir, finetune_response_save_path),
+                model="meta-llama/Meta-Llama-3.1-8B-Instruct-Reference",  # Reset to base model every time
+                n_epochs=n_epochs,
+                batch_size=batch_size,
+                learning_rate=learning_rate,
+                lora=lora,
+                **lora_params
+            )
+            outer_loop_responses.append(fine_tune_response)
+            model = fine_tune_response.output_name
 
         # Step 4: Fine-tune the base model with rationalized datasets
         # To do 
@@ -529,6 +543,7 @@ def star_pipeline_base_reset(client, base_model, dataset_name, output_dir, n_sam
             top_p=top_p,
             top_k=top_k,
             stop=stop,
+            mode=mode
         )
     return outer_loop_responses
 

@@ -171,11 +171,11 @@ def main():
     hulk = Hulk(angry=True)
     peter = PeterParker(True)
     result = check_if_thor_happy_then_peter_uniform(thor, hulk, peter)
-    print(f"Thor(happy=True) => Conclusion => {result}")
 
 if __name__ == "__main__":
     main()
 </Python>
+Therefore, the Answer is (A).
 </Reasoning>
 <Answer>
 The final answer is (A).
@@ -261,14 +261,7 @@ def check_theistic_god_is_sophist_and_philosopher(god: Entity) -> bool:
 
 def main():
     theisticGod = GodEntity()
-    
     statement_truth_value = check_theistic_god_is_sophist_and_philosopher(theisticGod)
-    
-    if statement_truth_value:
-        print("The statement 'The theistic God is a sophist and a philosopher' is TRUE.")
-    else:
-        print("The statement 'The theistic God is a sophist and a philosopher' is FALSE.")
-
 
 if __name__ == "__main__":
     main()
@@ -355,7 +348,6 @@ def went_to_uk_schools_for_HS_and_uni(d: Entity) -> str:
 def main():
     dickinson = DickinsonEntity()
     conclusion = went_to_uk_schools_for_HS_and_uni(dickinson)
-    print("Conclusion about 'William Dickinson went to UK schools for HS & Uni':", conclusion)
 
 if __name__ == "__main__":
     main()
