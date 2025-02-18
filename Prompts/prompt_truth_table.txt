@@ -1,0 +1,122 @@
+You will be provided with an input text. Your task is to convert the information from the text into a logical truth table. The truth table will represent the possible combinations of conditions described in the text and indicate whether each combination satisfies the constraints provided. You will first see three examples, and then you will be asked to generate the truth table for a new input following a similar style.
+
+
+Instructions for generating truth tables:
+
+	1.	Define Logical Predicates: Identify all key conditions and constraints from the text, and translate them into well-defined logical predicates.
+	2.	Enumerate Selective Combinations: 
+			2.1. Focus on relevant combinations of truth values that are critical for evaluating the constraints.
+			2.2. Avoid generating all possible combinations by leveraging logical dependencies or simplifying constraints.
+			2.3. Use methods like constraint propagation or incremental combination generation to reduce unnecessary rows.
+	3.	Validate Rows: For each combination, determine whether it satisfies all constraints described in the text. Indicate this in a Valid column as Yes or No.
+	4.	Format: The truth table should clearly label predicates, include all possible rows of truth value combinations, and provide a final validity evaluation for each row.
+
+An example begins with the text "<EXAMPLE n>" and ends with "<EXAMPLE n>", where "n" is the number of the example. Similarly, the text will start and end with <TEXT> and <\TEXT>, and the truth table will start and end with <TRUTH TABLE> and <\TRUTH TABLE>.
+
+
+<EXAMPLE 1>
+
+<TEXT>
+There are six types of wild turkeys: Eastern wild turkey, Osceola wild turkey, Gould’s wild turkey, Merriam’s wild turkey, Rio Grande wild turkey, and Ocellated wild turkey.
+Tom is not an Eastern wild turkey.
+Tom is not an Osceola wild turkey.
+Tom is not a Gould's wild turkey.
+Tom is neither a Merriam's wild turkey nor a Rio Grande wild turkey.
+Tom is a wild turkey.
+<\TEXT>
+
+<TRUTH TABLE>
+
+Definitions: 
+	1.	WildTurkey(x): x is a wild turkey.
+	2. 	EasternWildTurkey(x): x is an Eastern wild turkey.
+	3.	OsceolaWildTurkey(x): x is an Osceola wild turkey.
+	4. 	GouldWildTurkey(x): x is a Gould’s wild turkey.
+	5. 	MerriamWildTurkey(x): x is a Merriam’s wild turkey.
+	6.	RioGrandeWildTurkey(x): x is a Rio Grande wild turkey.
+	7. 	OcellatedWildTurkey(x): x is an Ocellated wild turkey.
+
+Truth Table:
+
+| WildTurkey(Tom) | EasternWildTurkey(Tom) | OsceolaWildTurkey(Tom) | GouldWildTurkey(Tom) | MerriamWildTurkey(Tom) | RioGrandeWildTurkey(Tom) | OcellatedWildTurkey(Tom) | Valid |
+|------------------|------------------------|-------------------------|-----------------------|-------------------------|--------------------------|--------------------------|-------|
+| True             | False                 | False                  | False                | False                  | False                   | True                   | Yes   |
+| True             | False                 | False                  | False                | False                  | False                   | False                  | No    |
+
+<\TRUTH TABLE>
+
+<\EXAMPLE 1>
+
+<EXAMPLE 2>
+Peter Parker is either a superhero or a civilian.
+The Hulk is a destroyer.
+The Hulk wakes up when he is angry.
+If the Hulk wakes up, then he will break a bridge.
+Thor is a god.
+Thor will break a bridge when he is happy.
+A god is not a destroyer.
+Peter Parker wears a uniform when he is a superhero.
+Peter Parker is not a civilian if a destroyer is breaking a bridge.
+If Thor is happy, the Hulk is angry.
+<\EXAMPLE 2>
+
+<TRUTH TABLE>
+Definitions:
+	1. Superhero(PeterParker): Peter Parker is a superhero.
+	2. Civilian(PeterParker): Peter Parker is a civilian.
+	3. Destroyer(TheHulk): The Hulk is a destroyer.
+	4. Angry(TheHulk): The Hulk is angry.
+	5. WakeUp(TheHulk): The Hulk wakes up.
+	6. BreakBridge(TheHulk): The Hulk breaks a bridge.
+	7. God(Thor): Thor is a god.
+	8. Happy(Thor): Thor is happy.
+	9. BreakBridge(Thor): Thor breaks a bridge.
+	10. WearsUniform(PeterParker): Peter Parker wears a uniform.
+
+Truth Table:
+
+| Superhero(PeterParker) | Civilian(PeterParker) | Destroyer(TheHulk) | Angry(TheHulk) | WakeUp(TheHulk) | BreakBridge(TheHulk) | God(Thor) | Happy(Thor) | BreakBridge(Thor) | WearsUniform(PeterParker) | Valid |
+|-------------------------|-----------------------|---------------------|----------------|-----------------|----------------------|-----------|-------------|-------------------|--------------------------|-------|
+| Yes                     | No                   | Yes                 | No             | No              | No                   | Yes       | No          | No                | Yes                      | Yes   |
+| Yes                     | No                   | Yes                 | Yes            | Yes             | Yes                  | Yes       | No          | No                | Yes                      | Yes   |
+| Yes                     | No                   | Yes                 | Yes            | Yes             | Yes                  | Yes       | Yes         | Yes               | Yes                      | Yes   |
+| No                      | Yes                  | Yes                 | No             | No              | No                   | Yes       | No          | No                | No                       | Yes   |
+| No                      | Yes                  | Yes                 | Yes            | Yes             | Yes                  | Yes       | Yes         | Yes               | No                       | No    |
+
+<\TRUTH TABLE>
+
+<\EXAMPLE 2>
+
+<EXAMPLE 3>
+
+<TEXT>
+All philosophers reason.
+Some sophists reason.
+All who can reason can distinguish truth from falsehood.
+Nobody who can distinguish truth from falsehood is morally perfect.
+The theistic God is morally perfect.
+The theistic God is a sophist.
+<\TEXT>
+<TRUTH TABLE>
+
+Definitions:
+	1. Philosopher(x): x is a philosopher.
+	2. Sophist(x): x is a sophist.
+	3. Reason(x): x can reason.
+	4. DistinguishTruthFalsehood(x): x can distinguish truth from falsehood.
+	5. MorallyPerfect(x): x is morally perfect.
+	6. TheisticGod(x): x is the theistic God.
+
+Truth Table:
+
+| Philosopher(x) | Sophist(x) | Reason(x) | DistinguishTruthFalsehood(x) | MorallyPerfect(x) | TheisticGod(x) | Valid |
+|----------------|------------|-----------|------------------------------|-------------------|----------------|-------|
+| Yes            | No         | Yes       | Yes                          | No                | No             | Yes   |
+| Yes            | Yes        | Yes       | Yes                          | No                | No             | Yes   |
+| Yes            | Yes        | Yes       | Yes                          | Yes               | Yes            | No    |
+| No             | Yes        | Yes       | Yes                          | No                | No             | Yes   |
+| No             | Yes        | Yes       | Yes                          | Yes               | Yes            | No    |
+
+<\TRUTH TABLE>
+
+<\EXAMPLE 3>
