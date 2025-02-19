@@ -22,8 +22,7 @@ Is the following statement true, false, or uncertain? If Thor is happy, then Pet
 (B) False
 (C) Uncertain
 </Options>
-<Reasoning>
-<Python>
+<PYTHON>
 from typing import Optional
 
 class Entity:
@@ -174,12 +173,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-</Python>
-Therefore, the Answer is (A).
-</Reasoning>
-<Answer>
-The final answer is (A).
-</Answer>
+</PYTHON>
 </EXAMPLE 1>
 
 <EXAMPLE 2>
@@ -202,8 +196,7 @@ Is the following statement true, false, or uncertain? The theistic God is a soph
 (B) False
 (C) Uncertain
 </Options>
-<Reasoning>
-<Python>
+<PYTHON>
 class Entity:
     def is_philosopher(self) -> bool:
         raise NotImplementedError
@@ -265,12 +258,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-</Python>
-Therefore, the Answer is (B).
-</Reasoning>
-<Answer>
-The final answer is (B).
-</Answer>
+</PYTHON>
 </EXAMPLE 2>
 
 <EXAMPLE 3>
@@ -291,8 +279,7 @@ Is the following statement true, false, or uncertain? William Dickinson went to 
 (B) False
 (C) Uncertain
 </Options>
-<Reasoning>
-<Python>
+<PYTHON>
 from typing import Optional
 
 class Entity:
@@ -351,12 +338,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-</Python>
-Therefore, the answer is (C).
-</Reasoning>
-<Answer>
-The final answer is (C).
-</Answer>
+</PYTHON>
 </EXAMPLE 3>
 
 The following is the problem you need to solve.
@@ -375,6 +357,6 @@ Is the following statement true, false, or uncertain? {Conclusions}
 (B) False
 (C) Uncertain
 </Options>
-<Reasoning>
+<PYTHON>
 
 
