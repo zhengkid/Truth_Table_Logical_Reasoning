@@ -317,13 +317,6 @@ def evaluation_batch(model, tokenizer, dataset, output_dir, raw_data_path, accur
     rationales = []
     correct_num = 0
     total_num = 0
-    #model = deepspeed.init_inference(
-    #    model,
-    #    mp_size=4,                 
-    #    dtype=torch.float16,
-    #    replace_method="auto",
-    #    replace_with_kernel_inject=True
-    #)
     model.eval()
 
     rationale_prompt = {
@@ -358,38 +351,59 @@ def evaluation_batch(model, tokenizer, dataset, output_dir, raw_data_path, accur
         except Exception as e:
             print(f"Error generating responses for batch starting at index {batch_start}: {e}")
             continue 
+        if mode != 'code':
+            batch_premises = batch_items['premises']
+            batch_conclusion = batch_items['conclusion']
+            batch_label = batch_items['label']
+            for prompt, premise, conclusion, label, rationale_response in zip(batch_prompts, batch_premises, batch_conclusion, batch_label, batch_responses):            
+                #print(rationale_response)
+                rationale_response = rationale_response.split("<Reasoning>")[-1]
+                rationale_response = rationale_response.split("</Answer>")[0] + "</Answer>"
+                print(rationale_response)
+                if "(A)" in rationale_response:
+                    predict = "True"
+                elif "(B)" in rationale_response:
+                    predict = "False"
+                elif "(C)" in rationale_response:
+                    predict = "Uncertain"
+                else:
+                    predict = "Unknown"
+                rationales.append({
+                    "premises": premise,
+                    "conclusions": conclusion,
+                    "rationale": rationale_response.strip(),
+                    "label": label,
+                    "predict": predict,
+                    "user_prompt": prompt,
+                })
 
-        batch_premises = batch_items['premises']
-        batch_conclusion = batch_items['conclusion']
-        batch_label = batch_items['label']
-        for prompt, premise, conclusion, label, rationale_response in zip(batch_prompts, batch_premises, batch_conclusion, batch_label, batch_responses):            
-            #print(rationale_response)
-            rationale_response = rationale_response.split("<Reasoning>")[-1]
-            rationale_response = rationale_response.split("</Answer>")[0] + "</Answer>"
-            print(rationale_response)
-            if "(A)" in rationale_response:
-                predict = "True"
-            elif "(B)" in rationale_response:
-                predict = "False"
-            elif "(C)" in rationale_response:
-                predict = "Uncertain"
-            else:
-                predict = "Unknown"
-            rationales.append({
-                "premises": premise,
-                "conclusions": conclusion,
-                "rationale": rationale_response.strip(),
-                "label": label,
-                "predict": predict,
-                "user_prompt": prompt,
-            })
+                if predict == label:
+                    correct_num += 1
+                total_num += 1
+                print(f"{correct_num} out of {total_num} is correct!")
+                accuracy = correct_num / total_num if total_num > 0 else 0.0
+        else:
+            for code_response in batch_responses:            
+                #print(rationale_response)
+                code_response = code_response.split("<PYTHON>")[-1]
+                code_response = code_response.split("</PYTHON")[0]
+                exec(code_response)
+                predict = locals().get("result")
+                rationales.append({
+                    "premises": premise,
+                    "conclusions": conclusion,
+                    "rationale": code_response.strip(),
+                    "label": label,
+                    "predict": predict,
+                    "user_prompt": prompt,
+                })
 
-            if predict == label:
-                correct_num += 1
-            total_num += 1
-            print(f"{correct_num} out of {total_num} is correct!")
+                if predict == label:
+                    correct_num += 1
+                total_num += 1
+                print(f"{correct_num} out of {total_num} is correct!")
+                accuracy = correct_num / total_num if total_num > 0 else 0.0
 
-    accuracy = correct_num / total_num if total_num > 0 else 0.0
 
     with open(os.path.join(output_dir, raw_data_path), 'w') as f:
         json.dump(rationales, f, indent=4)
