@@ -255,6 +255,7 @@ def check_theistic_god_is_sophist_and_philosopher(god: Entity) -> bool:
 def main():
     theisticGod = GodEntity()
     statement_truth_value = check_theistic_god_is_sophist_and_philosopher(theisticGod)
+    result = statement_truth_value
 
 if __name__ == "__main__":
     main()
@@ -335,6 +336,7 @@ def went_to_uk_schools_for_HS_and_uni(d: Entity) -> str:
 def main():
     dickinson = DickinsonEntity()
     conclusion = went_to_uk_schools_for_HS_and_uni(dickinson)
+    result = conclusion
 
 if __name__ == "__main__":
     main()

@@ -10,6 +10,7 @@ import transformers
 from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, default_data_collator,TrainingArguments,DataCollatorForLanguageModeling
 from functools import partial
 import deepspeed
+
 ##########################################################Begin: Formating Prompts##########################################################################
 # Prompting Truth Table 
 def get_sys_prompt_rational_truth_table():
@@ -150,17 +151,17 @@ def convert_to_custom_format(input_data):
     return converted_data
 
 ##########################################################Code for Training##########################################################################
-def preprocess_function(examples, tokenizer):
+def preprocess_function(examples, tokenizer, is_chat_model):
     """
     Process dataset into chat-style format for instruction tuning.
     """
     all_input_ids = []
     all_attention_mask = []
     all_labels = []
-    user_prompt = examples.get("user_prompt", "")
-    assistant_response = examples.get("rationale", "")
 
     for user_prompt, rationale in zip(examples["user_prompt"], examples["rationale"]):
+
+
         messages = [
             {"role": "user", "content": user_prompt},
             {"role": "assistant", "content": rationale}
@@ -178,7 +179,7 @@ def preprocess_function(examples, tokenizer):
         "labels": all_labels,
     }
 
-def finetune(client, dataset_path, output_dir, n_epochs=4, batch_size=16, learning_rate=1e-5):
+def finetune(client, dataset_path, output_dir, n_epochs=4, batch_size=16, micro_batch_size=1, learning_rate=1e-5, is_chat_model=False):
     """
     Fine-tune a Hugging Face model using full parameter fine-tuning.
     """
@@ -186,25 +187,24 @@ def finetune(client, dataset_path, output_dir, n_epochs=4, batch_size=16, learni
     dataset = load_dataset("json", data_files=dataset_path)['train']
     #print(dataset)
     #print(dataset[0])
-    tokenized_dataset = dataset.map(lambda x: preprocess_function(x, tokenizer), batched=True,remove_columns=["label"])
+    tokenized_dataset = dataset.map(lambda x: preprocess_function(x, tokenizer, is_chat_model), batched=True,remove_columns=["label"])
     
     training_args = TrainingArguments(
         output_dir=output_dir,
         evaluation_strategy="no",
         save_strategy="epoch",
-        per_device_train_batch_size=batch_size,
-        per_device_eval_batch_size=batch_size,
+        per_device_train_batch_size=micro_batch_size,
+        gradient_accumulation_steps=batch_size // micro_batch_size,
         num_train_epochs=n_epochs,
         learning_rate=learning_rate,
         save_total_limit=2,
         logging_dir=os.path.join(output_dir, "logs"),
         logging_steps=10,
         push_to_hub=False,
-        #fp16=torch.cuda.is_available(),
         full_determinism=True
     )
     
-    data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
+    data_collator = default_data_collator
     
     trainer = Trainer(
         model=model,
@@ -213,7 +213,6 @@ def finetune(client, dataset_path, output_dir, n_epochs=4, batch_size=16, learni
         tokenizer=tokenizer,
         data_collator=data_collator
     )
-    
     trainer.train()
     trainer.save_model(output_dir)
     print(f"Fine-tuned model saved to {output_dir}")
@@ -251,9 +250,7 @@ def evaluation(model, tokenizer, dataset, output_dir, raw_data_path, accuracy_pa
                 max_tokens=max_tokens,
                 temperature=temperature, top_p=top_p, top_k=top_k, stop=stop, is_chat_model=True
             )
-            print(rationale_response)
             rationale_response = rationale_response.split("<Answer>")[-1]
-            print(rationale_response) 
             if "(A)" in rationale_response:
                 predict = "True"
             elif "(B)" in rationale_response:
@@ -387,7 +384,6 @@ def evaluation_batch(model, tokenizer, dataset, output_dir, raw_data_path, accur
                 #print(rationale_response)
                 code_response = code_response.split("<PYTHON>")[-1]
                 code_response = code_response.split("</PYTHON")[0]
-                exec(code_response)
                 predict = locals().get("result")
                 rationales.append({
                     "premises": premise,
@@ -530,7 +526,7 @@ def generate_rationales(model, tokenizer, dataset, output_dir, output_file, max_
 ################################################# Star Pipeline #############################################################
 
 def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_samples=200, n_outer_loops=10, n_epochs=4,
-                             batch_size=16, learning_rate=1e-5, lora=False, lora_params=None, seed=42, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table'):
+                             batch_size=16, micro_batch_size=1, learning_rate=1e-5, lora=False, lora_params=None, seed=42, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False):
     """
     Implements the STaR pipeline where each fine-tuning starts from the initial base model.
 
@@ -578,7 +574,8 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
                 top_p=top_p,
                 top_k=top_k,
                 stop=stop,
-                mode=mode  
+                mode=mode,
+                is_chat_model=is_chat_model,  
         )
 
     model = base_model
@@ -606,6 +603,7 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
                 top_k=top_k,
                 stop=stop,
                 mode=mode,
+                is_chat_model=is_chat_model,  
             )
         
         # Step 2: Fine-tune the base model with rationalized datasets
@@ -617,7 +615,9 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
             output_dir=os.path.join(output_dir, finetune_response_save_path),
             n_epochs=n_epochs,
             batch_size=batch_size,
-            learning_rate=learning_rate
+            micro_batch_size=micro_batch_size,
+            learning_rate=learning_rate,
+            is_chat_model=is_chat_model,  
         )
 
         # Step 4: Fine-tune the base model with rationalized datasets
@@ -636,6 +636,7 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
                 top_k=top_k,
                 stop=stop,
                 mode=mode,
+                is_chat_model=is_chat_model,
         )
     return outer_loop_responses
 
@@ -661,6 +662,8 @@ def main():
                         help="Number of training epochs.")
     parser.add_argument("--batch_size", type=int, default=16, 
                         help="Batch size for fine-tuning.")
+    parser.add_argument("--micro_batch_size", type=int, default=16, 
+                        help="Mirco Batch size for fine-tuning.")
     parser.add_argument("--learning_rate", type=float, default=1e-5, 
                         help="Learning rate for fine-tuning.")
     parser.add_argument("--lora", action="store_true", 
@@ -690,6 +693,30 @@ def main():
     for arg, value in vars(args).items():
         print(f"{arg}: {value}")
 
+
+    comp_models = {
+                "NousResearch/Meta-Llama-3-8B",
+                "NousResearch/Meta-Llama-3.1-8B",
+                "unsloth/gemma-2-9b",
+                'mistralai/Mistral-7B-v0.3',
+                'google/gemma-2-9b',
+                "Qwen/Qwen2.5-7B",
+
+            }
+    chat_models = {
+        "NousResearch/Meta-Llama-3-8B-Instruct",
+        "unsloth/Meta-Llama-3.1-8B-Instruct",
+        'mistralai/Mistral-7B-Instruct-v0.3',
+        'google/gemma-2-9b-it',
+        'Qwen/Qwen2.5-7B-Instruct'
+    }
+
+    if args.model_name_and_path in chat_models:
+        is_chat = True
+    elif args.model_name_and_path in comp_models:
+        is_chat = False
+
+
     # Run the pipeline
     star_pipeline_base_reset(
         model_name_and_path=args.model_name_and_path,
@@ -699,6 +726,7 @@ def main():
         n_outer_loops=args.n_outer_loops,
         n_epochs=args.n_epochs,
         batch_size=args.batch_size,
+        micro_batch_size=args.micro_batch_size,
         learning_rate=args.learning_rate,
         lora=args.lora,
         lora_params={
@@ -712,6 +740,7 @@ def main():
         top_p=args.top_p,
         top_k=args.top_k,
         mode=args.mode,
+        is_chat_model=is_chat,  
     )
 
 if __name__ == "__main__":
