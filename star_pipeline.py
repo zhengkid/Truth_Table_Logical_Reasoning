@@ -2,23 +2,24 @@ import os
 import re
 import json
 import time
+import torch
 import tqdm
 import argparse
 from datasets import load_dataset
 import transformers
-from transformers import AutoTokenizer, AutoModelForCausalLM, default_data_collator
+from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, default_data_collator,TrainingArguments,DataCollatorForLanguageModeling
 from functools import partial
-
+import deepspeed
 ##########################################################Begin: Formating Prompts##########################################################################
 # Prompting Truth Table 
 def get_sys_prompt_rational_truth_table():
-    file_path = os.path.join('./prompts', 'sys_prompt_truth_table_star.txt')
+    file_path = os.path.join('./Prompts', 'sys_prompt_truth_table_star.txt')
     with open(file_path) as f:
         sys_prompt = f.read()
     return sys_prompt
 
 def get_few_shot_prompt_rational_truth_table():
-    file_path = os.path.join('./prompts', 'prompt_truth_table_star.txt')
+    file_path = os.path.join('./Prompts', 'prompt_truth_table_star.txt')
     with open(file_path) as f:
         in_context_examples = f.read()
     return in_context_examples
@@ -31,13 +32,13 @@ def get_prompt_rational_truth_table():
 
 # Prompting Code
 def get_sys_prompt_rational_code():
-    file_path = os.path.join('./prompts', 'sys_prompt_code_star.txt')
+    file_path = os.path.join('./Prompts', 'sys_prompt_code_star.txt')
     with open(file_path) as f:
         sys_prompt = f.read()
     return sys_prompt
 
 def get_few_shot_prompt_rational_code():
-    file_path = os.path.join('./prompts', 'prompt_code_star.txt')
+    file_path = os.path.join('./Prompts', 'prompt_code_star.txt')
     with open(file_path) as f:
         in_context_examples = f.read()
     return in_context_examples
@@ -51,13 +52,13 @@ def get_prompt_rational_code():
 
 # Prompting nl
 def get_sys_prompt_rational_nl():
-    file_path = os.path.join('./prompts', 'sys_prompt_nl_star.txt')
+    file_path = os.path.join('./Prompts', 'sys_prompt_nl_star.txt')
     with open(file_path) as f:
         sys_prompt = f.read()
     return sys_prompt
 
 def get_few_shot_prompt_rational_nl():
-    file_path = os.path.join('./prompts', 'prompt_nl_star.txt')
+    file_path = os.path.join('./Prompts', 'prompt_nl_star.txt')
     with open(file_path) as f:
         in_context_examples = f.read()
     return in_context_examples
@@ -95,7 +96,7 @@ def obtain_seed_dataset(dataset_name, num_samples, seed=42):
 
 ##########################################################Load Model, Tokenizer##########################################################################
 
-def load_model_and_tokenizer(model_name_or_path='gemma-2-9b', low_cpu_mem_usage=False, use_flash_attention_2=False, torch_dtype='fp16'):
+def load_model_and_tokenizer(model_name_or_path='gemma-2-9b', low_cpu_mem_usage=True, use_flash_attention_2=False, torch_dtype='fp16'):
     """
     Load a pre-trained model from Hugging Face Transformers.
     
@@ -113,11 +114,13 @@ def load_model_and_tokenizer(model_name_or_path='gemma-2-9b', low_cpu_mem_usage=
                 device_map="auto",
                 low_cpu_mem_usage=low_cpu_mem_usage,
                 use_flash_attention_2=use_flash_attention_2,
-                torch_dtype=torch_dtype,
+                torch_dtype="auto",
             )
     tokenizer = AutoTokenizer.from_pretrained(model_name_or_path)
 
     # set eos token and pad token 
+    tokenizer.padding_side='left'
+    tokenizer.pad_token = tokenizer.eos_token
     return model, tokenizer
 
 ##########################################################Code for Training Data Preparation##########################################################################
@@ -151,32 +154,43 @@ def preprocess_function(examples, tokenizer):
     """
     Process dataset into chat-style format for instruction tuning.
     """
+    all_input_ids = []
+    all_attention_mask = []
+    all_labels = []
     user_prompt = examples.get("user_prompt", "")
     assistant_response = examples.get("rationale", "")
-    
-    messages = [
-        {"role": "user", "content": user_prompt},
-        {"role": "assistant", "content": assistant_response}
-    ]
-    
-    full_prompt = tokenizer.apply_chat_template(messages, return_tensors="pt")
-    
-    model_inputs = tokenizer(full_prompt, truncation=True, padding="max_length", max_length=512)
-    labels = model_inputs["input_ids"].copy()
-    model_inputs["labels"] = labels
-    return model_inputs
+
+    for user_prompt, rationale in zip(examples["user_prompt"], examples["rationale"]):
+        messages = [
+            {"role": "user", "content": user_prompt},
+            {"role": "assistant", "content": rationale}
+        ]
+
+        full_prompt = tokenizer.apply_chat_template(messages, tokenize=False)
+        model_inputs = tokenizer(full_prompt, truncation=True, padding="max_length", max_length=512)
+        print(len(model_inputs["input_ids"]))
+        all_input_ids.append(model_inputs["input_ids"])
+        all_attention_mask.append(model_inputs["attention_mask"])
+        all_labels.append(model_inputs["input_ids"].copy())
+    return {
+        "input_ids": all_input_ids,
+        "attention_mask": all_attention_mask,
+        "labels": all_labels,
+    }
 
 def finetune(client, dataset_path, output_dir, n_epochs=4, batch_size=16, learning_rate=1e-5):
     """
     Fine-tune a Hugging Face model using full parameter fine-tuning.
     """
     model, tokenizer = client
-    dataset = load_dataset("json", data_files=dataset_path)
-    tokenized_dataset = dataset.map(lambda x: preprocess_function(x, tokenizer), batched=True)
+    dataset = load_dataset("json", data_files=dataset_path)['train']
+    #print(dataset)
+    #print(dataset[0])
+    tokenized_dataset = dataset.map(lambda x: preprocess_function(x, tokenizer), batched=True,remove_columns=["label"])
     
     training_args = TrainingArguments(
         output_dir=output_dir,
-        evaluation_strategy="epoch",
+        evaluation_strategy="no",
         save_strategy="epoch",
         per_device_train_batch_size=batch_size,
         per_device_eval_batch_size=batch_size,
@@ -186,7 +200,7 @@ def finetune(client, dataset_path, output_dir, n_epochs=4, batch_size=16, learni
         logging_dir=os.path.join(output_dir, "logs"),
         logging_steps=10,
         push_to_hub=False,
-        fp16=torch.cuda.is_available(),
+        #fp16=torch.cuda.is_available(),
         full_determinism=True
     )
     
@@ -195,7 +209,7 @@ def finetune(client, dataset_path, output_dir, n_epochs=4, batch_size=16, learni
     trainer = Trainer(
         model=model,
         args=training_args,
-        train_dataset=tokenized_dataset["train"],
+        train_dataset=tokenized_dataset,
         tokenizer=tokenizer,
         data_collator=data_collator
     )
@@ -215,6 +229,7 @@ def evaluation(model, tokenizer, dataset, output_dir, raw_data_path, accuracy_pa
     rationales = []
     correct_num = 0
     total_num = 0
+    print(mode)
     rationale_prompt = {
         'truth_table': get_prompt_rational_truth_table(),
         'code': get_prompt_rational_code(),
@@ -227,17 +242,18 @@ def evaluation(model, tokenizer, dataset, output_dir, raw_data_path, accuracy_pa
         label = item.get("label", "")  
         
         prompt = rationale_prompt.format(Premises=premises, Conclusions=conclusions)
-        
+        #print(prompt) 
         try:
             rationale_response = generate_response(
                 model=model,
                 tokenizer=tokenizer,
                 user_prompt=prompt,
                 max_tokens=max_tokens,
-                temperature=temperature, top_p=top_p, top_k=top_k, stop=stop, is_chat_model=is_chat_model
+                temperature=temperature, top_p=top_p, top_k=top_k, stop=stop, is_chat_model=True
             )
+            print(rationale_response)
             rationale_response = rationale_response.split("<Answer>")[-1]
-            
+            print(rationale_response) 
             if "(A)" in rationale_response:
                 predict = "True"
             elif "(B)" in rationale_response:
@@ -281,6 +297,114 @@ def evaluation(model, tokenizer, dataset, output_dir, raw_data_path, accuracy_pa
     print(f"Correct predictions: {correct_num}")
     print(f"Accuracy report saved to {accuracy_path}")
 
+def generate_responses_batch(model, tokenizer, prompts, max_tokens, temperature, top_p, top_k, stop, is_chat_model):
+    inputs = tokenizer(prompts, return_tensors="pt", padding=True, truncation=True).to(model.device)
+    outputs = model.generate(
+        input_ids=inputs["input_ids"],
+        attention_mask=inputs["attention_mask"],
+        max_new_tokens=max_tokens,
+        do_sample=True,
+        temperature=temperature,
+        top_p=top_p,
+        eos_token_id=tokenizer.eos_token_id if stop is None else tokenizer.convert_tokens_to_ids(stop)
+    )
+    responses = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+    return responses
+
+def evaluation_batch(model, tokenizer, dataset, output_dir, raw_data_path, accuracy_path,
+               max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None,
+               mode='truth_table', is_chat_model=False, batch_size=256):
+    rationales = []
+    correct_num = 0
+    total_num = 0
+    #model = deepspeed.init_inference(
+    #    model,
+    #    mp_size=4,                 
+    #    dtype=torch.float16,
+    #    replace_method="auto",
+    #    replace_with_kernel_inject=True
+    #)
+    model.eval()
+
+    rationale_prompt = {
+        'truth_table': get_prompt_rational_truth_table(),
+        'code': get_prompt_rational_code(),
+        'nl': get_prompt_rational_nl()
+    }.get(mode, "")
+
+    prompts = []
+    for item in dataset:
+        premises = item.get("premises", "")
+        conclusions = item.get("conclusion", "")
+        prompt = rationale_prompt.format(Premises=premises, Conclusions=conclusions)
+        prompts.append(prompt)
+
+    for batch_start in tqdm.tqdm(range(0, len(dataset), batch_size)):
+        batch_prompts = prompts[batch_start: batch_start + batch_size]
+        batch_items = dataset[batch_start: batch_start + batch_size]
+        try:
+            with torch.no_grad():
+                batch_responses = generate_responses_batch(
+                    model=model,
+                    tokenizer=tokenizer,
+                    prompts=batch_prompts,
+                    max_tokens=max_tokens,
+                    temperature=temperature,
+                    top_p=top_p,
+                    top_k=top_k,
+                    stop=stop,
+                    is_chat_model=True
+                )
+        except Exception as e:
+            print(f"Error generating responses for batch starting at index {batch_start}: {e}")
+            continue 
+
+        batch_premises = batch_items['premises']
+        batch_conclusion = batch_items['conclusion']
+        batch_label = batch_items['label']
+        for prompt, premise, conclusion, label, rationale_response in zip(batch_prompts, batch_premises, batch_conclusion, batch_label, batch_responses):            
+            #print(rationale_response)
+            rationale_response = rationale_response.split("<Reasoning>")[-1]
+            rationale_response = rationale_response.split("</Answer>")[0] + "</Answer>"
+            print(rationale_response)
+            if "(A)" in rationale_response:
+                predict = "True"
+            elif "(B)" in rationale_response:
+                predict = "False"
+            elif "(C)" in rationale_response:
+                predict = "Uncertain"
+            else:
+                predict = "Unknown"
+            rationales.append({
+                "premises": premise,
+                "conclusions": conclusion,
+                "rationale": rationale_response.strip(),
+                "label": label,
+                "predict": predict,
+                "user_prompt": prompt,
+            })
+
+            if predict == label:
+                correct_num += 1
+            total_num += 1
+            print(f"{correct_num} out of {total_num} is correct!")
+
+    accuracy = correct_num / total_num if total_num > 0 else 0.0
+
+    with open(os.path.join(output_dir, raw_data_path), 'w') as f:
+        json.dump(rationales, f, indent=4)
+    print(f"Rationales saved to {os.path.join(output_dir, raw_data_path)}")
+
+    with open(os.path.join(output_dir, accuracy_path), 'w') as f:
+        f.write(f"Accuracy: {accuracy:.4f}\n")
+        f.write(f"Total samples: {total_num}\n")
+        f.write(f"Correct predictions: {correct_num}\n")
+
+    print(f"Accuracy: {accuracy:.4f}")
+    print(f"Total samples: {total_num}")
+    print(f"Correct predictions: {correct_num}")
+    print(f"Accuracy report saved to {accuracy_path}")
+
 
 ##########################################################Code for Generating Response##########################################################################
 
@@ -309,9 +433,8 @@ def generate_response(model, tokenizer, user_prompt, max_tokens=50, temperature=
         inputs = tokenizer.apply_chat_template([{ "role": "user", "content": user_prompt }], return_tensors="pt").to(device)
     else:
         inputs = tokenizer(user_prompt, return_tensors="pt").to(device)
-
     output = model.generate(
-        **inputs,
+        inputs,
         max_new_tokens=max_tokens,
         temperature=temperature,
         top_p=top_p,
@@ -320,6 +443,20 @@ def generate_response(model, tokenizer, user_prompt, max_tokens=50, temperature=
     )
     response = tokenizer.decode(output[0], skip_special_tokens=True)
     return response
+
+def generate_response_batch(model, tokenizer, user_prompts, max_tokens, temperature, top_p, top_k, stop, is_chat_model):
+    inputs = tokenizer(user_prompts, return_tensors="pt", padding=True, truncation=True)
+    inputs = inputs.to(model.device)
+    outputs = model.generate(
+        **inputs,
+        max_new_tokens=max_tokens,
+        temperature=temperature,
+        top_p=top_p,
+        top_k=top_k,
+        eos_token_id=tokenizer.eos_token_id
+    )
+    responses = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+    return responses
 
 def generate_rationales(model, tokenizer, dataset, output_dir, output_file, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', eval=False, is_chat_model=False):
     """
@@ -345,7 +482,7 @@ def generate_rationales(model, tokenizer, dataset, output_dir, output_file, max_
                 tokenizer=tokenizer,
                 user_prompt=prompt,
                 max_tokens=max_tokens,
-                temperature=temperature, top_p=top_p, top_k=top_k, stop=stop, is_chat_model=is_chat_model
+                temperature=temperature, top_p=top_p, top_k=top_k, stop=stop, is_chat_model=True
             )
             rationale_process = rationale_response.split("<Reasoning>")[-1]
             answer_response = rationale_response.split("<Answer>")[-1]
@@ -375,16 +512,6 @@ def generate_rationales(model, tokenizer, dataset, output_dir, output_file, max_
     with open(os.path.join(output_dir, output_file), 'w') as f:
         json.dump(rationales, f, indent=4)
     print(f"Rationales saved to {os.path.join(output_dir, output_file)}")
-    
-    # if not eval:
-    #     converted_data = convert_to_custom_format(rationales)
-    #     output_file = output_file.split('.')[0] + '_train' + '.' + output_file.split('.')[1]
-    #     with open(os.path.join(output_dir, output_file), 'w', encoding='utf-8') as f:
-    #         for item in converted_data:
-    #             json.dump(item, f, ensure_ascii=False)
-    #             f.write('\n')
-    #     print(f"Data successfully converted and saved to {os.path.join(output_dir, output_file)}")
-
 
 ################################################# Star Pipeline #############################################################
 
@@ -419,12 +546,13 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
     
     # Step -1: Evaluate few-shot perfomrnace with different ideas
     rationale_file = f"rationales_{mode}_{0}.jsonl"
-    test_rationale_file = base_model.split('/')[-1] + f"-{mode}-r{0}-Raw.jsonl"
-    test_accuracy_file = base_model.split('/')[-1] + f"-{mode}-r{0}-Result.jsonl"
+    test_rationale_file = model_name_and_path.split('/')[-1] + f"-{mode}-r{0}-Raw.jsonl"
+    test_accuracy_file = model_name_and_path.split('/')[-1] + f"-{mode}-r{0}-Result.jsonl"
     if os.path.exists(os.path.join(output_dir, test_rationale_file)):
             pass
     else:
-        evaluation(
+        pass
+        evaluation_batch(
                 model=base_model,  # Always use the base model
                 tokenizer=tokenizer,
                 dataset=test_dataset,
@@ -436,7 +564,7 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
                 top_p=top_p,
                 top_k=top_k,
                 stop=stop,
-                mode=mode,
+                mode=mode  
         )
 
     model = base_model
@@ -446,8 +574,8 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
         # Step 1: Perform rationale generation
         print("Generating rationales...")
         rationale_file = f"rationales_{mode}_{n}.jsonl"
-        test_rationale_file = base_model.split('/')[-1] + f"-{mode}-r{n}-Raw.jsonl"
-        test_accuracy_file = base_model.split('/')[-1] + f"-{mode}-r{n}-Result.jsonl"
+        test_rationale_file = model_name_and_path.split('/')[-1] + f"-{mode}-r{n}-Raw.jsonl"
+        test_accuracy_file = model_name_and_path.split('/')[-1] + f"-{mode}-r{n}-Result.jsonl"
         finetune_response_save_path = f"fine_tuning_{mode}_{batch_size}_{learning_rate}_round_{n}.jsonl"
         if os.path.exists(os.path.join(output_dir, rationale_file)):
             pass
@@ -468,7 +596,7 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
         
         # Step 2: Fine-tune the base model with rationalized datasets
         print("Fine-tuning base model...")
-        trainin_data_path = rationale_file.split('.')[0] + "_train." +  rationale_file.split('.')[1]
+        trainin_data_path = rationale_file#.split('.')[0] + "_train." +  rationale_file.split('.')[1]
         model = finetune(
             client=[base_model, tokenizer],
             dataset_path=os.path.join(output_dir, trainin_data_path),
@@ -479,9 +607,9 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
         )
 
         # Step 4: Fine-tune the base model with rationalized datasets
-        # To do 
 
-        evaluation(
+
+        evaluation_batch(
                 model=model,  # Always use the base model
                 tokenizer=tokenizer,
                 dataset=test_dataset,
@@ -541,8 +669,8 @@ def main():
                         help="Random seed for reproducibility.")
 
     # Parse arguments
-    args = parser.parse_args()
-
+    #args = parser.parse_args()
+    args, unknown = parser.parse_known_args()
     # Print arguments for verification
     print("Running with the following arguments:")
     for arg, value in vars(args).items():
