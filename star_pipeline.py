@@ -10,6 +10,7 @@ import transformers
 from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, default_data_collator,TrainingArguments,DataCollatorForLanguageModeling
 from functools import partial
 import deepspeed
+from vllm import LLM, SamplingParams
 
 ##########################################################Begin: Formating Prompts##########################################################################
 # Prompting Truth Table 
@@ -97,7 +98,7 @@ def obtain_seed_dataset(dataset_name, num_samples, seed=42):
 
 ##########################################################Load Model, Tokenizer##########################################################################
 
-def load_model_and_tokenizer(model_name_or_path='gemma-2-9b', low_cpu_mem_usage=True, use_flash_attention_2=False, torch_dtype='fp16'):
+def load_model_and_tokenizer(model_name_or_path='gemma-2-9b', use_deepspeed_inference = True, is_training = False, low_cpu_mem_usage=True, use_flash_attention_2=False, torch_dtype='fp16'):
     """
     Load a pre-trained model from Hugging Face Transformers.
     
@@ -118,11 +119,17 @@ def load_model_and_tokenizer(model_name_or_path='gemma-2-9b', low_cpu_mem_usage=
                 torch_dtype="auto",
             )
     tokenizer = AutoTokenizer.from_pretrained(model_name_or_path)
-
+    print(model)
     # set eos token and pad token 
     tokenizer.padding_side='left'
     tokenizer.pad_token = tokenizer.eos_token
     return model, tokenizer
+
+
+def load_model_inference(model_name_or_path='gemma-2-9b'):
+    gpu_count = torch.cuda.device_count()
+    model = LLM(model=model_name_or_path, tensor_parallel_size=gpu_count)
+    return model
 
 ##########################################################Code for Training Data Preparation##########################################################################
 def convert_to_custom_format(input_data):
@@ -221,100 +228,13 @@ def finetune(client, dataset_path, output_dir, n_epochs=4, batch_size=16, micro_
 
 
 ##########################################################Code for Evaluation##########################################################################
-def evaluation(model, tokenizer, dataset, output_dir, raw_data_path, accuracy_path, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False):
-    """
-    Evaluate model performance on a dataset.
-    """
-    rationales = []
-    correct_num = 0
-    total_num = 0
-    print(mode)
-    rationale_prompt = {
-        'truth_table': get_prompt_rational_truth_table(),
-        'code': get_prompt_rational_code(),
-        'nl': get_prompt_rational_nl()
-    }.get(mode, "")
-    
-    for i, item in tqdm.tqdm(enumerate(dataset)):
-        premises = item.get("premises", "")
-        conclusions = item.get("conclusion", "")
-        label = item.get("label", "")  
-        
-        prompt = rationale_prompt.format(Premises=premises, Conclusions=conclusions)
-        #print(prompt) 
-        try:
-            rationale_response = generate_response(
-                model=model,
-                tokenizer=tokenizer,
-                user_prompt=prompt,
-                max_tokens=max_tokens,
-                temperature=temperature, top_p=top_p, top_k=top_k, stop=stop, is_chat_model=True
-            )
-            rationale_response = rationale_response.split("<Answer>")[-1]
-            if "(A)" in rationale_response:
-                predict = "True"
-            elif "(B)" in rationale_response:
-                predict = 'False'
-            elif "(C)" in rationale_response:
-                predict = 'Uncertain'
-            else:
-                predict = 'Unknown'
 
-            rationales.append({
-                "premises": premises,
-                "conclusions": conclusions,
-                "rationale": rationale_response.strip(),
-                'label': label,
-                'predict': predict,
-                'user_prompt': prompt,
-            })
-            
-            if predict == label:
-                correct_num += 1
-            total_num += 1
-
-            print(f"{correct_num} out of {total_num} is correct!")
-        except Exception as e:
-            print(f"Error generating rationale for data point {i + 1}: {e}")
-            continue
-
-    accuracy = correct_num / total_num if total_num > 0 else 0.0
-    
-    with open(os.path.join(output_dir, raw_data_path), 'w') as f:
-        json.dump(rationales, f, indent=4)
-    print(f"Rationales saved to {os.path.join(output_dir, raw_data_path)}")
-    
-    with open(os.path.join(output_dir, accuracy_path), 'w') as f:
-        f.write(f"Accuracy: {accuracy:.4f}\n")
-        f.write(f"Total samples: {total_num}\n")
-        f.write(f"Correct predictions: {correct_num}\n")
-    
-    print(f"Accuracy: {accuracy:.4f}")
-    print(f"Total samples: {total_num}")
-    print(f"Correct predictions: {correct_num}")
-    print(f"Accuracy report saved to {accuracy_path}")
-
-def generate_responses_batch(model, tokenizer, prompts, max_tokens, temperature, top_p, top_k, stop, is_chat_model):
-    inputs = tokenizer(prompts, return_tensors="pt", padding=True, truncation=True).to(model.device)
-    outputs = model.generate(
-        input_ids=inputs["input_ids"],
-        attention_mask=inputs["attention_mask"],
-        max_new_tokens=max_tokens,
-        do_sample=True,
-        temperature=temperature,
-        top_p=top_p,
-        eos_token_id=tokenizer.eos_token_id if stop is None else tokenizer.convert_tokens_to_ids(stop)
-    )
-    responses = tokenizer.batch_decode(outputs, skip_special_tokens=True)
-    return responses
-
-def evaluation_batch(model, tokenizer, dataset, output_dir, raw_data_path, accuracy_path,
+def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None,
-               mode='truth_table', is_chat_model=False, batch_size=256):
+               mode='truth_table', is_chat_model=False, batch_size=16):
     rationales = []
     correct_num = 0
-    total_num = 0
-    model.eval()
+    total_num = 0   
 
     rationale_prompt = {
         'truth_table': get_prompt_rational_truth_table(),
@@ -327,6 +247,12 @@ def evaluation_batch(model, tokenizer, dataset, output_dir, raw_data_path, accur
         premises = item.get("premises", "")
         conclusions = item.get("conclusion", "")
         prompt = rationale_prompt.format(Premises=premises, Conclusions=conclusions)
+        if is_chat_model:
+            prompt = [  {
+                        "role": "user",
+                        "content": prompt
+                        },
+                        ]
         prompts.append(prompt)
 
     for batch_start in tqdm.tqdm(range(0, len(dataset), batch_size)):
@@ -336,14 +262,13 @@ def evaluation_batch(model, tokenizer, dataset, output_dir, raw_data_path, accur
             with torch.no_grad():
                 batch_responses = generate_responses_batch(
                     model=model,
-                    tokenizer=tokenizer,
-                    prompts=batch_prompts,
+                    user_prompts=batch_prompts,
                     max_tokens=max_tokens,
                     temperature=temperature,
                     top_p=top_p,
                     top_k=top_k,
                     stop=stop,
-                    is_chat_model=True
+                    is_chat_model=is_chat_model
                 )
         except Exception as e:
             print(f"Error generating responses for batch starting at index {batch_start}: {e}")
@@ -380,10 +305,15 @@ def evaluation_batch(model, tokenizer, dataset, output_dir, raw_data_path, accur
                 print(f"{correct_num} out of {total_num} is correct!")
                 accuracy = correct_num / total_num if total_num > 0 else 0.0
         else:
-            for code_response in batch_responses:            
-                #print(rationale_response)
+            batch_premises = batch_items['premises']
+            batch_conclusion = batch_items['conclusion']
+            batch_label = batch_items['label']
+            for prompt, premise, conclusion, label, code_response in zip(batch_prompts, batch_premises, batch_conclusion, batch_label, batch_responses):            
                 code_response = code_response.split("<PYTHON>")[-1]
                 code_response = code_response.split("</PYTHON")[0]
+                globals_dict = globals().copy()
+                #exec(code_response, globals_dict)
+                exec(code_response)
                 predict = locals().get("result")
                 rationales.append({
                     "premises": premise,
@@ -418,57 +348,30 @@ def evaluation_batch(model, tokenizer, dataset, output_dir, raw_data_path, accur
 
 ##########################################################Code for Generating Response##########################################################################
 
-def generate_response(model, tokenizer, user_prompt, max_tokens=50, temperature=1.0, top_p=1.0, top_k=50, stop=None, device=None, is_chat_model=False):
-    """
-    Generate a response using the model.
-    
-    Args:
-        model: The pre-trained model.
-        tokenizer: The tokenizer corresponding to the model.
-        user_prompt (str): The input prompt.
-        max_tokens (int): The maximum number of tokens to generate.
-        temperature (float): Sampling temperature.
-        top_p (float): Nucleus sampling probability.
-        top_k (int): Number of top tokens to consider.
-        stop (list, optional): Stop sequences.
-        device (str, optional): Device to run the model on.
-    
-    Returns:
-        response: The generated response text.
-    """
-    if device is None:
-        device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    
+def generate_responses_batch(model, user_prompts, max_tokens, temperature, top_p, top_k, stop, is_chat_model):
+    sampling_params = SamplingParams(
+        temperature=temperature,
+        top_p=top_p,
+        top_k=top_k,
+        max_tokens=max_tokens
+    )
     if is_chat_model:
-        inputs = tokenizer.apply_chat_template([{ "role": "user", "content": user_prompt }], return_tensors="pt").to(device)
+        outputs = model.chat(
+            user_prompts,
+            sampling_params,
+        )
     else:
-        inputs = tokenizer(user_prompt, return_tensors="pt").to(device)
-    output = model.generate(
-        inputs,
-        max_new_tokens=max_tokens,
-        temperature=temperature,
-        top_p=top_p,
-        top_k=top_k,
-        eos_token_id=tokenizer.eos_token_id if stop is None else tokenizer.convert_tokens_to_ids(stop)
-    )
-    response = tokenizer.decode(output[0], skip_special_tokens=True)
-    return response
-
-def generate_response_batch(model, tokenizer, user_prompts, max_tokens, temperature, top_p, top_k, stop, is_chat_model):
-    inputs = tokenizer(user_prompts, return_tensors="pt", padding=True, truncation=True)
-    inputs = inputs.to(model.device)
-    outputs = model.generate(
-        **inputs,
-        max_new_tokens=max_tokens,
-        temperature=temperature,
-        top_p=top_p,
-        top_k=top_k,
-        eos_token_id=tokenizer.eos_token_id
-    )
-    responses = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+        outputs = model.generate(
+            user_prompts,
+            sampling_params,
+        )
+    responses = []
+    for output in outputs:
+        generated_text = output.outputs[0].text
+        responses.append(generated_text)
     return responses
 
-def generate_rationales(model, tokenizer, dataset, output_dir, output_file, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', eval=False, is_chat_model=False):
+def generate_rationales(model, dataset, output_dir, output_file, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', eval=False, is_chat_model=False):
     """
     Generate rationales for each data point in the dataset.
     """
@@ -494,15 +397,24 @@ def generate_rationales(model, tokenizer, dataset, output_dir, output_file, max_
                 max_tokens=max_tokens,
                 temperature=temperature, top_p=top_p, top_k=top_k, stop=stop, is_chat_model=True
             )
-            rationale_process = rationale_response.split("<Reasoning>")[-1]
-            answer_response = rationale_response.split("<Answer>")[-1]
+            if mode == "code":
+                rationale_response = rationale_response.split("<PYTHON>")[-1]
+                answer_response = rationale_response.split("</PYTHON>")[0]
+            else:
+                rationale_response = rationale_response.split("<Reasoning>")[-1]
+                answer_response = rationale_response.split("</Answer>")[0]
+            #print(answer_response)
             predict = 'None'
-            if "(A)" in answer_response:
-                predict = "True"
-            elif "(B)" in answer_response:
-                predict = 'False'
-            elif "(C)" in answer_response:
-                predict = 'Uncertain'
+            if mode == 'code':
+                exec(answer_response)
+                predict = locals().get("result")
+            else:
+                if "(A)" in answer_response:
+                    predict = "True"
+                elif "(B)" in answer_response:
+                    predict = 'False'
+                elif "(C)" in answer_response:
+                    predict = 'Uncertain'
 
             if predict == label:
                 rationales.append({
@@ -547,7 +459,7 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
     """
 
     # Load Base Model and Tokenizer
-    base_model, tokenizer = load_model_and_tokenizer(model_name_or_path=model_name_and_path)
+    #base_model, tokenizer = load_model_and_tokenizer(model_name_or_path=model_name_and_path)
 
     outer_loop_responses = []
     os.makedirs(output_dir, exist_ok=True)  # Ensure output directory exists
@@ -555,16 +467,17 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
     dataset, test_dataset = obtain_seed_dataset(dataset_name, n_samples, seed)
     
     # Step -1: Evaluate few-shot perfomrnace with different ideas
+    # Load Model 
+    base_model = load_model_inference(model_name_or_path=model_name_and_path)
     rationale_file = f"rationales_{mode}_{0}.jsonl"
     test_rationale_file = model_name_and_path.split('/')[-1] + f"-{mode}-r{0}-Raw.jsonl"
     test_accuracy_file = model_name_and_path.split('/')[-1] + f"-{mode}-r{0}-Result.jsonl"
     if os.path.exists(os.path.join(output_dir, test_rationale_file)):
             pass
     else:
-        pass
+        #pass
         evaluation_batch(
                 model=base_model,  # Always use the base model
-                tokenizer=tokenizer,
                 dataset=test_dataset,
                 output_dir=output_dir,
                 raw_data_path=test_rationale_file, 
@@ -706,6 +619,7 @@ def main():
     chat_models = {
         "NousResearch/Meta-Llama-3-8B-Instruct",
         "unsloth/Meta-Llama-3.1-8B-Instruct",
+        'NousResearch/Meta-Llama-3.1-8B-Instruct',
         'mistralai/Mistral-7B-Instruct-v0.3',
         'google/gemma-2-9b-it',
         'Qwen/Qwen2.5-7B-Instruct'

@@ -14,14 +14,6 @@ If Thor is happy, the Hulk is angry.
 <Conclusion>
 If Thor is happy, then Peter Parker wears a uniform.
 </Conclusion>
-<Question>
-Is the following statement true, false, or uncertain? If Thor is happy, then Peter Parker wears a uniform.
-</Question> 
-<Options>
-(A) True
-(B) False
-(C) Uncertain
-</Options>
 <PYTHON>
 from typing import Optional
 
@@ -154,25 +146,25 @@ def check_if_thor_happy_then_peter_uniform(thor: Thor, hulk: Hulk, peter: PeterP
     run_inference(thor, hulk, peter)
     thor_happy = thor.is_happy()
     if thor_happy is False:
-        return "A"
+        return "True"
     if thor_happy is None:
-        return "C"
+        return "Unknown"
     pu = peter.wears_uniform()
     if pu is True:
-        return "A"
+        return "True"
     elif pu is False:
-        return "B"
+        return "False"
     else:
-        return "C"
+        return "Uncertain"
 
-def main():
+def func():
     thor = Thor(happy=True)
     hulk = Hulk(angry=True)
     peter = PeterParker(True)
-    result = check_if_thor_happy_then_peter_uniform(thor, hulk, peter)
-
-if __name__ == "__main__":
-    main()
+    conclusion = check_if_thor_happy_then_peter_uniform(thor, hulk, peter)
+    result = conclusion
+    return result
+result = func() 
 </PYTHON>
 </EXAMPLE 1>
 
@@ -188,14 +180,6 @@ The theistic God is a sophist.
 <Conclusion>
 The theistic God is a sophist and a philosopher.
 </Conclusion>
-<Question>
-Is the following statement true, false, or uncertain? The theistic God is a sophist and a philosopher.
-</Question>
-<Options>
-(A) True
-(B) False
-(C) Uncertain
-</Options>
 <PYTHON>
 class Entity:
     def is_philosopher(self) -> bool:
@@ -252,13 +236,13 @@ def check_theistic_god_is_sophist_and_philosopher(god: Entity) -> bool:
     return god.is_sophist() and god.is_philosopher()
 
 
-def main():
+def func():
     theisticGod = GodEntity()
-    statement_truth_value = check_theistic_god_is_sophist_and_philosopher(theisticGod)
-    result = statement_truth_value
+    conclusion = check_theistic_god_is_sophist_and_philosopher(theisticGod)
+    result = conclusion
+    return result
 
-if __name__ == "__main__":
-    main()
+result = func()
 </PYTHON>
 </EXAMPLE 2>
 
@@ -272,14 +256,6 @@ People who supported the Portland Whigs did not get a seat in the Parliament.
 <Conclusion>
 William Dickinson went to schools located in the United Kingdom for both high school and university.
 </Conclusion>
-<Question>
-Is the following statement true, false, or uncertain? William Dickinson went to schools located in the United Kingdom for both high school and university.
-</Question> 
-<Options>
-(A) True
-(B) False
-(C) Uncertain
-</Options>
 <PYTHON>
 from typing import Optional
 
@@ -333,13 +309,13 @@ def went_to_uk_schools_for_HS_and_uni(d: Entity) -> str:
         return "Uncertain"
     return "True"
 
-def main():
+def func():
     dickinson = DickinsonEntity()
     conclusion = went_to_uk_schools_for_HS_and_uni(dickinson)
     result = conclusion
+    return result
 
-if __name__ == "__main__":
-    main()
+result = func()
 </PYTHON>
 </EXAMPLE 3>
 
@@ -351,14 +327,6 @@ The following is the problem you need to solve.
 <Conclusion>
 {Conclusions}
 </Conclusion>
-<Question>
-Is the following statement true, false, or uncertain? {Conclusions}
-</Question> 
-<Options>
-(A) True
-(B) False
-(C) Uncertain
-</Options>
 <PYTHON>
 
 

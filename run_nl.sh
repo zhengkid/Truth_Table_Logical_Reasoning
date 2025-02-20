@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-BASE_MODEL="meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo"  #"meta-llama/Meta-Llama-3.1-8B-Instruct-Reference"
+BASE_MODEL="NousResearch/Meta-Llama-3.1-8B-Instruct"  #"meta-llama/Meta-Llama-3.1-8B-Instruct-Reference"
 MODE="nl"
 DATASET_NAME='yale-nlp/FOLIO'
 OUTPUT_DIR="outputs_nl"
-N_SAMPLES=1000
+N_SAMPLES=5
 N_OUTER_LOOPS=3
 N_EPOCHS=4
 BATCH_SIZE=16
@@ -19,8 +19,8 @@ TOP_P=0.9
 TOP_K=50
 SEED=42
 
-python star_pipeline_together_ai.py \
-    --base_model "$BASE_MODEL" \
+python star_pipeline.py \
+    --model_name_and_path "$BASE_MODEL" \
     --mode "$MODE" \
     --dataset_name "$DATASET_NAME" \
     --output_dir "$OUTPUT_DIR" \

@@ -1,0 +1,28 @@
+Collecting accelerate
+  Obtaining dependency information for accelerate from https://files.pythonhosted.org/packages/0a/f6/791b9d7eb371a2f385da3b7f1769ced72ead7bf09744637ea2985c83d7ee/accelerate-1.4.0-py3-none-any.whl.metadata
+  Downloading accelerate-1.4.0-py3-none-any.whl.metadata (19 kB)
+Requirement already satisfied: numpy<3.0.0,>=1.17 in /beacon-scratch/tongzh24/miniconda3/envs/dschat/lib/python3.10/site-packages (from accelerate) (1.26.4)
+Requirement already satisfied: packaging>=20.0 in /beacon-scratch/tongzh24/miniconda3/envs/dschat/lib/python3.10/site-packages (from accelerate) (24.2)
+Requirement already satisfied: psutil in /beacon-scratch/tongzh24/miniconda3/envs/dschat/lib/python3.10/site-packages (from accelerate) (7.0.0)
+Requirement already satisfied: pyyaml in /beacon-scratch/tongzh24/miniconda3/envs/dschat/lib/python3.10/site-packages (from accelerate) (6.0.2)
+Requirement already satisfied: torch>=2.0.0 in /beacon-scratch/tongzh24/miniconda3/envs/dschat/lib/python3.10/site-packages (from accelerate) (2.0.0)
+Requirement already satisfied: huggingface-hub>=0.21.0 in /beacon-scratch/tongzh24/miniconda3/envs/dschat/lib/python3.10/site-packages (from accelerate) (0.29.0)
+Requirement already satisfied: safetensors>=0.4.3 in /beacon-scratch/tongzh24/miniconda3/envs/dschat/lib/python3.10/site-packages (from accelerate) (0.5.2)
+Requirement already satisfied: filelock in /beacon-scratch/tongzh24/miniconda3/envs/dschat/lib/python3.10/site-packages (from huggingface-hub>=0.21.0->accelerate) (3.13.1)
+Requirement already satisfied: fsspec>=2023.5.0 in /beacon-scratch/tongzh24/miniconda3/envs/dschat/lib/python3.10/site-packages (from huggingface-hub>=0.21.0->accelerate) (2024.12.0)
+Requirement already satisfied: requests in /beacon-scratch/tongzh24/miniconda3/envs/dschat/lib/python3.10/site-packages (from huggingface-hub>=0.21.0->accelerate) (2.32.3)
+Requirement already satisfied: tqdm>=4.42.1 in /beacon-scratch/tongzh24/miniconda3/envs/dschat/lib/python3.10/site-packages (from huggingface-hub>=0.21.0->accelerate) (4.67.1)
+Requirement already satisfied: typing-extensions>=3.7.4.3 in /beacon-scratch/tongzh24/miniconda3/envs/dschat/lib/python3.10/site-packages (from huggingface-hub>=0.21.0->accelerate) (4.12.2)
+Requirement already satisfied: sympy in /beacon-scratch/tongzh24/miniconda3/envs/dschat/lib/python3.10/site-packages (from torch>=2.0.0->accelerate) (1.13.3)
+Requirement already satisfied: networkx in /beacon-scratch/tongzh24/miniconda3/envs/dschat/lib/python3.10/site-packages (from torch>=2.0.0->accelerate) (3.1)
+Requirement already satisfied: jinja2 in /beacon-scratch/tongzh24/miniconda3/envs/dschat/lib/python3.10/site-packages (from torch>=2.0.0->accelerate) (3.1.2)
+Requirement already satisfied: MarkupSafe>=2.0 in /beacon-scratch/tongzh24/miniconda3/envs/dschat/lib/python3.10/site-packages (from jinja2->torch>=2.0.0->accelerate) (3.0.2)
+Requirement already satisfied: charset-normalizer<4,>=2 in /beacon-scratch/tongzh24/miniconda3/envs/dschat/lib/python3.10/site-packages (from requests->huggingface-hub>=0.21.0->accelerate) (3.3.2)
+Requirement already satisfied: idna<4,>=2.5 in /beacon-scratch/tongzh24/miniconda3/envs/dschat/lib/python3.10/site-packages (from requests->huggingface-hub>=0.21.0->accelerate) (3.4)
+Requirement already satisfied: urllib3<3,>=1.21.1 in /beacon-scratch/tongzh24/miniconda3/envs/dschat/lib/python3.10/site-packages (from requests->huggingface-hub>=0.21.0->accelerate) (1.26.19)
+Requirement already satisfied: certifi>=2017.4.17 in /beacon-scratch/tongzh24/miniconda3/envs/dschat/lib/python3.10/site-packages (from requests->huggingface-hub>=0.21.0->accelerate) (2025.1.31)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in /beacon-scratch/tongzh24/miniconda3/envs/dschat/lib/python3.10/site-packages (from sympy->torch>=2.0.0->accelerate) (1.3.0)
+Downloading accelerate-1.4.0-py3-none-any.whl (342 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 342.1/342.1 kB 15.4 MB/s eta 0:00:00
+Installing collected packages: accelerate
+Successfully installed accelerate-1.4.0
