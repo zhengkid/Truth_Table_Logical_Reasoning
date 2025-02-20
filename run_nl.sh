@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BASE_MODEL="/beacon-scratch/tongzh24/outputs_nl/fine_tuning_nl_16_5e-06_round_1.jsonl/checkpoint-40" #"NousResearch/Meta-Llama-3.1-8B-Instruct"  #"meta-llama/Meta-Llama-3.1-8B-Instruct-Reference"
+BASE_MODEL="NousResearch/Meta-Llama-3.1-8B-Instruct"  #"meta-llama/Meta-Llama-3.1-8B-Instruct-Reference"
 MODE="nl"
 DATASET_NAME='yale-nlp/FOLIO'
 OUTPUT_DIR="/beacon-scratch/tongzh24/outputs_nl"
@@ -8,13 +8,15 @@ N_SAMPLES=1000
 N_OUTER_LOOPS=3
 N_EPOCHS=4
 BATCH_SIZE=128
+MACRO_BATCH_SIZE=16
 LEARNING_RATE=5e-6
 LORA="--lora" 
 LORA_R=16
 LORA_ALPHA=32
 LORA_DROPOUT=0.0
 MAX_TOKENS=2048
-TEMPERATURE=0.7
+TEMPERATURE=1.0
+TEST_TEMPERATURE=0.7
 TOP_P=0.9
 TOP_K=50
 SEED=42
@@ -28,6 +30,7 @@ python star_pipeline.py \
     --n_outer_loops "$N_OUTER_LOOPS" \
     --n_epochs "$N_EPOCHS" \
     --batch_size "$BATCH_SIZE" \
+    --micro_batch_size "$MACRO_BATCH_SIZE" \
     --learning_rate "$LEARNING_RATE" \
     $LORA \
     --lora_r "$LORA_R" \
@@ -35,6 +38,7 @@ python star_pipeline.py \
     --lora_dropout "$LORA_DROPOUT" \
     --max_tokens "$MAX_TOKENS" \
     --temperature "$TEMPERATURE" \
+    --test_temperature "$TEST_TEMPERATURE" \
     --top_p "$TOP_P" \
     --top_k "$TOP_K" \
     --seed "$SEED"

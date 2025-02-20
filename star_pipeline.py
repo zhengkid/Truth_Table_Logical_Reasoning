@@ -481,7 +481,7 @@ def generate_rationales(model, dataset, output_dir, output_file, max_tokens=512,
 ################################################# Star Pipeline #############################################################
 
 def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_samples=200, n_outer_loops=10, n_epochs=4,
-                             batch_size=16, micro_batch_size=1, learning_rate=1e-5, seed=42, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False):
+                             batch_size=16, micro_batch_size=1, learning_rate=1e-5, seed=42, max_tokens=512, temperature=1.0, test_temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False):
     """
     Implements the STaR pipeline where each fine-tuning starts from the initial base model.
 
@@ -527,7 +527,7 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
                 raw_data_path=test_rationale_file, 
                 accuracy_path=test_accuracy_file,
                 max_tokens=max_tokens,
-                temperature=temperature,
+                temperature=test_temperature,
                 top_p=top_p,
                 top_k=top_k,
                 stop=stop,
@@ -613,7 +613,7 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
                 raw_data_path=test_rationale_file, 
                 accuracy_path=test_accuracy_file,
                 max_tokens=max_tokens,
-                temperature=temperature,
+                temperature=test_temperature,
                 top_p=top_p,
                 top_k=top_k,
                 stop=stop,
@@ -675,8 +675,10 @@ def main():
                         help="Dropout probability for LoRA layers.")
     parser.add_argument("--max_tokens", type=int, default=512, 
                         help="Maximum number of tokens for generated responses.")
-    parser.add_argument("--temperature", type=float, default=0.7, 
+    parser.add_argument("--temperature", type=float, default=1, 
                         help="Sampling temperature for generation.")
+    parser.add_argument("--test_temperature", type=float, default=0.7,
+                        help="test temperature for generation.")
     parser.add_argument("--top_p", type=float, default=0.9, 
                         help="Top-p (nucleus) sampling parameter.")
     parser.add_argument("--top_k", type=int, default=50, 
@@ -733,6 +735,7 @@ def main():
         seed=args.seed,
         max_tokens=args.max_tokens,
         temperature=args.temperature,
+        test_temperature=args.test_temperature,
         top_p=args.top_p,
         top_k=args.top_k,
         mode=args.mode,
