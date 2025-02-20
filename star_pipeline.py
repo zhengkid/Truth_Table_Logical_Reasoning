@@ -180,7 +180,7 @@ def preprocess_function(examples, tokenizer, is_chat_model):
         ]
 
         full_prompt = tokenizer.apply_chat_template(messages, tokenize=False)
-        model_inputs = tokenizer(full_prompt, truncation=True, padding="max_length", max_length=512)
+        model_inputs = tokenizer(full_prompt, truncation=True, padding="max_length", max_length=2048)
         print(len(model_inputs["input_ids"]))
         all_input_ids.append(model_inputs["input_ids"])
         all_attention_mask.append(model_inputs["attention_mask"])
@@ -213,7 +213,8 @@ def finetune(client, dataset_path, output_dir, n_epochs=4, batch_size=16, micro_
         logging_dir=os.path.join(output_dir, "logs"),
         logging_steps=10,
         push_to_hub=False,
-        full_determinism=True
+        full_determinism=True,
+        #deepspeed=ds_config
     )
     
     data_collator = default_data_collator
@@ -587,7 +588,7 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
 
         # Step 2: Fine-tune the base model with rationalized datasets
         print("Fine-tuning base model...")
-        model, tokenizer = load_model_and_tokenizer(model_name_or_path=model_name)
+        model, tokenizer = load_model_and_tokenizer(model_name_or_path=init_model_name)
         trainin_data_path = rationale_file#.split('.')[0] + "_train." +  rationale_file.split('.')[1]
         model = finetune(
             client=[model, tokenizer],
@@ -711,7 +712,10 @@ def main():
         'NousResearch/Meta-Llama-3.1-8B-Instruct',
         'mistralai/Mistral-7B-Instruct-v0.3',
         'google/gemma-2-9b-it',
-        'Qwen/Qwen2.5-7B-Instruct'
+        'Qwen/Qwen2.5-7B-Instruct',
+        'unsloth/gemma-2-2b-it',
+        'Qwen/QwQ-32B-Preview',
+        'Qwen/Qwen2.5-14B-Instruct-1M',
     }
 
     if args.model_name_and_path in chat_models:
