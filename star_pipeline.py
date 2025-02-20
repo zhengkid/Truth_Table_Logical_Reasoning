@@ -555,7 +555,7 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
         rationale_file = f"rationales_{mode}_{n}.jsonl"
         test_rationale_file = model_name_and_path.split('/')[-1] + f"-{mode}-r{n}-Raw.jsonl"
         test_accuracy_file = model_name_and_path.split('/')[-1] + f"-{mode}-r{n}-Result.jsonl"
-        finetune_response_save_path = f"fine_tuning_{mode}_{batch_size}_{learning_rate}_round_{n}.jsonl"
+        finetune_response_save_path = f"fine_tuning_{mode}_{batch_size}_{learning_rate}_round_{n}"
         if os.path.exists(os.path.join(output_dir, rationale_file)):
             pass
         else:
