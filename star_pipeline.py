@@ -1,3 +1,5 @@
+import random
+import numpy as np
 import os
 import re
 import json
@@ -13,11 +15,9 @@ import deepspeed
 from vllm import LLM, SamplingParams
 import gc
 import socket
-def get_free_port():
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind(('', 0))
-        return s.getsockname()[1]
-
+from vllm.distributed.parallel_state import destroy_model_parallel
+torch.use_deterministic_algorithms(False)
+os.environ['CUBLAS_WORKSPACE_CONFIG']=':16:8'       
 ##########################################################Begin: Formating Prompts##########################################################################
 # Prompting Truth Table 
 def get_sys_prompt_rational_truth_table():
@@ -132,10 +132,8 @@ def load_model_and_tokenizer(model_name_or_path='gemma-2-9b', low_cpu_mem_usage=
 
 
 def load_model_inference(model_name_or_path='gemma-2-9b'):
-    os.environ["MASTER_ADDR"] = "127.0.0.1" 
-    os.environ["MASTER_PORT"] = str(get_free_port())
     gpu_count = torch.cuda.device_count()
-    model = LLM(model=model_name_or_path, tensor_parallel_size=gpu_count)
+    model = LLM(model=model_name_or_path, tensor_parallel_size=1)
     return model
 
 ##########################################################Code for Training Data Preparation##########################################################################
@@ -211,7 +209,7 @@ def finetune(client, dataset_path, output_dir, n_epochs=4, batch_size=16, micro_
         gradient_accumulation_steps=batch_size // micro_batch_size,
         num_train_epochs=n_epochs,
         learning_rate=learning_rate,
-        save_total_limit=2,
+        save_total_limit=1,
         logging_dir=os.path.join(output_dir, "logs"),
         logging_steps=10,
         push_to_hub=False,
@@ -537,14 +535,15 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
                 is_chat_model=is_chat_model,  
         )
 
-    del base_model
-    torch.cuda.empty_cache()
+    os.environ["TOKENIZERS_PARALLELISM"] = "false"
+    destroy_model_parallel()
+    del base_model.llm_engine.model_executor
+    del base_model # Isn't necessary for releasing memory, but why not
     gc.collect()
-    torch.cuda.synchronize()
-    time.sleep(200)
-    print(torch.cuda.memory_allocated())
-    print(torch.cuda.memory_reserved())
-    print("Releasing the GPU memory!!!!!")
+    torch.cuda.empty_cache()
+    #torch.distributed.destroy_process_group()
+    import ray
+    ray.shutdown()
 
     model_name = init_model_name
     print(model_name)
@@ -573,17 +572,25 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
                 mode=mode,
                 is_chat_model=is_chat_model,  
             )
-        del model
-        torch.cuda.empty_cache()
+
+        os.environ["TOKENIZERS_PARALLELISM"] = "false"
+        destroy_model_parallel()
+        del model.llm_engine.model_executor
+        del model # Isn't necessary for releasing memory, but why not
         gc.collect()
-        time.sleep(20)
+        torch.cuda.empty_cache()
+        #torch.distributed.destroy_process_group()
+        import ray
+        ray.shutdown()
+
+
 
         # Step 2: Fine-tune the base model with rationalized datasets
         print("Fine-tuning base model...")
         model, tokenizer = load_model_and_tokenizer(model_name_or_path=model_name)
         trainin_data_path = rationale_file#.split('.')[0] + "_train." +  rationale_file.split('.')[1]
         model = finetune(
-            client=[base_model, tokenizer],
+            client=[model, tokenizer],
             dataset_path=os.path.join(output_dir, trainin_data_path),
             output_dir=os.path.join(output_dir, finetune_response_save_path),
             n_epochs=n_epochs,
@@ -613,12 +620,25 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
                 mode=mode,
                 is_chat_model=is_chat_model,
         )
-        del model
-        torch.cuda.empty_cache()
-        gc.collect()
-        time.sleep(20)
-    return outer_loop_responses
 
+        os.environ["TOKENIZERS_PARALLELISM"] = "false"
+        destroy_model_parallel()
+        del model.llm_engine.model_executor
+        del model # Isn't necessary for releasing memory, but why not
+        gc.collect()
+        torch.cuda.empty_cache()
+        #torch.distributed.destroy_process_group()
+        import ray
+        ray.shutdown()
+    return outer_loop_responses
+def set_seed(seed):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.benchmark = False
+    torch.backends.cudnn.deterministic = True
 
 def main():
     # Create argument parser
@@ -673,6 +693,7 @@ def main():
         print(f"{arg}: {value}")
 
 
+    set_seed(args.seed)
     comp_models = {
                 "NousResearch/Meta-Llama-3-8B",
                 "NousResearch/Meta-Llama-3.1-8B",
@@ -695,7 +716,8 @@ def main():
         is_chat = True
     elif args.model_name_and_path in comp_models:
         is_chat = False
-
+    else:
+        is_chat = True
 
     # Run the pipeline
     star_pipeline_base_reset(

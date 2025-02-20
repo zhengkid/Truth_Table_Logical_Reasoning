@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-BASE_MODEL="NousResearch/Meta-Llama-3.1-8B-Instruct"  #"meta-llama/Meta-Llama-3.1-8B-Instruct-Reference"
+BASE_MODEL="/beacon-scratch/tongzh24/outputs_nl/fine_tuning_nl_16_5e-06_round_1.jsonl/checkpoint-40" #"NousResearch/Meta-Llama-3.1-8B-Instruct"  #"meta-llama/Meta-Llama-3.1-8B-Instruct-Reference"
 MODE="nl"
 DATASET_NAME='yale-nlp/FOLIO'
-OUTPUT_DIR="outputs_nl"
+OUTPUT_DIR="/beacon-scratch/tongzh24/outputs_nl"
 N_SAMPLES=1000
 N_OUTER_LOOPS=3
 N_EPOCHS=4
