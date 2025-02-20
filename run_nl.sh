@@ -3,12 +3,12 @@
 BASE_MODEL="unsloth/gemma-2-2b-it"  #"meta-llama/Meta-Llama-3.1-8B-Instruct-Reference"
 MODE="nl"
 DATASET_NAME='yale-nlp/FOLIO'
-OUTPUT_DIR="/beacon-scratch/tongzh24/outputs_nl/gemma-2-2b-it"
+OUTPUT_DIR="/beacon-scratch/tongzh24/outputs_nl/gemma-2-2b-it-bs-64-max-length-4096-epoch-5"
 N_SAMPLES=1000
 N_OUTER_LOOPS=3
 N_EPOCHS=5
-BATCH_SIZE=128
-MACRO_BATCH_SIZE=4
+BATCH_SIZE=64
+MACRO_BATCH_SIZE=2
 LEARNING_RATE=5e-6
 LORA="--lora" 
 LORA_R=16

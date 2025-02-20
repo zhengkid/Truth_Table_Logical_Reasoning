@@ -180,8 +180,11 @@ def preprocess_function(examples, tokenizer, is_chat_model):
         ]
 
         full_prompt = tokenizer.apply_chat_template(messages, tokenize=False)
-        model_inputs = tokenizer(full_prompt, truncation=True, padding="max_length", max_length=2048)
-        print(len(model_inputs["input_ids"]))
+        model_inputs = tokenizer(full_prompt, truncation=True, padding="max_length", max_length=4096)
+        #print(len(model_inputs["input_ids"]))
+        if model_inputs["input_ids"][-1] != tokenizer.eos_token_id:
+            model_inputs["input_ids"].append(tokenizer.eos_token_id)
+            model_inputs["attention_mask"].append(1)
         all_input_ids.append(model_inputs["input_ids"])
         all_attention_mask.append(model_inputs["attention_mask"])
         all_labels.append(model_inputs["input_ids"].copy())
