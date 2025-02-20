@@ -593,16 +593,19 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
         print("Fine-tuning base model...")
         model, tokenizer = load_model_and_tokenizer(model_name_or_path=init_model_name)
         trainin_data_path = rationale_file#.split('.')[0] + "_train." +  rationale_file.split('.')[1]
-        model = finetune(
-            client=[model, tokenizer],
-            dataset_path=os.path.join(output_dir, trainin_data_path),
-            output_dir=os.path.join(output_dir, finetune_response_save_path),
-            n_epochs=n_epochs,
-            batch_size=batch_size,
-            micro_batch_size=micro_batch_size,
-            learning_rate=learning_rate,
-            is_chat_model=is_chat_model,  
-        )
+        if os.path.exists(os.path.join(output_dir, finetune_response_save_path)):
+            pass
+        else:
+            model = finetune(
+                client=[model, tokenizer],
+                dataset_path=os.path.join(output_dir, trainin_data_path),
+                output_dir=os.path.join(output_dir, finetune_response_save_path),
+                n_epochs=n_epochs,
+                batch_size=batch_size,
+                micro_batch_size=micro_batch_size,
+                learning_rate=learning_rate,
+                is_chat_model=is_chat_model,  
+            )
         del model
         torch.cuda.empty_cache()
         gc.collect()
@@ -610,20 +613,24 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
         # Step 4: Fine-tune the base model with rationalized datasets
         model_name = os.path.join(output_dir, finetune_response_save_path)
         model = load_model_inference(model_name_or_path=model_name)
-        evaluation_batch(
-                model=model,  # Always use the base model
-                dataset=test_dataset,
-                output_dir=output_dir,
-                raw_data_path=test_rationale_file, 
-                accuracy_path=test_accuracy_file,
-                max_tokens=max_tokens,
-                temperature=test_temperature,
-                top_p=top_p,
-                top_k=top_k,
-                stop=stop,
-                mode=mode,
-                is_chat_model=is_chat_model,
-        )
+
+        if os.path.exists(os.path.join(output_dir, test_rationale_file)):
+            pass
+        else:
+            evaluation_batch(
+                    model=model,  # Always use the base model
+                    dataset=test_dataset,
+                    output_dir=output_dir,
+                    raw_data_path=test_rationale_file, 
+                    accuracy_path=test_accuracy_file,
+                    max_tokens=max_tokens,
+                    temperature=test_temperature,
+                    top_p=top_p,
+                    top_k=top_k,
+                    stop=stop,
+                    mode=mode,
+                    is_chat_model=is_chat_model,
+            )
 
         os.environ["TOKENIZERS_PARALLELISM"] = "false"
         destroy_model_parallel()
