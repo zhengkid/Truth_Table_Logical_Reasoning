@@ -11,6 +11,12 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, default_d
 from functools import partial
 import deepspeed
 from vllm import LLM, SamplingParams
+import gc
+import socket
+def get_free_port():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(('', 0))
+        return s.getsockname()[1]
 
 ##########################################################Begin: Formating Prompts##########################################################################
 # Prompting Truth Table 
@@ -126,6 +132,8 @@ def load_model_and_tokenizer(model_name_or_path='gemma-2-9b', low_cpu_mem_usage=
 
 
 def load_model_inference(model_name_or_path='gemma-2-9b'):
+    os.environ["MASTER_ADDR"] = "127.0.0.1" 
+    os.environ["MASTER_PORT"] = str(get_free_port())
     gpu_count = torch.cuda.device_count()
     model = LLM(model=model_name_or_path, tensor_parallel_size=gpu_count)
     return model
@@ -376,7 +384,7 @@ def generate_rationales(model, dataset, output_dir, output_file, max_tokens=512,
     """
     rationales = []
     total_num = 0   
-
+    print(model)
     rationale_prompt = {
         'truth_table': get_prompt_rational_truth_table(),
         'code': get_prompt_rational_code(),
@@ -531,10 +539,15 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
 
     del base_model
     torch.cuda.empty_cache()
-    time.sleep(10)
+    gc.collect()
+    torch.cuda.synchronize()
+    time.sleep(200)
+    print(torch.cuda.memory_allocated())
+    print(torch.cuda.memory_reserved())
     print("Releasing the GPU memory!!!!!")
 
     model_name = init_model_name
+    print(model_name)
     for n in range(1, n_outer_loops+1):
         print(f"--- Outer Loop {n} ---")
         # Step 1: Perform rationale generation
@@ -562,7 +575,8 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
             )
         del model
         torch.cuda.empty_cache()
-        time.sleep(10)
+        gc.collect()
+        time.sleep(20)
 
         # Step 2: Fine-tune the base model with rationalized datasets
         print("Fine-tuning base model...")
@@ -580,7 +594,8 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
         )
         del model
         torch.cuda.empty_cache()
-        time.sleep(10)
+        gc.collect()
+        time.sleep(20)
         # Step 4: Fine-tune the base model with rationalized datasets
         model_name = os.path.join(output_dir, finetune_response_save_path)
         model = load_model_inference(model_name_or_path=model_name)
@@ -600,7 +615,8 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
         )
         del model
         torch.cuda.empty_cache()
-        time.sleep(10)
+        gc.collect()
+        time.sleep(20)
     return outer_loop_responses
 
 
@@ -692,12 +708,6 @@ def main():
         batch_size=args.batch_size,
         micro_batch_size=args.micro_batch_size,
         learning_rate=args.learning_rate,
-        lora=args.lora,
-        lora_params={
-            "lora_r": args.lora_r,
-            "lora_alpha": args.lora_alpha,
-            "lora_dropout": args.lora_dropout,
-        },
         seed=args.seed,
         max_tokens=args.max_tokens,
         temperature=args.temperature,
