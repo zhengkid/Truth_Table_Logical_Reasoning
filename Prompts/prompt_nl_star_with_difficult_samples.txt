@@ -1,3 +1,5 @@
+Below are four examples that demonstrate the desired reasoning style:
+
 <EXAMPLE 1>
 <Premises>
 Peter Parker is either a superhero or a civilian.
@@ -141,24 +143,6 @@ Therefore, the answer is (B).
 The final answer is (B).
 </Answer>
 </EXAMPLE 4>
-
-The following is the problem you need to solve.
-
-<Premises>
-{Premises}
-</Premises>
-<Conclusion>
-{Conclusions}
-</Conclusion>
-<Question>
-Is the following statement true, false, or uncertain? {Conclusions}
-</Question> 
-<Options>
-(A) True
-(B) False
-(C) Uncertain
-</Options>
-<Reasoning>
 
 
 

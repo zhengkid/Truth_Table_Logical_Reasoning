@@ -340,4 +340,112 @@ if __name__ == '__main__':
 </PYTHON>
 </EXAMPLE 3>
 
+<EXAMPLE 4>
+<Premises>
+If Jane's friends wear scrubs every day, then they work in hospital settings.
+If Jane's friends often wear casual outfits to work regularly, then they do not work in hospital settings.
+All of Jane's friends who work in the laboratory wear scrubs every day.
+All of Jane's friends who enjoy engineering and work in a related profession work in the laboratory.
+All of Jane's friends who are more inclined towards analytical career paths also enjoy engineering and work in a related profession.
+Martha is Jane's friend, and she either enjoys engineering and works in a related profession or she wears scrubs every day.
+</Premises>
+<Conclusion>
+Martha is Jane's friend and she either often wears casual outfits to work regularly or is more inclined toward analytical career paths.
+</Conclusion>
+<PYTHON>
+from typing import Optional
 
+class Friend:
+    def __init__(self,
+                 is_friend: bool,
+                 wears_scrubs: Optional[bool] = None,
+                 wears_casual: Optional[bool] = None,
+                 works_in_hospital: Optional[bool] = None,
+                 works_in_lab: Optional[bool] = None,
+                 enjoys_engineering: Optional[bool] = None,
+                 works_in_related: Optional[bool] = None,
+                 more_inclined_analytical: Optional[bool] = None):
+        self.is_friend = is_friend
+        self.wears_scrubs = wears_scrubs
+        self.wears_casual = wears_casual
+        self.works_in_hospital = works_in_hospital
+        self.works_in_lab = works_in_lab
+        self.enjoys_engineering = enjoys_engineering
+        self.works_in_related = works_in_related
+        self.more_inclined_analytical = more_inclined_analytical
+
+def apply_premises(friend: Friend) -> bool:
+    updated = False
+
+    # Premise 1: If Jane's friends wear scrubs every day, then they work in hospital settings.
+    if friend.wears_scrubs is True and friend.works_in_hospital is not True:
+        friend.works_in_hospital = True
+        updated = True
+
+    # Premise 2: If Jane's friends often wear casual outfits to work regularly, then they do not work in hospital settings.
+    if friend.wears_casual is True and friend.works_in_hospital is not False:
+        friend.works_in_hospital = False
+        updated = True
+
+    # Premise 3: All of Jane's friends who work in the laboratory wear scrubs every day.
+    if friend.works_in_lab is True and friend.wears_scrubs is not True:
+        friend.wears_scrubs = True
+        updated = True
+
+    # Premise 4: All of Jane's friends who enjoy engineering and work in a related profession work in the laboratory.
+    if friend.enjoys_engineering is True and friend.works_in_related is True and friend.works_in_lab is not True:
+        friend.works_in_lab = True
+        updated = True
+
+    # Premise 5: All of Jane's friends who are more inclined towards analytical career paths also enjoy engineering and work in a related profession.
+    if friend.more_inclined_analytical is True:
+        if friend.enjoys_engineering is not True:
+            friend.enjoys_engineering = True
+            updated = True
+        if friend.works_in_related is not True:
+            friend.works_in_related = True
+            updated = True
+
+    # Premise 6: Martha is Jane's friend, and she either enjoys engineering and works in a related profession or she wears scrubs every day.
+    # (This is provided by initial conditions; no automatic update is applied.)
+
+    return updated
+
+def run_inference(friend: Friend):
+    while apply_premises(friend):
+        pass
+
+def check_conclusion(friend: Friend) -> str:
+    run_inference(friend)
+    # Conclusion: Martha is Jane's friend and she either often wears casual outfits to work regularly 
+    # or is more inclined toward analytical career paths.
+    # The conclusion is true if at least one of 'wears_casual' or 'more_inclined_analytical' is True.
+    # Otherwise, if both are False, the conclusion is false.
+    if friend.wears_casual is None or friend.more_inclined_analytical is None:
+        return "Uncertain"
+    if friend.is_friend and (friend.wears_casual is True or friend.more_inclined_analytical is True):
+        return "True"
+    else:
+        return "False"
+
+def func():
+    # Initial conditions for Martha (Premise 6):
+    # We enforce the disjunction by choosing the "wear scrubs" branch:
+    # Set wears_scrubs = True, and the other branch (enjoys_engineering and works_in_related) as False.
+    # Also, we explicitly set wears_casual and more_inclined_analytical to False.
+    martha = Friend(
+        is_friend=True,
+        wears_scrubs=True,
+        wears_casual=False,
+        works_in_hospital=None,
+        works_in_lab=None,
+        enjoys_engineering=False,
+        works_in_related=False,
+        more_inclined_analytical=False
+    )
+    return check_conclusion(martha)
+
+if __name__ == '__main__':
+    result = func()
+    print("Conclusion: Martha is Jane's friend and she either wears casual outfits or is more inclined toward analytical career paths?", result)
+</PYTHON>
