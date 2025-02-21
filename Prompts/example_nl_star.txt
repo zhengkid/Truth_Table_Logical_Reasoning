@@ -1,0 +1,17 @@
+The following is the problem you need to solve.
+
+<Premises>
+{Premises}
+</Premises>
+<Conclusion>
+{Conclusions}
+</Conclusion>
+<Question>
+Is the following statement true, false, or uncertain? {Conclusions}
+</Question>
+<Options>
+(A) True
+(B) False
+(C) Uncertain
+</Options>
+<Reasoning>

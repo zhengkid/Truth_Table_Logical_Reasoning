@@ -32,11 +32,24 @@ def get_few_shot_prompt_rational_truth_table():
         in_context_examples = f.read()
     return in_context_examples
 
-def get_prompt_rational_truth_table():
-    fewshot_example = get_few_shot_prompt_rational_truth_table()
+def get_question_rational_truth_table():
+    file_path = os.path.join('./Prompts', 'example_truth_table_star.txt')
+    with open(file_path) as f:
+        example = f.read()
+    return example
+
+def get_prompt_rational_truth_table(use_fewshot=False):
     sys_prompt = get_sys_prompt_rational_truth_table()
-    full_prompt = sys_prompt + "\n\n" + fewshot_example
-    return full_prompt
+    example = get_question_rational_truth_table()
+    if use_fewshot:
+        fewshot_example = get_few_shot_prompt_rational_truth_table()
+        full_prompt = sys_prompt + '\n\n' + fewshot_example + '\n\n' + example
+        full_prompt_wo_fewshot = sys_prompt + '\n\n' + example
+        return full_prompt, full_prompt_wo_fewshot
+    else:
+        full_prompt = ""
+        full_prompt_wo_fewshot = sys_prompt + '\n\n' + example
+        return full_prompt_wo_fewshot, full_prompt_wo_fewshot
 
 # Prompting Code
 def get_sys_prompt_rational_code():
@@ -51,12 +64,25 @@ def get_few_shot_prompt_rational_code():
         in_context_examples = f.read()
     return in_context_examples
 
-def get_prompt_rational_code():
-    fewshot_example = get_few_shot_prompt_rational_code()
-    sys_prompt = get_sys_prompt_rational_code()
-    full_prompt = sys_prompt + "\n\n" + fewshot_example
-    return full_prompt
 
+def get_question_rational_code():
+    file_path = os.path.join('./Prompts', 'example_code_star.txt')
+    with open(file_path) as f:
+        example = f.read()
+    return example
+
+def get_prompt_rational_code(use_fewshot=False):
+    sys_prompt = get_sys_prompt_rational_code()
+    example = get_question_rational_code()
+    if use_fewshot:
+        fewshot_example = get_few_shot_prompt_rational_code()
+        full_prompt = sys_prompt + '\n\n' + fewshot_example + '\n\n' + example
+        full_prompt_wo_fewshot = sys_prompt + '\n\n' + example
+        return full_prompt, full_prompt_wo_fewshot
+    else:
+        full_prompt = ""
+        full_prompt_wo_fewshot = sys_prompt + '\n\n' + example
+        return full_prompt_wo_fewshot, full_prompt_wo_fewshot
 
 # Prompting nl
 def get_sys_prompt_rational_nl():
@@ -71,11 +97,24 @@ def get_few_shot_prompt_rational_nl():
         in_context_examples = f.read()
     return in_context_examples
 
-def get_prompt_rational_nl():
-    fewshot_example = get_few_shot_prompt_rational_nl()
+def get_question_rational_nl():
+    file_path = os.path.join('./Prompts', 'example_nl_star.txt')
+    with open(file_path) as f:
+        example = f.read()
+    return example
+
+def get_prompt_rational_nl(use_fewshot=False):
     sys_prompt = get_sys_prompt_rational_nl()
-    full_prompt = sys_prompt + "\n\n" + fewshot_example
-    return full_prompt
+    example = get_question_rational_nl()
+    if use_fewshot:
+        fewshot_example = get_few_shot_prompt_rational_nl()
+        full_prompt = sys_prompt + '\n\n' + fewshot_example + '\n\n' + example
+        full_prompt_wo_fewshot = sys_prompt + '\n\n' + example
+        return full_prompt, full_prompt_wo_fewshot
+    else:
+        full_prompt = ""
+        full_prompt_wo_fewshot = sys_prompt + '\n\n' + example
+        return full_prompt_wo_fewshot, full_prompt_wo_fewshot 
 
 ##########################################################Code for Sampling Data##########################################################################
 def obtain_seed_dataset(dataset_name, num_samples, seed=42):
@@ -180,14 +219,45 @@ def preprocess_function(examples, tokenizer, is_chat_model):
         ]
 
         full_prompt = tokenizer.apply_chat_template(messages, tokenize=False)
-        model_inputs = tokenizer(full_prompt, truncation=True, padding="max_length", max_length=4096)
+        print(full_prompt)
+        model_inputs = tokenizer(full_prompt, truncation=True, padding="max_length", max_length=2048)
         #print(len(model_inputs["input_ids"]))
         if model_inputs["input_ids"][-1] != tokenizer.eos_token_id:
             model_inputs["input_ids"].append(tokenizer.eos_token_id)
             model_inputs["attention_mask"].append(1)
+        input_ids = model_inputs["input_ids"]
+        attention_mask = model_inputs["attention_mask"]
+
+        # Tokenize the assistant's response using the same chat template formatting
+        dummy_conversation = [
+            {"role": "user", "content": ""},
+            {"role": "assistant", "content": rationale}
+        ]
+
+        # Apply the chat template to get the formatted text.
+        assistant_text = tokenizer.apply_chat_template(dummy_conversation, tokenize=False)
+        # Tokenize the formatted text without adding special tokens.
+        assistant_tokens = tokenizer(assistant_text, add_special_tokens=False)["input_ids"]
+
+        # Now, get the tokenized dummy user message in the same format.
+        dummy_text = tokenizer.apply_chat_template([{"role": "user", "content": ""}], tokenize=False)
+        dummy_tokens = tokenizer(dummy_text, add_special_tokens=False)["input_ids"]
+
+        # The assistant portion's token count is the difference.
+        assistant_length = len(assistant_tokens) - len(dummy_tokens)
+
+        # Since valid tokens are at the end (left padding),
+        # the assistant's response occupies the last `assistant_length` tokens.
+        answer_start_index = len(input_ids) - assistant_length
+
+        # Create labels (copy of input_ids) and mask prompt tokens by setting them to -100
+        labels = input_ids.copy()
+        for i in range(answer_start_index):
+            labels[i] = -100
+
         all_input_ids.append(model_inputs["input_ids"])
         all_attention_mask.append(model_inputs["attention_mask"])
-        all_labels.append(model_inputs["input_ids"].copy())
+        all_labels.append(labels)
     return {
         "input_ids": all_input_ids,
         "attention_mask": all_attention_mask,
@@ -240,24 +310,26 @@ def finetune(client, dataset_path, output_dir, n_epochs=4, batch_size=16, micro_
 
 def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None,
-               mode='truth_table', is_chat_model=False, batch_size=16):
+               mode='truth_table', is_chat_model=False, batch_size=16, use_fewshot=True):
     rationales = []
     correct_num = 0
     total_num = 0   
-
     rationale_prompt = {
-        'truth_table': get_prompt_rational_truth_table(),
-        'code': get_prompt_rational_code(),
-        'nl': get_prompt_rational_nl()
+        'truth_table': get_prompt_rational_truth_table(use_fewshot=use_fewshot),
+        'code': get_prompt_rational_code(use_fewshot=use_fewshot),
+        'nl': get_prompt_rational_nl(use_fewshot=use_fewshot)
     }.get(mode, "")
-
+    full_prompt = rationale_prompt[0]
+    full_prompt_only_example = rationale_prompt[1]
     prompts = []
     for item in dataset:
         premises = item.get("premises", "")
         conclusions = item.get("conclusion", "")
-        prompt = rationale_prompt.format(Premises=premises, Conclusions=conclusions)
+        prompt = full_prompt.format(Premises=premises, Conclusions=conclusions)
+        prompt_only_example = full_prompt_only_example.format(Premises=premises, Conclusions=conclusions)
         if is_chat_model:
-            prompt = [  {
+            prompt = [
+                        {
                         "role": "user",
                         "content": prompt
                         },
@@ -305,7 +377,7 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                     "rationale": rationale_response.strip(),
                     "label": label,
                     "predict": predict,
-                    "user_prompt": prompt,
+                    "user_prompt": prompt
                 })
 
                 if predict == label:
@@ -380,26 +452,29 @@ def generate_responses_batch(model, user_prompts, max_tokens, temperature, top_p
         responses.append(generated_text)
     return responses
 
-def generate_rationales(model, dataset, output_dir, output_file, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False, batch_size=16):
+def generate_rationales(model, dataset, output_dir, output_file, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False, batch_size=16,use_fewshot=True):
     """
     Generate rationales for each data point in the dataset.
     """
     rationales = []
     total_num = 0   
-    print(model)
     rationale_prompt = {
-        'truth_table': get_prompt_rational_truth_table(),
-        'code': get_prompt_rational_code(),
-        'nl': get_prompt_rational_nl()
+        'truth_table': get_prompt_rational_truth_table(use_fewshot=use_fewshot),
+        'code': get_prompt_rational_code(use_fewshot=use_fewshot),
+        'nl': get_prompt_rational_nl(use_fewshot=use_fewshot)
     }.get(mode, "")
 
+    full_prompt = rationale_prompt[0]
+    full_prompt_only_example = rationale_prompt[1]
     prompts = []
     for item in dataset:
         premises = item.get("premises", "")
         conclusions = item.get("conclusion", "")
-        prompt = rationale_prompt.format(Premises=premises, Conclusions=conclusions)
+        prompt = full_prompt.format(Premises=premises, Conclusions=conclusions)
+        prompt_only_example = full_prompt_only_example.format(Premises=premises, Conclusions=conclusions)
         if is_chat_model:
-            prompt = [  {
+            prompt = [
+                        {
                         "role": "user",
                         "content": prompt
                         },
@@ -448,7 +523,7 @@ def generate_rationales(model, dataset, output_dir, output_file, max_tokens=512,
                         "conclusions": conclusion,
                         "rationale": rationale_response.strip(),
                         'label': label,
-                        'user_prompt': prompt,
+                        'user_prompt': prompt_only_example,
                     })
                     print(f"Generated rationale for data point {total_num + 1}/{len(dataset)}")
                 else:
@@ -536,7 +611,8 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
                 top_k=top_k,
                 stop=stop,
                 mode=mode,
-                is_chat_model=is_chat_model,  
+                is_chat_model=is_chat_model, 
+                use_fewshot=False
         )
 
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
@@ -574,7 +650,8 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
                 top_k=top_k,
                 stop=stop,
                 mode=mode,
-                is_chat_model=is_chat_model,  
+                is_chat_model=is_chat_model, 
+                use_fewshot=True if n == 1 else False,
             )
 
         os.environ["TOKENIZERS_PARALLELISM"] = "false"
@@ -630,6 +707,7 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
                     stop=stop,
                     mode=mode,
                     is_chat_model=is_chat_model,
+                    use_fewshot=False,
             )
 
         os.environ["TOKENIZERS_PARALLELISM"] = "false"
