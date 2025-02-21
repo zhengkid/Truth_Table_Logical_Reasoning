@@ -301,12 +301,43 @@ def finetune(client, dataset_path, output_dir, n_epochs=4, batch_size=16, micro_
     )
     trainer.train()
     trainer.save_model(output_dir)
+    #model.save_pretrained(output_dir,save_optimizer=False)
     print(f"Fine-tuned model saved to {output_dir}")
     return model
 
 
 
 ##########################################################Code for Evaluation##########################################################################
+import re
+
+def extract_code_blocks(text: str) -> list[str]:
+    """
+    Extracts code blocks delimited by triple backticks.
+    """
+    return re.findall(r"```(.*?)```", text, re.DOTALL)
+
+def filter_relevant_lines(code: str, keywords: list[str]) -> str:
+    """
+    Filters out lines from the code that do not contain any of the keywords.
+    """
+    lines = code.splitlines()
+    filtered = [line for line in lines if any(keyword in line for keyword in keywords)]
+    return "\n".join(filtered)
+
+def clean_code_blocks(text: str) -> str:
+    """
+    Removes Markdown-style code block delimiters (e.g., ```python and ```)
+    """
+    # Remove triple backticks with "python" or standalone ```
+    cleaned_text = re.sub(r"```python\s*", "", text)  # Remove ```python
+    cleaned_text = re.sub(r"```", "", cleaned_text)   # Remove remaining ```
+    return cleaned_text.strip()
+
+def clean_code_manual(text: str) -> str:
+    lines = text.splitlines()
+    # Exclude any line that starts with triple backticks
+    cleaned_lines = [line for line in lines if not line.strip().startswith("```")]
+    return "\n".join(cleaned_lines).strip()
 
 def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None,
@@ -326,6 +357,7 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
         premises = item.get("premises", "")
         conclusions = item.get("conclusion", "")
         prompt = full_prompt.format(Premises=premises, Conclusions=conclusions)
+        print(prompt)
         prompt_only_example = full_prompt_only_example.format(Premises=premises, Conclusions=conclusions)
         if is_chat_model:
             prompt = [
@@ -392,10 +424,12 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
             for prompt, premise, conclusion, label, code_response in zip(batch_prompts, batch_premises, batch_conclusion, batch_label, batch_responses):            
                 code_response = code_response.split("<PYTHON>")[-1]
                 code_response = code_response.split("</PYTHON")[0]
-                globals_dict = globals().copy()
-                #exec(code_response, globals_dict)
+                #code_response = clean_code_blocks(extract_code_blocks(code_response)[0])
+                code_response = clean_code_manual(code_response)
+                print(type(code_response))
                 exec(code_response)
-                predict = locals().get("result")
+                predict = result
+                print(result)
                 rationales.append({
                     "premises": premise,
                     "conclusions": conclusion,
@@ -467,6 +501,7 @@ def generate_rationales(model, dataset, output_dir, output_file, max_tokens=512,
     full_prompt = rationale_prompt[0]
     full_prompt_only_example = rationale_prompt[1]
     prompts = []
+    prompts_only_example = []
     for item in dataset:
         premises = item.get("premises", "")
         conclusions = item.get("conclusion", "")
@@ -480,9 +515,10 @@ def generate_rationales(model, dataset, output_dir, output_file, max_tokens=512,
                         },
                         ]
         prompts.append(prompt)
-
+        prompts_only_example.append(prompt_only_example)
     for batch_start in tqdm.tqdm(range(0, len(dataset), batch_size)):
         batch_prompts = prompts[batch_start: batch_start + batch_size]
+        batch_prompts_only_example = prompts_only_example[batch_start: batch_start + batch_size]
         batch_items = dataset[batch_start: batch_start + batch_size]
         try:
             with torch.no_grad():
@@ -503,7 +539,7 @@ def generate_rationales(model, dataset, output_dir, output_file, max_tokens=512,
             batch_premises = batch_items['premises']
             batch_conclusion = batch_items['conclusion']
             batch_label = batch_items['label']
-            for prompt, premise, conclusion, label, rationale_response in zip(batch_prompts, batch_premises, batch_conclusion, batch_label, batch_responses):            
+            for prompt, prompt_only_example, premise, conclusion, label, rationale_response in zip(batch_prompts, batch_prompts_only_example, batch_premises, batch_conclusion, batch_label, batch_responses):            
                 #print(rationale_response)
                 rationale_response = rationale_response.split("<Reasoning>")[-1]
                 rationale_response = rationale_response.split("</Answer>")[0] + "</Answer>"
@@ -516,14 +552,14 @@ def generate_rationales(model, dataset, output_dir, output_file, max_tokens=512,
                     predict = "Uncertain"
                 else:
                     predict = "Unknown"
-
+                print(prompt[0]['content'])
                 if predict == label:
                     rationales.append({
                         "premises": premise,
                         "conclusions": conclusion,
                         "rationale": rationale_response.strip(),
                         'label': label,
-                        'user_prompt': prompt_only_example,
+                        'user_prompt': prompt_only_example, #prompt[0]['content'],
                     })
                     print(f"Generated rationale for data point {total_num + 1}/{len(dataset)}")
                 else:
@@ -547,7 +583,7 @@ def generate_rationales(model, dataset, output_dir, output_file, max_tokens=512,
                         "conclusions": conclusion,
                         "rationale": rationale_response.strip(),
                         'label': label,
-                        'user_prompt': prompt,
+                        'user_prompt': prompt[0]['content'],
                     })
                     print(f"Generated rationale for data point {i + 1}/{len(dataset)}")
                 else:
@@ -651,7 +687,7 @@ def star_pipeline_base_reset(model_name_and_path, dataset_name, output_dir, n_sa
                 stop=stop,
                 mode=mode,
                 is_chat_model=is_chat_model, 
-                use_fewshot=True if n == 1 else False,
+                use_fewshot=True if n==1 else False,
             )
 
         os.environ["TOKENIZERS_PARALLELISM"] = "false"

@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-BASE_MODEL="unsloth/gemma-2-2b-it"  #"meta-llama/Meta-Llama-3.1-8B-Instruct-Reference"
+BASE_MODEL="Qwen/Qwen2.5-7B-Instruct" #"google/gemma-2-9b-it"  #"meta-llama/Meta-Llama-3.1-8B-Instruct-Reference"
 MODE="nl"
 DATASET_NAME='yale-nlp/FOLIO'
-OUTPUT_DIR="/beacon-scratch/tongzh24/outputs_nl/gemma-2-2b-it-bs-64-max-length-4096-epoch-5"
+OUTPUT_DIR="/beacon-scratch/tongzh24/outputs_nl/Qwen/Qwen2.5-7B-Instruct-bs-64-max-length-2048-epoch-3"
 N_SAMPLES=1000
 N_OUTER_LOOPS=3
-N_EPOCHS=5
+N_EPOCHS=3
 BATCH_SIZE=64
 MACRO_BATCH_SIZE=2
 LEARNING_RATE=5e-6

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 BASE_MODEL="unsloth/gemma-2-2b-it" #"google/gemma-2-2b-it"  #"meta-llama/Meta-Llama-3.1-8B-Instruct-Reference"
-MODE="nl"
+MODE="code"
 DATASET_NAME='yale-nlp/FOLIO'
 OUTPUT_DIR="/beacon-scratch/tongzh24/outputs_nl/gemma-2-2b-it-bs-64-max-length-4096-epoch-5-wo-fewshot-new"
 N_SAMPLES=1000
