@@ -160,7 +160,7 @@ def generate_responses_batch(model, user_prompts, max_tokens, temperature, top_p
         responses.append(generated_text)
     return responses
 
-def eval_performance(model_name_and_path, dataset_name, output_dir, save_raw_data_path, save_result_path, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False, batch_size=16):
+def eval_performance(model_name_and_path, dataset_name, output_dir, save_raw_data_path, save_result_path, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False, batch_size=16, use_fewshot=False):
     """
     Implements the STaR pipeline where each fine-tuning starts from the initial base model.
 
@@ -236,6 +236,8 @@ def main():
                         help="data path to save final results.")
     parser.add_argument("--batch_size", type=int, default=16, 
                         help="Batch size for Inference.")
+    parser.add_argument("--use_fewshot", action="store_true", 
+                    help="Enable the fewshot. If not provided, defaults to False.")
     parser.add_argument("--max_tokens", type=int, default=512, 
                         help="Maximum number of tokens for generated responses.")
     parser.add_argument("--temperature", type=float, default=1, 
@@ -296,6 +298,7 @@ def main():
         mode=args.mode,
         is_chat_model=is_chat,  
         batch_size=args.batch_size,
+        use_fewshot=args.use_fewshot,
     )
 
 if __name__ == "__main__":
