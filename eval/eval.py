@@ -8,19 +8,18 @@ import argparse
 from datasets import load_dataset
 from vllm import LLM, SamplingParams
      
-##########################################################Begin: Formating Prompts##########################################################################
 def get_prompt(mode, use_fewshot=False):
     """
     Load sys_prompt and few-shot examples according to modes(truth_table、code、nl)
     """
-    sys_prompt_path = os.path.join('./Prompts', f'sys_prompt_{mode}_star.txt')
-    example_path = os.path.join('./Prompts', f'example_{mode}_star.txt')
+    sys_prompt_path = os.path.join('../Prompts', f'sys_prompt_{mode}_star.txt')
+    example_path = os.path.join('../Prompts', f'example_{mode}_star.txt')
     with open(sys_prompt_path, encoding="utf-8") as f:
         sys_prompt = f.read()
     with open(example_path, encoding="utf-8") as f:
         example = f.read()
     if use_fewshot:
-        fewshot_path = os.path.join('./Prompts', f'prompt_{mode}_star.txt')
+        fewshot_path = os.path.join('../Prompts', f'prompt_{mode}_star.txt')
         with open(fewshot_path, encoding="utf-8") as f:
             fewshot_example = f.read()
         full_prompt = sys_prompt + '\n\n' + fewshot_example + '\n\n' + example
@@ -29,13 +28,10 @@ def get_prompt(mode, use_fewshot=False):
         full_prompt = sys_prompt + '\n\n' + example
         return full_prompt
 
-##########################################################Load Model, Tokenizer##########################################################################
 def load_model_inference(model_name_or_path='gemma-2-9b'):
     gpu_count = torch.cuda.device_count()
     model = LLM(model=model_name_or_path, tensor_parallel_size=gpu_count)
     return model
-
-##########################################################Code for Evaluation##########################################################################
 
 def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None,
@@ -75,15 +71,11 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
             print(f"Error generating responses for batch starting at index {batch_start}: {e}")
             continue 
         if mode != 'code':
-            batch_premises = batch_items['premises']
-            batch_conclusion = batch_items['conclusion']
-            batch_label = batch_items['label']
-            for prompt, premise, conclusion, label, rationale_response in zip(batch_prompts, batch_premises, batch_conclusion, batch_label, batch_responses):            
-                #print(rationale_response)
+            for prompt, item, rationale_response in zip(batch_prompts, batch_items, batch_responses):            
                 rationale_response = rationale_response.split("<Reasoning>")[-1]
                 rationale_response = rationale_response.split("</Answer>")[0] + "</Answer>"
                 answer_response = rationale_response.split("<Answer>")[-1]
-                print(answer_response)
+                label = item['label']
                 if "(A)" in answer_response:
                     predict = "True"
                 elif "(B)" in answer_response:
@@ -93,10 +85,10 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                 else:
                     predict = "Unknown"
                 rationales.append({
-                    "premises": premise,
-                    "conclusions": conclusion,
+                    "premises": item['premises'],
+                    "conclusions": item['conclusion'],
                     "rationale": rationale_response.strip(),
-                    "label": label,
+                    "label": item['label'],
                     "predict": predict,
                     "user_prompt": prompt
                 })
@@ -145,9 +137,6 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
     print(f"Correct predictions: {correct_num}")
     print(f"Accuracy report saved to {accuracy_path}")
 
-
-##########################################################Code for Generating Response##########################################################################
-
 def generate_responses_batch(model, user_prompts, max_tokens, temperature, top_p, top_k, stop, is_chat_model):
     sampling_params = SamplingParams(
         temperature=temperature,
@@ -170,8 +159,6 @@ def generate_responses_batch(model, user_prompts, max_tokens, temperature, top_p
         generated_text = output.outputs[0].text
         responses.append(generated_text)
     return responses
-
-################################################# Star Pipeline #############################################################
 
 def eval_performance(model_name_and_path, dataset_name, output_dir, save_raw_data_path, save_result_path, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False, batch_size=16):
     """
@@ -302,8 +289,6 @@ def main():
         output_dir=args.output_dir,
         save_raw_data_path=args.save_raw_data_path,
         save_result_path=args.save_result_path,
-        batch_size=args.batch_size,
-        seed=args.seed,
         max_tokens=args.max_tokens,
         temperature=args.temperature,
         top_p=args.top_p,
