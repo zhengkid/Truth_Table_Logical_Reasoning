@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-BASE_MODEL="Qwen/Qwen2.5-7B-Instruct" #"google/gemma-2-9b-it"  #"meta-llama/Meta-Llama-3.1-8B-Instruct-Reference"
+BASE_MODEL="unsloth/gemma-2-2b-it" #"google/gemma-2-9b-it" #"/beacon-scratch/tongzh24/outputs_nl/gemma-2-9b-it-bs-64-max-length-2048-epoch-3/fine_tuning_nl_64_5e-06_round_2/" #'Qwen/Qwen2.5-7B-Instruct' #"google/gemma-2-9b-it"  #"meta-llama/Meta-Llama-3.1-8B-Instruct-Reference"
 MODE="nl"
 DATASET_NAME='yale-nlp/FOLIO'
-OUTPUT_DIR="/beacon-scratch/tongzh24/outputs_nl/Qwen/Qwen2.5-7B-Instruct-bs-64-max-length-2048-epoch-3"
+OUTPUT_DIR="/beacon-scratch/tongzh24/outputs_nl/gemma-2-2b-it-bs-64-max-length-2048-epoch-3-zero-shot"
 N_SAMPLES=1000
 N_OUTER_LOOPS=3
 N_EPOCHS=3
@@ -21,7 +21,7 @@ TOP_P=0.9
 TOP_K=50
 SEED=42
 
-python star_pipeline.py \
+python  star_pipeline.py \
     --model_name_and_path "$BASE_MODEL" \
     --mode "$MODE" \
     --dataset_name "$DATASET_NAME" \
