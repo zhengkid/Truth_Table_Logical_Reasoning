@@ -260,8 +260,8 @@ def main():
                         help="Random seed for reproducibility.")
 
     # Parse arguments
-    #args = parser.parse_args()
-    args, unknown = parser.parse_known_args()
+    args = parser.parse_args()
+
     # Print arguments for verification
     print("Running with the following arguments:")
     for arg, value in vars(args).items():
