@@ -5,6 +5,6 @@
 
 conda env create -f environment.yml
 
-sh run_nl_qw_2.5_14b.sh
 
-sh run_nl_qwq.sh 
+sh scrips/star_pipeline.sh
+
