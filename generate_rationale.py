@@ -8,6 +8,7 @@ import tqdm
 import argparse
 from datasets import load_dataset
 from vllm import LLM, SamplingParams
+from datasets import Dataset, DatasetDict
 
 
 def get_prompt(mode, use_fewshot=False):
@@ -85,7 +86,7 @@ def generate_responses_batch(model, user_prompts, max_tokens, temperature, top_p
         responses.append(generated_text)
     return responses
 
-def generate_rationales(model, dataset, output_dir, output_file, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False, batch_size=16,use_fewshot=True):
+def generate_rationales(model, dataset, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False, batch_size=16,use_fewshot=True, huggingface_repo=""):
     """
     Generate rationales for each data point in the dataset.
     """
@@ -169,13 +170,27 @@ def generate_rationales(model, dataset, output_dir, output_file, max_tokens=512,
                 else:
                     print(f"Filter out the data point due to poor quality.") 
                 total_num += 1
-    with open(os.path.join(output_dir, output_file), 'w') as f:
-        json.dump(rationales, f, indent=4)
-    print(f"Rationales saved to {os.path.join(output_dir, output_file)}")
+    # with open(os.path.join(output_dir, output_file), 'w') as f:
+    #     json.dump(rationales, f, indent=4)
+    # print(f"Rationales saved to {os.path.join(output_dir, output_file)}")
+
+    
+    ds = Dataset.from_list(rationales)
+    ds_dict = DatasetDict({'train': ds})
+    ds_dict.push_to_hub(
+        repo_id=huggingface_repo,
+        private=True
+    )
+    
+    print(
+        f"Successfully pushed dataset to Hugging Face Hub: {huggingface_repo} "
+        f"(train split, private={True})."
+    )
+   
 
 ################################################# Star Pipeline #############################################################
 
-def generate_rationale_data(model_name_and_path, dataset_name, output_dir, output_file, n_samples=200, batch_size=16, seed=42, max_tokens=512, temperature=1.0, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False, use_fewshot=False):
+def generate_rationale_data(model_name_and_path, dataset_name, n_samples=200, batch_size=16, seed=42, max_tokens=512, temperature=1.0, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False, use_fewshot=False, huggingface_repo=""):
     """
     Implements the STaR pipeline where each fine-tuning starts from the initial base model.
 
@@ -205,16 +220,16 @@ def generate_rationale_data(model_name_and_path, dataset_name, output_dir, outpu
         generate_rationales(
             model=model,
             dataset=dataset,
-            output_dir=output_dir,
-            output_file=output_file,
             max_tokens=max_tokens,
             temperature=temperature,
+            batch_size=batch_size,
             top_p=top_p,
             top_k=top_k,
             stop=stop,
             mode=mode,
             is_chat_model=is_chat_model, 
             use_fewshot=use_fewshot,
+            huggingface_repo=huggingface_repo,
         )
 
    
@@ -238,10 +253,8 @@ def main():
                         help="truth_table, code, nl")
     parser.add_argument("--dataset_name", type=str, required=True, 
                         help="Name of the Hugging Face dataset to use (e.g., 'glue').")
-    parser.add_argument("--output_dir", type=str, default="outputs", 
-                        help="Directory to save generated files and responses.")
-    parser.add_argument("--output_file", type=str, default="outputs", 
-                        help="file to save generated files and responses.")
+    parser.add_argument("--huggingface_repo", type=str, default="", 
+                        help="huggingface_repo.")
     parser.add_argument("--n_samples", type=int, default=200, 
                         help="Number of samples to use from the dataset.")
     parser.add_argument("--batch_size", type=int, default=16, 
@@ -301,8 +314,6 @@ def main():
     generate_rationale_data(
         model_name_and_path=args.model_name_and_path,
         dataset_name=args.dataset_name,
-        output_dir=args.output_dir,
-        output_file=args.output_file,
         n_samples=args.n_samples,
         batch_size=args.batch_size,
         max_tokens=args.max_tokens,
@@ -312,6 +323,7 @@ def main():
         mode=args.mode,
         is_chat_model=is_chat,
         use_fewshot=args.use_fewshot,
+        huggingface_repo=args.huggingface_repo,
     )
 
 if __name__ == "__main__":
