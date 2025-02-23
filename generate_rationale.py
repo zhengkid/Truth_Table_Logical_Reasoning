@@ -15,14 +15,14 @@ def get_prompt(mode, use_fewshot=False):
     """
     Load sys_prompt and few-shot examples according to modes(truth_table、code、nl)
     """
-    sys_prompt_path = os.path.join('../Prompts', f'sys_prompt_{mode}_star.txt')
-    example_path = os.path.join('../Prompts', f'example_{mode}_star.txt')
+    sys_prompt_path = os.path.join('./Prompts', f'sys_prompt_{mode}_star.txt')
+    example_path = os.path.join('./Prompts', f'example_{mode}_star.txt')
     with open(sys_prompt_path, encoding="utf-8") as f:
         sys_prompt = f.read()
     with open(example_path, encoding="utf-8") as f:
         example = f.read()
     if use_fewshot:
-        fewshot_path = os.path.join('../Prompts', f'prompt_{mode}_star.txt')
+        fewshot_path = os.path.join('./Prompts', f'prompt_{mode}_star.txt')
         with open(fewshot_path, encoding="utf-8") as f:
             fewshot_example = f.read()
         full_prompt = sys_prompt + '\n\n' + fewshot_example + '\n\n' + example
@@ -57,7 +57,8 @@ def obtain_seed_dataset(dataset_name, num_samples, seed=42):
     return seed_dataset
 
 def load_model_inference(model_name_or_path='gemma-2-9b'):
-    gpu_count = torch.cuda.device_count()
+    gpu_count = 1
+    #gpu_count = torch.cuda.device_count()
     model = LLM(model=model_name_or_path, tensor_parallel_size=gpu_count)
     return model
 
@@ -209,28 +210,28 @@ def generate_rationale_data(model_name_and_path, dataset_name, n_samples=200, ba
     Returns:
         dict: Responses of all stages in the STaR pipeline.
     """
-    os.makedirs(output_dir, exist_ok=True)  # Ensure output directory exists
+
     # Obtain seed training set and test set
     dataset = obtain_seed_dataset(dataset_name, n_samples, seed)
     model = load_model_inference(model_name_or_path=model_name_and_path)
 
-    if os.path.exists(os.path.join(output_dir, output_file)):
-            pass
-    else:
-        generate_rationales(
-            model=model,
-            dataset=dataset,
-            max_tokens=max_tokens,
-            temperature=temperature,
-            batch_size=batch_size,
-            top_p=top_p,
-            top_k=top_k,
-            stop=stop,
-            mode=mode,
-            is_chat_model=is_chat_model, 
-            use_fewshot=use_fewshot,
-            huggingface_repo=huggingface_repo,
-        )
+
+
+
+    generate_rationales(
+        model=model,
+        dataset=dataset,
+        max_tokens=max_tokens,
+        temperature=temperature,
+        batch_size=batch_size,
+        top_p=top_p,
+        top_k=top_k,
+        stop=stop,
+        mode=mode,
+        is_chat_model=is_chat_model, 
+        use_fewshot=use_fewshot,
+        huggingface_repo=huggingface_repo,
+    )
 
    
 def set_seed(seed):

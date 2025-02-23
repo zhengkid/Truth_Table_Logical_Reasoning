@@ -12,14 +12,14 @@ def get_prompt(mode, use_fewshot=False):
     """
     Load sys_prompt and few-shot examples according to modes(truth_table、code、nl)
     """
-    sys_prompt_path = os.path.join('../Prompts', f'sys_prompt_{mode}_star.txt')
-    example_path = os.path.join('../Prompts', f'example_{mode}_star.txt')
+    sys_prompt_path = os.path.join('./Prompts', f'sys_prompt_{mode}_star.txt')
+    example_path = os.path.join('./Prompts', f'example_{mode}_star.txt')
     with open(sys_prompt_path, encoding="utf-8") as f:
         sys_prompt = f.read()
     with open(example_path, encoding="utf-8") as f:
         example = f.read()
     if use_fewshot:
-        fewshot_path = os.path.join('../Prompts', f'prompt_{mode}_star.txt')
+        fewshot_path = os.path.join('./Prompts', f'prompt_{mode}_star.txt')
         with open(fewshot_path, encoding="utf-8") as f:
             fewshot_example = f.read()
         full_prompt = sys_prompt + '\n\n' + fewshot_example + '\n\n' + example
@@ -29,7 +29,8 @@ def get_prompt(mode, use_fewshot=False):
         return full_prompt
 
 def load_model_inference(model_name_or_path='gemma-2-9b'):
-    gpu_count = torch.cuda.device_count()
+    gpu_count = 1
+    #gpu_count = torch.cuda.device_count()
     model = LLM(model=model_name_or_path, tensor_parallel_size=gpu_count)
     return model
 
