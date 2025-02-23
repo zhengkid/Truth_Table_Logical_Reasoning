@@ -2,18 +2,6 @@
 # star_pipeline_all_flags.sh
 
 # General parameters
-BASE_MODEL="google/gemma-2-9b-it"
-MODEL_NAME=${BASE_MODEL##*/}
-DATASET="yale-nlp/FOLIO"
-OUTPUT_DIR="star_pipeline_outputs/gemma-2-9b-it/nl"
-MODEL_OUTPUT_DIR="/beacon-scratch/tongzh24/"
-SRC_YAML="alignment-handbook/recipes/star_training/sft/config_full.yaml"
-HF_USER="TongZheng1999"
-SAVE_RAW_DATA_PATH='Eval_Rationale_Raw_Data_round_'
-SAVE_RESULT_PATH='Result_round_'
-RATIONALE_FILE_PATH='Rationale_data_round_'
-RECIPE_DIR='alignment-handbook/recipes/'
-ACC_PATH='alignment-handbook/recipes/accelerate_configs/deepspeed_zero3.yaml'
 N_SAMPLES=1000
 N_ROUNDS=3
 N_EPOCHS=4
@@ -28,7 +16,19 @@ TEST_TEMP=0.7
 TOP_P=0.9
 TOP_K=50
 MODE="nl"     # Options: truth_table, code, nl
-IS_CHAT="true"        # "true" or "false"
+BASE_MODEL="unsloth/gemma-2-2b-it"
+MODEL_NAME=${BASE_MODEL##*/}
+DATASET="yale-nlp/FOLIO"
+OUTPUT_DIR="star_pipeline_outputs/${MODEL_NAME}/${MODE}"
+MODEL_OUTPUT_DIR="/beacon-scratch/tongzh24/"
+SRC_YAML="alignment-handbook/recipes/star_training/sft/config_full.yaml"
+HF_USER="TongZheng1999"
+HF_DATA_ID="${MODEL_NAME}_${MODE}_rationale_${N_SAMPLES}_round_"
+SAVE_RAW_DATA_PATH='Eval_Rationale_Raw_Data_round_'
+SAVE_RESULT_PATH='Result_round_'
+RECIPE_DIR='alignment-handbook/recipes/'
+ACC_PATH='alignment-handbook/recipes/accelerate_configs/deepspeed_zero3.yaml'
+N_SAMPLES=1000
 
 # Recipe file location (used only for --parse)
 MODEL_SHORTNAME=$(basename "$BASE_MODEL")
@@ -71,26 +71,26 @@ do
   fi
   
   echo "Stage 1: Generating rationales for round $round using model: $CURRENT_MODEL"
-  python generate_rationale.py \
-    --model_name_and_path "$CURRENT_MODEL" \
-    --dataset_name "$DATASET" \
-    --mode "$MODE" \
-    --seed "$SEED" \
-    --n_samples "$N_SAMPLES" \
-    --huggingface_repo "${HF_USER}/${MODE}_rationale_${N_SAMPLES}_round_${round}" \
-    --max_tokens "$MAX_TOKENS" \
-    --temperature "$TEMP" \
-    --batch_size "$INFERENCE_BATCH_SIZE" \
-    --top_p "$TOP_P" \
-    --top_k "$TOP_K" \
-    --mode "$MODE" \
-    --use_fewshot 
+ # python generate_rationale.py \
+ #   --model_name_and_path "$CURRENT_MODEL" \
+ #   --dataset_name "$DATASET" \
+ #   --mode "$MODE" \
+ #   --seed "$SEED" \
+ #   --n_samples "$N_SAMPLES" \
+ #   --huggingface_repo "${HF_USER}/${MODEL_NAME}_${MODE}_rationale_${N_SAMPLES}_round_${round}" \
+ #   --max_tokens "$MAX_TOKENS" \
+ #   --temperature "$TEMP" \
+ #   --batch_size "$INFERENCE_BATCH_SIZE" \
+ #   --top_p "$TOP_P" \
+ #   --top_k "$TOP_K" \
+ #   --mode "$MODE" \
+ #   --use_fewshot 
   
   sleep 5
   
   # Stage 2: Fine-tuning with generated rationales
   
-  ITER_YAML_DIR="$RECIPE_DIR/${MODEL_NAME}"
+  ITER_YAML_DIR="$RECIPE_DIR/${MODEL_NAME}_star_training"
   if [ ! -d "$ITER_YAML_DIR" ]; then
     echo "Directory does not exist. Creating: $ITER_YAML_DIR"
     mkdir -p "$ITER_YAML_DIR"
@@ -109,6 +109,16 @@ do
   sed -i "s|^model_name_or_path:.*|model_name_or_path: $BASE_MODEL|" "$ITER_YAML"
 
   sed -i "s|^tokenizer_name_or_path:.*|tokenizer_name_or_path: $BASE_MODEL|" "$ITER_YAML"
+   
+  
+  awk -v new_id="$HF_USER/${HF_DATA_ID}${round}" '
+/^\s*dataset_mixer:/ {print; next}
+/^\s*TongZheng1999\/nl_rationale_1000_round_[0-9]+:/ {
+    sub(/TongZheng1999\/nl_rationale_1000_round_[0-9]+/, new_id);
+}
+{print}' "$ITER_YAML" > tmpfile && mv tmpfile "$ITER_YAML"
+  
+
 
   echo "Updated: $ITER_YAML"
 
