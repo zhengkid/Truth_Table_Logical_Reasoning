@@ -71,20 +71,20 @@ do
   fi
   
   echo "Stage 1: Generating rationales for round $round using model: $CURRENT_MODEL"
- # python generate_rationale.py \
- #   --model_name_and_path "$CURRENT_MODEL" \
- #   --dataset_name "$DATASET" \
- #   --mode "$MODE" \
- #   --seed "$SEED" \
- #   --n_samples "$N_SAMPLES" \
- #   --huggingface_repo "${HF_USER}/${MODEL_NAME}_${MODE}_rationale_${N_SAMPLES}_round_${round}" \
- #   --max_tokens "$MAX_TOKENS" \
- #   --temperature "$TEMP" \
- #   --batch_size "$INFERENCE_BATCH_SIZE" \
- #   --top_p "$TOP_P" \
- #   --top_k "$TOP_K" \
- #   --mode "$MODE" \
- #   --use_fewshot 
+  python generate_rationale.py \
+    --model_name_and_path "$CURRENT_MODEL" \
+    --dataset_name "$DATASET" \
+    --mode "$MODE" \
+    --seed "$SEED" \
+    --n_samples "$N_SAMPLES" \
+    --huggingface_repo "${HF_USER}/${MODEL_NAME}_${MODE}_rationale_${N_SAMPLES}_round_${round}" \
+    --max_tokens "$MAX_TOKENS" \
+    --temperature "$TEMP" \
+    --batch_size "$INFERENCE_BATCH_SIZE" \
+    --top_p "$TOP_P" \
+    --top_k "$TOP_K" \
+    --mode "$MODE" \
+    --use_fewshot 
   
   sleep 5
   
