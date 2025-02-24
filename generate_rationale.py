@@ -136,7 +136,8 @@ def generate_rationales(model, dataset, max_tokens=512, temperature=0.7, top_p=0
                 rationale_response = rationale_response.split("</Answer>")[0] + "</Answer>"
                 answer_response = rationale_response.split("<Answer>")[-1]
 
-
+                print(prompt)
+                print(answer_response)
                 if "(A)" in answer_response:
                     predict = "True"
                 elif "(B)" in answer_response:

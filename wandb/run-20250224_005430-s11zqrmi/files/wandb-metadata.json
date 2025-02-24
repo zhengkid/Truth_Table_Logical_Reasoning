@@ -1,0 +1,66 @@
+{
+  "os":  "Linux-5.14.0-503.23.2.el9_5.x86_64-x86_64-with-glibc2.34",
+  "python":  "CPython 3.11.11",
+  "startedAt":  "2025-02-24T05:54:30.241365Z",
+  "args":  [
+    "alignment-handbook/recipes//gemma-2-2b-it_star_training/iter_1_config.yaml"
+  ],
+  "program":  "/ihchomes/tongzh24/logical_reasoning/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py",
+  "codePath":  "alignment-handbook/scripts/run_sft.py",
+  "git":  {
+    "remote":  "git@github.com:zhengkid/Truth_Table_Logical_Reasoning.git",
+    "commit":  "71da7ac8ed663f268a666f7dc2c1287a31e2f36f"
+  },
+  "email":  "zhengtong12356@gmail.com",
+  "root":  "/ihchomes/tongzh24/logical_reasoning/new/Truth_Table_Logical_Reasoning",
+  "host":  "ada6compute04.ihc.umd.edu",
+  "executable":  "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/bin/python",
+  "codePathLocal":  "alignment-handbook/scripts/run_sft.py",
+  "cpu_count":  32,
+  "cpu_count_logical":  32,
+  "gpu":  "NVIDIA RTX 6000 Ada Generation",
+  "gpu_count":  4,
+  "disk":  {
+    "/":  {
+      "total":  "41875931136",
+      "used":  "11967881216"
+    }
+  },
+  "memory":  {
+    "total":  "810782691328"
+  },
+  "cpu":  {
+    "count":  32,
+    "countLogical":  32
+  },
+  "gpu_nvidia":  [
+    {
+      "name":  "NVIDIA RTX 6000 Ada Generation",
+      "memoryTotal":  "51527024640",
+      "cudaCores":  18176,
+      "architecture":  "Ada"
+    },
+    {
+      "name":  "NVIDIA RTX 6000 Ada Generation",
+      "memoryTotal":  "51527024640",
+      "cudaCores":  18176,
+      "architecture":  "Ada"
+    },
+    {
+      "name":  "NVIDIA RTX 6000 Ada Generation",
+      "memoryTotal":  "51527024640",
+      "cudaCores":  18176,
+      "architecture":  "Ada"
+    },
+    {
+      "name":  "NVIDIA RTX 6000 Ada Generation",
+      "memoryTotal":  "51527024640",
+      "cudaCores":  18176,
+      "architecture":  "Ada"
+    }
+  ],
+  "slurm":  {
+    "job_id":  "20394"
+  },
+  "cudaVersion":  "12.8"
+}

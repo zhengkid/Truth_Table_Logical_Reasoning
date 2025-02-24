@@ -3,23 +3,22 @@
 # General parameters
 N_SAMPLES=1000
 N_ROUNDS=3
-N_EPOCHS=4
 INFERENCE_BATCH_SIZE=16
 SEED=42
-MAX_TOKENS=2048
+MAX_TOKENS=5120
 TEMP=1.0
 TEST_TEMP=0.7
 TOP_P=0.9
 TOP_K=50
-MODE="nl"     # Options: truth_table, code, nl
-BASE_MODEL="unsloth/gemma-2-2b-it"
+MODE="truth_table"     # Options: truth_table, code, nl
+BASE_MODEL="google/gemma-2-9b-it"
 MODEL_NAME=${BASE_MODEL##*/}
 DATASET="yale-nlp/FOLIO"
-OUTPUT_DIR="star_pipeline_outputs/${MODEL_NAME}/${MODE}"
+OUTPUT_DIR="star_pipeline_outputs/${MODEL_NAME}/${MODE}/${N_ROUNDS}Rounds"
 MODEL_OUTPUT_DIR="/beacon-scratch/tongzh24/"
 SRC_YAML="alignment-handbook/recipes/star_training/sft/config_full.yaml"
 HF_USER="TongZheng1999"
-HF_DATA_ID="${MODEL_NAME}_${MODE}_rationale_${N_SAMPLES}_round_"
+HF_DATA_ID="${MODEL_NAME}_${MODE}_rationale_${N_SAMPLES}_${N_ROUNDS}Rounds_round_"
 SAVE_RAW_DATA_PATH='Eval_Rationale_Raw_Data_round_'
 SAVE_RESULT_PATH='Result_round_'
 RECIPE_DIR='alignment-handbook/recipes/'
@@ -72,7 +71,7 @@ do
     --mode "$MODE" \
     --seed "$SEED" \
     --n_samples "$N_SAMPLES" \
-    --huggingface_repo "${HF_USER}/${MODEL_NAME}_${MODE}_rationale_${N_SAMPLES}_round_${round}" \
+    --huggingface_repo "${HF_USER}/${HF_DATA_ID}${round}" \
     --max_tokens "$MAX_TOKENS" \
     --temperature "$TEMP" \
     --batch_size "$INFERENCE_BATCH_SIZE" \
@@ -97,9 +96,9 @@ do
   cp "$SRC_YAML" "$ITER_YAML"
 
 
-  sed -i "s|^output_dir:.*|output_dir: ${MODEL_OUTPUT_DIR}/${MODEL_NAME}/${MODE}/ft_iter_${round}|" "$ITER_YAML"
+  sed -i "s|^output_dir:.*|output_dir: ${MODEL_OUTPUT_DIR}/${MODEL_NAME}/${MODE}/${N_ROUNDS}Rounds/ft_iter_${round}|" "$ITER_YAML"
 
-  sed -i "s|^hub_model_id:.*|hub_model_id: ${MODEL_NAME}-star-iter-${round}|" "$ITER_YAML"
+  sed -i "s|^hub_model_id:.*|hub_model_id: ${MODEL_NAME}-star-${MODE}-${N_ROUNDS}Rounds-iter-${round}|" "$ITER_YAML"
 
   sed -i "s|^model_name_or_path:.*|model_name_or_path: $BASE_MODEL|" "$ITER_YAML"
 
