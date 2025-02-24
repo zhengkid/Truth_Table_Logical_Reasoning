@@ -1,0 +1,10 @@
+{"time":"2025-02-23T19:42:50.100731369-05:00","level":"INFO","msg":"stream: starting","core version":"0.19.7","symlink path":"/ihchomes/tongzh24/logical_reasoning/new/Truth_Table_Logical_Reasoning/wandb/run-20250223_194250-lxumf0lg/logs/debug-core.log"}
+{"time":"2025-02-23T19:42:50.223116171-05:00","level":"INFO","msg":"created new stream","id":"lxumf0lg"}
+{"time":"2025-02-23T19:42:50.223149421-05:00","level":"INFO","msg":"stream: started","id":"lxumf0lg"}
+{"time":"2025-02-23T19:42:50.224139934-05:00","level":"INFO","msg":"sender: started","stream_id":"lxumf0lg"}
+{"time":"2025-02-23T19:42:50.224177595-05:00","level":"INFO","msg":"handler: started","stream_id":"lxumf0lg"}
+{"time":"2025-02-23T19:42:50.224191925-05:00","level":"INFO","msg":"writer: Do: started","stream_id":"lxumf0lg"}
+{"time":"2025-02-23T19:42:50.448813927-05:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-02-23T19:44:11.784042681-05:00","level":"INFO","msg":"stream: closing","id":"lxumf0lg"}
+{"time":"2025-02-23T19:44:11.784222673-05:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-02-23T19:44:11.785395638-05:00","level":"INFO","msg":"Stopped system monitor"}

@@ -1,0 +1,100 @@
+  0%|                                                                                                                                                                    | 0/3 [00:00<?, ?it/s][WARNING|logging.py:328] 2025-02-23 19:48:48,140 >> It is strongly recommended to train Gemma2 models with the `eager` attention implementation instead of `flash_attention_2`. Use `eager` with `AutoModelForCausalLM.from_pretrained('<path-to-checkpoint>', attn_implementation='eager')`.
+100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3/3 [01:08<00:00, 22.53s/it][INFO|trainer.py:2584] 2025-02-23 19:49:56,094 >>
+{'loss': 1.0345, 'grad_norm': 17.681307713640532, 'learning_rate': 2e-05, 'epoch': 0.73}
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3/3 [01:08<00:00, 22.68s/it]
+{'train_runtime': 68.8499, 'train_samples_per_second': 3.791, 'train_steps_per_second': 0.044, 'train_loss': 1.3533840974171956, 'epoch': 2.18}
+***** train metrics *****
+  epoch                    =     2.1818
+  total_flos               =     1040GF
+  train_loss               =     1.3534
+  train_runtime            = 0:01:08.84
+  train_samples            =        662
+  train_samples_per_second =      3.791
+  train_steps_per_second   =      0.044
+2025-02-23 19:49:56 - INFO - __main__ - *** Save model ***
+[INFO|trainer.py:3801] 2025-02-23 19:49:57,608 >> Saving model checkpoint to /beacon-scratch/tongzh24/checkpoints/gemma-2-2b-it/nl/gemma-2-2b-it-iter1
+[INFO|configuration_utils.py:414] 2025-02-23 19:49:57,615 >> Configuration saved in /beacon-scratch/tongzh24/checkpoints/gemma-2-2b-it/nl/gemma-2-2b-it-iter1/config.json
+[INFO|configuration_utils.py:865] 2025-02-23 19:49:57,618 >> Configuration saved in /beacon-scratch/tongzh24/checkpoints/gemma-2-2b-it/nl/gemma-2-2b-it-iter1/generation_config.json
+[INFO|modeling_utils.py:3042] 2025-02-23 19:50:26,479 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 2 checkpoint shards. You can find where each parameters has been saved in the index located at /beacon-scratch/tongzh24/checkpoints/gemma-2-2b-it/nl/gemma-2-2b-it-iter1/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2646] 2025-02-23 19:50:26,484 >> tokenizer config file saved in /beacon-scratch/tongzh24/checkpoints/gemma-2-2b-it/nl/gemma-2-2b-it-iter1/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2025-02-23 19:50:26,487 >> Special tokens file saved in /beacon-scratch/tongzh24/checkpoints/gemma-2-2b-it/nl/gemma-2-2b-it-iter1/special_tokens_map.json
+[INFO|trainer.py:3801] 2025-02-23 19:50:28,608 >> Saving model checkpoint to /beacon-scratch/tongzh24/checkpoints/gemma-2-2b-it/nl/gemma-2-2b-it-iter1
+[INFO|configuration_utils.py:414] 2025-02-23 19:50:28,615 >> Configuration saved in /beacon-scratch/tongzh24/checkpoints/gemma-2-2b-it/nl/gemma-2-2b-it-iter1/config.json
+[INFO|configuration_utils.py:865] 2025-02-23 19:50:28,618 >> Configuration saved in /beacon-scratch/tongzh24/checkpoints/gemma-2-2b-it/nl/gemma-2-2b-it-iter1/generation_config.json
+[INFO|modeling_utils.py:3042] 2025-02-23 19:50:55,452 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 2 checkpoint shards. You can find where each parameters has been saved in the index located at /beacon-scratch/tongzh24/checkpoints/gemma-2-2b-it/nl/gemma-2-2b-it-iter1/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2646] 2025-02-23 19:50:55,458 >> tokenizer config file saved in /beacon-scratch/tongzh24/checkpoints/gemma-2-2b-it/nl/gemma-2-2b-it-iter1/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2025-02-23 19:50:55,459 >> Special tokens file saved in /beacon-scratch/tongzh24/checkpoints/gemma-2-2b-it/nl/gemma-2-2b-it-iter1/special_tokens_map.json
+Traceback (most recent call last):
+  File "/ihchomes/tongzh24/logical_reasoning/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 225, in <module>
+    main()
+  File "/ihchomes/tongzh24/logical_reasoning/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 191, in main
+    trainer.save_model(training_args.output_dir)
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 3723, in save_model
+    self.push_to_hub(commit_message="Model save")
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 4651, in push_to_hub
+    return upload_folder(
+           ^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_api.py", line 1551, in _inner
+    return fn(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_api.py", line 4688, in upload_folder
+    add_operations = self._prepare_upload_folder_additions(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_api.py", line 9204, in _prepare_upload_folder_additions
+    operations = [
+                 ^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_api.py", line 9205, in <listcomp>
+    CommitOperationAdd(
+  File "<string>", line 5, in __init__
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/_commit_api.py", line 195, in __post_init__
+    self.upload_info = UploadInfo.from_path(self.path_or_fileobj)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/lfs.py", line 84, in from_path
+    sha = sha_fileobj(file)
+          ^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/sha.py", line 25, in sha_fileobj
+    chunk = fileobj.read(chunk_size)
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/ihchomes/tongzh24/logical_reasoning/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 225, in <module>
+[rank0]:     main()
+[rank0]:   File "/ihchomes/tongzh24/logical_reasoning/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 191, in main
+[rank0]:     trainer.save_model(training_args.output_dir)
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 3723, in save_model
+[rank0]:     self.push_to_hub(commit_message="Model save")
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 4651, in push_to_hub
+[rank0]:     return upload_folder(
+[rank0]:            ^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+[rank0]:     return fn(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_api.py", line 1551, in _inner
+[rank0]:     return fn(self, *args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_api.py", line 4688, in upload_folder
+[rank0]:     add_operations = self._prepare_upload_folder_additions(
+[rank0]:                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_api.py", line 9204, in _prepare_upload_folder_additions
+[rank0]:     operations = [
+[rank0]:                  ^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_api.py", line 9205, in <listcomp>
+[rank0]:     CommitOperationAdd(
+[rank0]:   File "<string>", line 5, in __init__
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/_commit_api.py", line 195, in __post_init__
+[rank0]:     self.upload_info = UploadInfo.from_path(self.path_or_fileobj)
+[rank0]:                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/lfs.py", line 84, in from_path
+[rank0]:     sha = sha_fileobj(file)
+[rank0]:           ^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/sha.py", line 25, in sha_fileobj
+[rank0]:     chunk = fileobj.read(chunk_size)
+[rank0]:             ^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]: KeyboardInterrupt

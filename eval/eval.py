@@ -76,6 +76,7 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                 rationale_response = rationale_response.split("<Reasoning>")[-1]
                 rationale_response = rationale_response.split("</Answer>")[0] + "</Answer>"
                 answer_response = rationale_response.split("<Answer>")[-1]
+                print(prompt)
                 label = item['label']
                 if "(A)" in answer_response:
                     predict = "True"

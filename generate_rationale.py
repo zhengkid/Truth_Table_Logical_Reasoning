@@ -92,7 +92,8 @@ def generate_rationales(model, dataset, max_tokens=512, temperature=0.7, top_p=0
     Generate rationales for each data point in the dataset.
     """
     rationales = []
-    total_num = 0   
+    total_num = 0  
+    correct = 0
     rationale_prompt = get_prompt(mode=mode, use_fewshot=use_fewshot)
     full_prompt = rationale_prompt[0]
     full_prompt_only_example = rationale_prompt[1]
@@ -134,6 +135,8 @@ def generate_rationales(model, dataset, max_tokens=512, temperature=0.7, top_p=0
                 rationale_response = rationale_response.split("<Reasoning>")[-1]
                 rationale_response = rationale_response.split("</Answer>")[0] + "</Answer>"
                 answer_response = rationale_response.split("<Answer>")[-1]
+
+
                 if "(A)" in answer_response:
                     predict = "True"
                 elif "(B)" in answer_response:
@@ -150,6 +153,8 @@ def generate_rationales(model, dataset, max_tokens=512, temperature=0.7, top_p=0
                         'messages': [{"role": "user","content": prompt_only_example}, { "content":rationale_response.strip(), "role": "assistant" }],
                     })
                     print(f"Generated rationale for data point {total_num + 1}/{len(dataset)}")
+                    correct += 1
+                    print("correct_number:", correct)
                 else:
                     print(f"Filter out the data point due to poor quality.") 
                 total_num += 1
@@ -310,7 +315,10 @@ def main():
         is_chat = False
     else:
         is_chat = True
-
+    
+    print(args.temperature)
+    print(args.top_p)
+    print(args.top_k)
     # Run the pipeline
     generate_rationale_data(
         model_name_and_path=args.model_name_and_path,

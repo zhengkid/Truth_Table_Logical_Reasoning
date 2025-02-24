@@ -7,7 +7,7 @@ attn_implementation: flash_attention_2
 
 # Data training arguments
 dataset_mixer:
-  TongZheng1999/gemma-2-2b-it_nl_rationale_1000_round_: 1.0
+  TongZheng1999/gemma-2-2b-it_nl_rationale_1000_round_2: 1.0
 dataset_splits:
 - train
 auto_insert_empty_system_msg: false
@@ -26,14 +26,14 @@ gradient_checkpointing_kwargs:
   use_reentrant: false
 hub_model_id: gemma-2-2b-it-star-iter-2
 hub_strategy: every_save
-learning_rate: 2.0e-05
+learning_rate: 5.0e-06
 log_level: info
 logging_steps: 5
 logging_strategy: steps
 lr_scheduler_type: cosine
-max_seq_length: 2048
+max_seq_length: 4096
 max_steps: -1
-num_train_epochs: 3
+num_train_epochs: 5
 output_dir: /beacon-scratch/tongzh24//gemma-2-2b-it/nl/ft_iter_2
 overwrite_output_dir: true
 per_device_eval_batch_size: 4
@@ -45,4 +45,4 @@ report_to:
 - wandb
 save_strategy: "no"
 seed: 42
-warmup_ratio: 0.1
+warmup_ratio: 0

@@ -1,16 +1,12 @@
 #!/bin/bash
 # star_pipeline_all_flags.sh
-
 # General parameters
 N_SAMPLES=1000
 N_ROUNDS=3
 N_EPOCHS=4
-BATCH_SIZE=64
 INFERENCE_BATCH_SIZE=16
-MICRO_BATCH_SIZE=4
-LEARNING_RATE=1e-5
 SEED=42
-MAX_TOKENS=1024
+MAX_TOKENS=2048
 TEMP=1.0
 TEST_TEMP=0.7
 TOP_P=0.9
@@ -28,7 +24,6 @@ SAVE_RAW_DATA_PATH='Eval_Rationale_Raw_Data_round_'
 SAVE_RESULT_PATH='Result_round_'
 RECIPE_DIR='alignment-handbook/recipes/'
 ACC_PATH='alignment-handbook/recipes/accelerate_configs/deepspeed_zero3.yaml'
-N_SAMPLES=1000
 
 # Recipe file location (used only for --parse)
 MODEL_SHORTNAME=$(basename "$BASE_MODEL")
@@ -126,7 +121,7 @@ do
   SFT_SAVE_PATH=$(grep  '^output_dir:' "$ITER_YAML" | cut -d':' -f2 | tr -d ' ')
   echo "$SFT_SAVE_PATH"
   echo "Stage 2: Fine-tuning base model with rationales (round $round)..."
-  ACCELERATE_LOG_LEVEL=info accelerate launch --config_file $ACC_PATH alignment-handbook/scripts/run_sft.py $ITER_YAML
+  CUDA_VISIBLE_DEVICES=0,1,2,3 ACCELERATE_LOG_LEVEL=info accelerate launch --config_file $ACC_PATH alignment-handbook/scripts/run_sft.py $ITER_YAML
   
   sleep 20
    
