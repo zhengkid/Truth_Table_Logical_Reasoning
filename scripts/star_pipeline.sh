@@ -11,7 +11,7 @@ TEST_TEMP=0.7
 TOP_P=0.9
 TOP_K=50
 MODE="truth_table"     # Options: truth_table, code, nl
-BASE_MODEL="google/gemma-2-9b-it"
+BASE_MODEL="unsloth/gemma-2-2b-it"
 MODEL_NAME=${BASE_MODEL##*/}
 DATASET="yale-nlp/FOLIO"
 OUTPUT_DIR="star_pipeline_outputs/${MODEL_NAME}/${MODE}/${N_ROUNDS}Rounds"
@@ -78,7 +78,7 @@ do
     --top_p "$TOP_P" \
     --top_k "$TOP_K" \
     --mode "$MODE" \
-    --use_fewshot 
+    $FEWSHOT
   
   sleep 5
   

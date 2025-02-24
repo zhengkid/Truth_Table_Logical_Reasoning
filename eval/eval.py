@@ -209,7 +209,7 @@ def eval_performance(model_name_and_path, dataset_name, output_dir, save_raw_dat
                 mode=mode,
                 is_chat_model=is_chat_model, 
                 batch_size=batch_size,
-                use_fewshot=True,
+                use_fewshot=use_fewshot,
         )
 def set_seed(seed):
     random.seed(seed)

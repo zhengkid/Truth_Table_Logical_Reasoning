@@ -320,6 +320,7 @@ def main():
     print(args.temperature)
     print(args.top_p)
     print(args.top_k)
+    print(args.use_fewshot)
     # Run the pipeline
     generate_rationale_data(
         model_name_and_path=args.model_name_and_path,
