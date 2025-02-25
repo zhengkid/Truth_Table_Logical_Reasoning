@@ -1,0 +1,35 @@
+100%|██████████| 45/45 [15:38<00:00, 20.81s/it][INFO|trainer.py:2584] 2025-02-25 13:55:00,322 >>
+{'loss': 1.0066, 'grad_norm': 14.298987801491178, 'learning_rate': 4.993910125649561e-06, 'epoch': 0.11}
+{'loss': 0.6779, 'grad_norm': 9.794869675448687, 'learning_rate': 4.849231551964771e-06, 'epoch': 0.54}
+{'loss': 0.2902, 'grad_norm': 5.087372348639387, 'learning_rate': 4.415111107797445e-06, 'epoch': 1.09}
+{'loss': 0.1766, 'grad_norm': 1.0261728052245098, 'learning_rate': 3.7500000000000005e-06, 'epoch': 1.63}
+{'loss': 0.175, 'grad_norm': 0.6896320220479303, 'learning_rate': 2.9341204441673267e-06, 'epoch': 2.18}
+{'loss': 0.1339, 'grad_norm': 0.6548571357152928, 'learning_rate': 2.0658795558326745e-06, 'epoch': 2.72}
+{'loss': 0.142, 'grad_norm': 0.5472451914658202, 'learning_rate': 1.2500000000000007e-06, 'epoch': 3.27}
+{'loss': 0.1111, 'grad_norm': 0.6201268580069547, 'learning_rate': 5.848888922025553e-07, 'epoch': 3.81}
+{'loss': 0.1229, 'grad_norm': 0.5855161579605985, 'learning_rate': 1.507684480352292e-07, 'epoch': 4.35}
+{'loss': 0.1009, 'grad_norm': 0.4768531600687744, 'learning_rate': 0.0, 'epoch': 4.9}
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+100%|██████████| 45/45 [15:38<00:00, 20.85s/it]
+{'train_runtime': 939.1226, 'train_samples_per_second': 3.12, 'train_steps_per_second': 0.048, 'train_loss': 0.2218072083261278, 'epoch': 4.9}
+***** train metrics *****
+  epoch                    =      4.898
+  total_flos               =     6509GF
+  train_loss               =     0.2218
+  train_runtime            = 0:15:39.12
+  train_samples            =        586
+  train_samples_per_second =       3.12
+  train_steps_per_second   =      0.048
+2025-02-25 13:55:00 - INFO - __main__ - *** Save model ***
+[INFO|trainer.py:3801] 2025-02-25 13:55:04,639 >> Saving model checkpoint to /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/truth_table/3Rounds/ft_iter_2
+[INFO|configuration_utils.py:414] 2025-02-25 13:55:04,647 >> Configuration saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/truth_table/3Rounds/ft_iter_2/config.json
+[INFO|configuration_utils.py:865] 2025-02-25 13:55:04,649 >> Configuration saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/truth_table/3Rounds/ft_iter_2/generation_config.json
+[INFO|modeling_utils.py:3042] 2025-02-25 13:56:23,454 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/truth_table/3Rounds/ft_iter_2/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2646] 2025-02-25 13:56:23,458 >> tokenizer config file saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/truth_table/3Rounds/ft_iter_2/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2025-02-25 13:56:23,460 >> Special tokens file saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/truth_table/3Rounds/ft_iter_2/special_tokens_map.json
+[INFO|trainer.py:3801] 2025-02-25 13:56:28,019 >> Saving model checkpoint to /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/truth_table/3Rounds/ft_iter_2
+[INFO|configuration_utils.py:414] 2025-02-25 13:56:28,026 >> Configuration saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/truth_table/3Rounds/ft_iter_2/config.json
+[INFO|configuration_utils.py:865] 2025-02-25 13:56:28,028 >> Configuration saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/truth_table/3Rounds/ft_iter_2/generation_config.json

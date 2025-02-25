@@ -3,10 +3,10 @@
 
 export CUDA_VISIBLE_DEVICES=0,1,2,3
 
-MODEL_NAME_AND_PATH="unsloth/gemma-2-2b-it"
+MODEL_NAME_AND_PATH="/beacon-scratch/tongzh24/gemma-2-9b-it/nl/3Rounds/ft_iter_3/"
 MODE="nl"
 DATASET_NAME='yale-nlp/FOLIO'
-OUTPUT_DIR="../outputs/prompting/gemma-2-2b-it/"
+OUTPUT_DIR="../outputs/prompting/gemma-2-9b-it/"
 SAVE_RAW_DATA_PATH="raw_data.json"
 SAVE_RESULT_PATH="result.txt"
 BATCH_SIZE=16
@@ -17,7 +17,7 @@ TOP_K=50
 SEED=42
 
 # 运行 Python 脚本
-python ../eval/eval.py \
+python ./eval/eval.py \
   --model_name_and_path ${MODEL_NAME_AND_PATH} \
   --mode ${MODE} \
   --dataset_name ${DATASET_NAME} \
@@ -29,5 +29,6 @@ python ../eval/eval.py \
   --temperature ${TEMPERATURE} \
   --top_p ${TOP_P} \
   --top_k ${TOP_K} \
-  --seed ${SEED}
+  --seed ${SEED} \
+  --use_fewshot 
 

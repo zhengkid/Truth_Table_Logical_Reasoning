@@ -10,6 +10,15 @@ from datasets import load_dataset
 from vllm import LLM, SamplingParams
 from datasets import Dataset, DatasetDict
 
+from huggingface_hub import HfApi
+import requests
+def check_huggingface_repo_exists(huggingface_repo: str) -> bool:
+    api = HfApi()
+    try:
+        api.repo_info(repo_id=huggingface_repo, repo_type="dataset")  # Change to "model" if checking a model
+        return True
+    except requests.exceptions.HTTPError:
+        return False
 
 def get_prompt(mode, use_fewshot=False):
     """
@@ -322,20 +331,24 @@ def main():
     print(args.top_k)
     print(args.use_fewshot)
     # Run the pipeline
-    generate_rationale_data(
-        model_name_and_path=args.model_name_and_path,
-        dataset_name=args.dataset_name,
-        n_samples=args.n_samples,
-        batch_size=args.batch_size,
-        max_tokens=args.max_tokens,
-        temperature=args.temperature,
-        top_p=args.top_p,
-        top_k=args.top_k,
-        mode=args.mode,
-        is_chat_model=is_chat,
-        use_fewshot=args.use_fewshot,
-        huggingface_repo=args.huggingface_repo,
-    )
+
+    if not check_huggingface_repo_exists(args.huggingface_repo):
+        generate_rationale_data(
+            model_name_and_path=args.model_name_and_path,
+            dataset_name=args.dataset_name,
+            n_samples=args.n_samples,
+            batch_size=args.batch_size,
+            max_tokens=args.max_tokens,
+            temperature=args.temperature,
+            top_p=args.top_p,
+            top_k=args.top_k,
+            mode=args.mode,
+            is_chat_model=is_chat,
+            use_fewshot=args.use_fewshot,
+            huggingface_repo=args.huggingface_repo,
+        )
+    else:
+        print(f"Dataset {args.huggingface_repo} already exists. Skipping generation.")
 
 if __name__ == "__main__":
     main()

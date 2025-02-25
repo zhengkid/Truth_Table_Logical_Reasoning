@@ -7,7 +7,39 @@ import tqdm
 import argparse
 from datasets import load_dataset
 from vllm import LLM, SamplingParams
-     
+
+
+import signal
+
+# Define a custom exception for timeouts
+class TimeoutException(Exception):
+    pass
+
+# Define a signal handler that raises a TimeoutException
+def timeout_handler(signum, frame):
+    raise TimeoutException("Execution timed out")
+
+# Set the alarm signal handler
+signal.signal(signal.SIGALRM, timeout_handler)
+
+def execute_with_timeout(code_str, timeout_seconds=10):
+    # Set the alarm for timeout_seconds
+    signal.alarm(timeout_seconds)
+    try:
+        # Execute the provided code string
+        exec(code_str, globals())
+        # Cancel the alarm if exec finishes in time
+        signal.alarm(0)
+        # Retrieve the "result" variable set by the executed code, if it exists
+        return globals().get("result", "Unknown")
+    except TimeoutException:
+        return "Unknown"
+    except Exception as e:
+        # Optionally log or print the exception
+        print("Error during execution:", e)
+        return "Unknown"
+
+
 def get_prompt(mode, use_fewshot=False):
     """
     Load sys_prompt and few-shot examples according to modes(truth_table、code、nl)
@@ -102,30 +134,33 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                 print(f"{correct_num} out of {total_num} is correct!")
                 accuracy = correct_num / total_num if total_num > 0 else 0.0
         else:
-            batch_premises = batch_items['premises']
-            batch_conclusion = batch_items['conclusion']
-            batch_label = batch_items['label']
-            for prompt, premise, conclusion, label, code_response in zip(batch_prompts, batch_premises, batch_conclusion, batch_label, batch_responses):            
-                code_response = code_response.split("<PYTHON>")[-1]
-                code_response = code_response.split("</PYTHON")[0]
-                exec(code_response)
-                predict = result
-                rationales.append({
-                    "premises": premise,
-                    "conclusions": conclusion,
-                    "rationale": code_response.strip(),
-                    "label": label,
-                    "predict": predict,
-                    "user_prompt": prompt,
-                })
+            for prompt, item, code_response in zip(batch_prompts, batch_items, batch_responses):            
+                try:
+                    label = item['label']
+                    code_response = code_response.split("<PYTHON>")[-1]
+                    code_response = code_response.split("</PYTHON")[0]
+                    print(code_response)
+                    predict  = execute_with_timeout(code_response, timeout_seconds=3)
+                    print("Conclusion:", predict)
+                    exec(code_response)
 
-                if predict == label:
-                    correct_num += 1
-                total_num += 1
-                print(f"{correct_num} out of {total_num} is correct!")
-                accuracy = correct_num / total_num if total_num > 0 else 0.0
+                    rationales.append({
+                        "premises": item['premises'],
+                        "conclusions": item['conclusion'],
+                        "rationale": code_response.strip(),
+                        "label": label,
+                        "predict": predict,
+                        "user_prompt": prompt,
+                    })
 
-
+                    if predict == label:
+                        correct_num += 1
+                    total_num += 1
+                    accuracy = correct_num / total_num if total_num > 0 else 0.0
+                    print(f"{correct_num} out of {total_num} is correct!")
+                except Exception as e:
+                    print(f"Unexpected error in processing item: {e}")
+                    continue
     with open(os.path.join(output_dir, raw_data_path), 'w') as f:
         json.dump(rationales, f, indent=4)
     print(f"Rationales saved to {os.path.join(output_dir, raw_data_path)}")
