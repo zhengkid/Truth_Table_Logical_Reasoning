@@ -322,7 +322,8 @@ def main():
         is_chat = False
     else:
         is_chat = True
-
+    print(args.model_name_and_path)
+    print(args.max_tokens)
     eval_performance(
         model_name_and_path=args.model_name_and_path,
         dataset_name=args.dataset_name,
