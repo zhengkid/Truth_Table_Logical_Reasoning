@@ -31,10 +31,10 @@ log_level: info
 logging_steps: 5
 logging_strategy: steps
 lr_scheduler_type: cosine
-max_seq_length: 4096
+max_seq_length: 3072
 max_steps: -1
 num_train_epochs: 5
-output_dir: /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/truth_table/3Rounds/ft_iter_2
+output_dir: /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/truth_table/3Rounds/ft_iter_2
 overwrite_output_dir: true
 per_device_eval_batch_size: 4
 per_device_train_batch_size: 1

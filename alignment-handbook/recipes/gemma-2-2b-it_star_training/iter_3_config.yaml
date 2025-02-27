@@ -24,7 +24,7 @@ gradient_accumulation_steps: 16
 gradient_checkpointing: true
 gradient_checkpointing_kwargs:
   use_reentrant: false
-hub_model_id: gemma-2-2b-it-star-3Rounds-iter-3
+hub_model_id: gemma-2-2b-it-star-truth_table-3Rounds-iter-3
 hub_strategy: every_save
 learning_rate: 5.0e-06
 log_level: info

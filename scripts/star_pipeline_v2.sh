@@ -11,14 +11,14 @@ TEST_TEMP=0.7
 TOP_P=0.9
 TOP_K=50
 MODE="truth_table"     # Options: truth_table, code, nl
-BASE_MODEL="Qwen/Qwen2.5-7B-Instruct"
+BASE_MODEL="unsloth/gemma-2-2b-it"
 MODEL_NAME=${BASE_MODEL##*/}
 DATASET="yale-nlp/FOLIO"
-OUTPUT_DIR="star_pipeline_outputs/${MODEL_NAME}/${MODE}/${N_ROUNDS}Rounds"
-MODEL_OUTPUT_DIR="/beacon-scratch/tongzh24/"
+OUTPUT_DIR="star_pipeline_outputs/${MODEL_NAME}/${MODE}/${MAX_TOKENS}_${N_ROUNDS}Rounds"
+MODEL_OUTPUT_DIR="/fs/cbcb-lab/heng/kz/"
 SRC_YAML="alignment-handbook/recipes/star_training/sft/config_full.yaml"
 HF_USER="TongZheng1999"
-HF_DATA_ID="${MODEL_NAME}_${MODE}_rationale_${N_SAMPLES}_${N_ROUNDS}Rounds_round_"
+HF_DATA_ID="${MODEL_NAME}_${MODE}_rationale_${N_SAMPLES}_${MAX_TOKENS}_${N_ROUNDS}Rounds_round_"
 SAVE_RAW_DATA_PATH='Eval_Rationale_Raw_Data_round_'
 SAVE_RESULT_PATH='Result_round_'
 RECIPE_DIR='alignment-handbook/recipes/'
@@ -96,7 +96,7 @@ do
 
   cp "$SRC_YAML" "$ITER_YAML"
    
-  python utils/utils.py $ITER_YAML ${MODEL_OUTPUT_DIR}/${MODEL_NAME}/${MODE}/${N_ROUNDS}Rounds/ft_iter_${round} ${MODEL_NAME}-star-${MODE}-${N_ROUNDS}Rounds-iter-${round} $BASE_MODEL $BASE_MODEL $PATTERN $HF_USER/${HF_DATA_ID}${round}
+  python utils/utils.py $ITER_YAML ${MODEL_OUTPUT_DIR}/${MODEL_NAME}/${MODE}/${MAX_TOKENS}_${N_ROUNDS}Rounds/ft_iter_${round} ${MODEL_NAME}-star-${MODE}-${MAX_TOKENS}-${N_ROUNDS}Rounds-iter-${round} $BASE_MODEL $BASE_MODEL $PATTERN $HF_USER/${HF_DATA_ID}${round}
   
   echo "Updated: $ITER_YAML"
 

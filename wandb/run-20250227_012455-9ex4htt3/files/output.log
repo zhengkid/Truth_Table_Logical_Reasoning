@@ -1,0 +1,3 @@
+  0%|          | 0/30 [00:00<?, ?it/s][WARNING|logging.py:329] 2025-02-27 01:24:56,060 >> It is strongly recommended to train Gemma2 models with the `eager` attention implementation instead of `flash_attention_2`. Use `eager` with `AutoModelForCausalLM.from_pretrained('<path-to-checkpoint>', attn_implementation='eager')`.
+ 10%|█         | 3/30 [02:30<21:53, 48.64s/it]
+{'loss': 1.5803, 'grad_norm': 20.97665875485239, 'learning_rate': 4.986304738420684e-06, 'epoch': 0.16}
