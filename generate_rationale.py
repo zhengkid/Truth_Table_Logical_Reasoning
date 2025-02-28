@@ -12,6 +12,37 @@ from datasets import Dataset, DatasetDict
 
 from huggingface_hub import HfApi
 import requests
+
+import multiprocessing
+
+class TimeoutException(Exception):
+    pass
+
+def run_code(code_str, return_dict):
+    try:
+        exec(code_str, globals())
+        return_dict["result"] = globals().get("result", "Unknown")
+    except Exception as e:
+        print("Error during execution:", e)
+        return_dict["result"] = "Unknown"
+
+def execute_with_timeout(code_str, timeout_seconds=3):
+    manager = multiprocessing.Manager()
+    return_dict = manager.dict()
+
+    proc = multiprocessing.Process(target=run_code, args=(code_str, return_dict))
+    proc.start()
+    proc.join(timeout_seconds)
+
+    if proc.is_alive():
+        print("Timeout reached! Terminating process...")
+        proc.terminate()
+        proc.join()
+        return "Unknow"
+
+    return return_dict.get("result", "Unknown")
+
+
 def check_huggingface_repo_exists(huggingface_repo: str) -> bool:
     api = HfApi()
     try:
@@ -170,21 +201,33 @@ def generate_rationales(model, dataset, max_tokens=512, temperature=0.7, top_p=0
 
         else:
             for prompt, prompt_only_example, item, code_response in zip(batch_prompts, batch_prompts_only_example, batch_items, batch_responses):            
-                code_response = code_response.split("<PYTHON>")[-1]
-                code_response = code_response.split("</PYTHON")[0]
-                exec(code_response)
-                predict = locals().get("result")
-                label = item['label']
-                if predict == label:
-                    rationales.append({
-                        'prompt_id': str(total_num),
-                        'prompt': prompt_only_example, #prompt[0]['content'],
-                        'messages': [{"role": "user","content": prompt_only_example}, { "content":code_response.strip(), "role": "assistant" }],
-                    })
-                    print(f"Generated rationale for data point {total_num + 1}/{len(dataset)}")
-                else:
-                    print(f"Filter out the data point due to poor quality.") 
-                total_num += 1
+                try:
+                    label = item['label']
+                    code_response = code_response.split("<PYTHON>")[-1]
+                    code_response = code_response.split("</PYTHON>")[0]
+
+                    if not code_response:
+                        print("Warning: Empty code response! Counting as incorrect.")
+                        predict = "Unknown"
+                    else:
+                        print("Executing code!")
+                        predict = execute_with_timeout(code_response, timeout_seconds=3)
+                    print(predict)
+                    if predict == label:
+                        rationales.append({
+                            'prompt_id': str(total_num),
+                            'prompt': prompt_only_example, #prompt[0]['content'],
+                            'messages': [{"role": "user","content": prompt_only_example}, { "content":code_response.strip(), "role": "assistant" }],
+                        })
+                        print(f"Generated rationale for data point {total_num + 1}/{len(dataset)}")
+                    else:
+                        print(f"Filter out the data point due to poor quality.")
+                    total_num += 1
+                except Exception as e:
+                    print(f"Unexpected error in processing item: {e}")
+                    print(f"Filter out the data point due to poor quality.")
+                    total_num += 1
+
     # with open(os.path.join(output_dir, output_file), 'w') as f:
     #     json.dump(rationales, f, indent=4)
     # print(f"Rationales saved to {os.path.join(output_dir, output_file)}")

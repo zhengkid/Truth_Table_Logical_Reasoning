@@ -7,37 +7,38 @@ import tqdm
 import argparse
 from datasets import load_dataset
 from vllm import LLM, SamplingParams
+import threading
+import time
 
 
-import signal
+import multiprocessing
 
-# Define a custom exception for timeouts
 class TimeoutException(Exception):
     pass
 
-# Define a signal handler that raises a TimeoutException
-def timeout_handler(signum, frame):
-    raise TimeoutException("Execution timed out")
-
-# Set the alarm signal handler
-signal.signal(signal.SIGALRM, timeout_handler)
-
-def execute_with_timeout(code_str, timeout_seconds=10):
-    # Set the alarm for timeout_seconds
-    signal.alarm(timeout_seconds)
+def run_code(code_str, return_dict):
     try:
-        # Execute the provided code string
         exec(code_str, globals())
-        # Cancel the alarm if exec finishes in time
-        signal.alarm(0)
-        # Retrieve the "result" variable set by the executed code, if it exists
-        return globals().get("result", "Unknown")
-    except TimeoutException:
-        return "Unknown"
+        return_dict["result"] = globals().get("result", "Unknown")
     except Exception as e:
-        # Optionally log or print the exception
         print("Error during execution:", e)
-        return "Unknown"
+        return_dict["result"] = "Unknown"
+
+def execute_with_timeout(code_str, timeout_seconds=3):
+    manager = multiprocessing.Manager()
+    return_dict = manager.dict()
+
+    proc = multiprocessing.Process(target=run_code, args=(code_str, return_dict))
+    proc.start()
+    proc.join(timeout_seconds)  
+
+    if proc.is_alive():
+        print("Timeout reached! Terminating process...")
+        proc.terminate()
+        proc.join() 
+        return "Unknow" 
+
+    return return_dict.get("result", "Unknown") 
 
 
 def get_prompt(mode, use_fewshot=False):
@@ -88,6 +89,8 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
     for batch_start in tqdm.tqdm(range(0, len(dataset_list), batch_size)):
         batch_prompts = prompts[batch_start: batch_start + batch_size]
         batch_items = dataset_list[batch_start: batch_start + batch_size]
+        print(batch_start, len(batch_items))
+
         try:
             with torch.no_grad():
                 batch_responses = generate_responses_batch(
@@ -102,6 +105,7 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                 )
         except Exception as e:
             print(f"Error generating responses for batch starting at index {batch_start}: {e}")
+            tqdm.tqdm.update(1)
             continue 
         if mode != 'code':
             for prompt, item, rationale_response in zip(batch_prompts, batch_items, batch_responses):            
@@ -138,12 +142,16 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                 try:
                     label = item['label']
                     code_response = code_response.split("<PYTHON>")[-1]
-                    code_response = code_response.split("</PYTHON")[0]
-                    print(code_response)
-                    predict  = execute_with_timeout(code_response, timeout_seconds=3)
-                    print("Conclusion:", predict)
-                    exec(code_response)
+                    code_response = code_response.split("</PYTHON>")[0]
 
+                    if not code_response:
+                        print("Warning: Empty code response! Counting as incorrect.")
+                        predict = "Unknown"
+                    else:
+                        print("Executing code!")
+                        predict = execute_with_timeout(code_response, timeout_seconds=3)
+                    print(predict)
+                   
                     rationales.append({
                         "premises": item['premises'],
                         "conclusions": item['conclusion'],
@@ -152,15 +160,16 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                         "predict": predict,
                         "user_prompt": prompt,
                     })
-
-                    if predict == label:
+                    if str(predict) == str(label):
                         correct_num += 1
-                    total_num += 1
-                    accuracy = correct_num / total_num if total_num > 0 else 0.0
-                    print(f"{correct_num} out of {total_num} is correct!")
+                    
                 except Exception as e:
                     print(f"Unexpected error in processing item: {e}")
-                    continue
+                    predict = "Unknown"
+                finally:
+                    total_num += 1
+                    accuracy = correct_num / total_num if total_num > 0 else 0.0
+                    print(f"{correct_num} out of {total_num} is correct! Accuracy: {accuracy:.2%}")
     with open(os.path.join(output_dir, raw_data_path), 'w') as f:
         json.dump(rationales, f, indent=4)
     print(f"Rationales saved to {os.path.join(output_dir, raw_data_path)}")

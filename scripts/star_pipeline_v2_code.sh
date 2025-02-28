@@ -15,7 +15,7 @@ BASE_MODEL="google/gemma-2-9b-it"
 MODEL_NAME=${BASE_MODEL##*/}
 DATASET="yale-nlp/FOLIO"
 OUTPUT_DIR="star_pipeline_outputs/${MODEL_NAME}/${MODE}/${N_ROUNDS}Rounds"
-MODEL_OUTPUT_DIR="/beacon-scratch/tongzh24/"
+MODEL_OUTPUT_DIR="/fs/cbcb-lab/heng/kz/"
 SRC_YAML="alignment-handbook/recipes/star_training/sft/config_full.yaml"
 HF_USER="TongZheng1999"
 HF_DATA_ID="${MODEL_NAME}_${MODE}_rationale_${N_SAMPLES}_${N_ROUNDS}Rounds_round_"
@@ -104,7 +104,7 @@ do
   SFT_SAVE_PATH=$(grep  '^output_dir:' "$ITER_YAML" | cut -d':' -f2 | tr -d ' ')
   echo "$SFT_SAVE_PATH"
   echo "Stage 2: Fine-tuning base model with rationales (round $round)..."
-  CUDA_VISIBLE_DEVICES=0,1,2,3 ACCELERATE_LOG_LEVEL=info accelerate launch --config_file $ACC_PATH alignment-handbook/scripts/run_sft.py $ITER_YAML
+  ACCELERATE_LOG_LEVEL=info accelerate launch --config_file $ACC_PATH alignment-handbook/scripts/run_sft.py $ITER_YAML
   
   sleep 20
    
