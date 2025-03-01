@@ -1,72 +1,48 @@
+from z3 import Solver, Bool, And, Not, Implies
 
-from typing import Optional
+# Define propositional variables
+Attended_Westminster = Bool("Attended_Westminster")
+Attended_Edinburgh = Bool("Attended_Edinburgh")
+Westminster_UK = Bool("Westminster_UK")
+Edinburgh_UK = Bool("Edinburgh_UK")
+Supported_Portland_Whigs = Bool("Supported_Portland_Whigs")
+Not_Sat_In_Parliament = Bool("Not_Sat_In_Parliament")
 
-class ClubMember:
-    def __init__(self,
-                 performs_in_talent_shows: Optional[bool] = None,
-                 attends_events: Optional[bool] = None,
-                 engaged_with_events: Optional[bool] = None,
-                 inactive_disinterested: Optional[bool] = None,
-                 chaperones_dances: Optional[bool] = None,
-                 student: Optional[bool] = None,
-                 wishes_to_further_education: Optional[bool] = None):
-        self.performs_in_talent_shows = performs_in_talent_shows
-        self.attends_events = attends_events
-        self.engaged_with_events = engaged_with_events
-        self.inactive_disinterested = inactive_disinterested
-        self.chaperones_dances = chaperones_dances
-        self.student = student
-        self.wishes_to_further_education = wishes_to_further_education
+# Initialize solver
+solver = Solver()
 
-def apply_premises(member: ClubMember) -> bool:
-    changed = False
+# Add premises
+solver.add(Attended_Westminster)  # William attended Westminster
+solver.add(Attended_Edinburgh)  # William attended Edinburgh
+solver.add(Edinburgh_UK)  # Edinburgh is in the UK
+solver.add(Supported_Portland_Whigs)  # William supported Portland Whigs
+solver.add(Implies(Supported_Portland_Whigs, Not_Sat_In_Parliament))  # Supporters of Portland Whigs did not sit in Parliament
 
-    if member.performs_in_talent_shows is True and member.attends_events is not True:
-        member.attends_events = True
-        changed = True
-    if member.performs_in_talent_shows is True and member.engaged_with_events is not True:
-        member.engaged_with_events = True
-        changed = True
+# Define the conclusion
+conclusion = And(Attended_Westminster, Attended_Edinburgh, Westminster_UK, Edinburgh_UK)
 
-    if member.performs_in_talent_shows is None and member.inactive_disinterested is not None:
-        member.performs_in_talent_shows = member.inactive_disinterested
-        changed = True
+# Check if the conclusion is necessarily true
+solver.push()
+solver.add(Not(conclusion))
+result1 = str(solver.check())
+solver.pop()
 
-    if member.chaperones_dances is True and member.student is not False:
-        member.student = False
-        changed = True
+solver.push()
+solver.add(conclusion)
+result2 = str(solver.check())
+solver.pop()
 
-    if member.inactive_disinterested is True and member.chaperones_dances is not True:
-        member.chaperones_dances = True
-        changed = True
-
-    if member.wishes_to_further_education is True and member.student is not True:
-        member.student = True
-        changed = True
-
-    if hasattr(member, 'name') and member.name == "Bonnie":
-        if member.attends_events is not None and member.engaged_with_events is not None and member.student is not None:
-            pass
-        else:
-            changed = True
-
-    return changed
-
-def run_inference(member: ClubMember):
-    while apply_premises(member):
-        print()
-        pass
-
-def check_conclusion(member: ClubMember) -> str:
-    run_inference(member)
-    return "True" if member.performs_in_talent_shows is True else "False"
-
-def func():
-    member = ClubMember()
-    member.name = "Bonnie"
-    return check_conclusion(member)
-
-result = func()
-print("Conclusion: Bonnie performs in school talent shows often?", result)
-
+# Interpret results
+if result1 == "unsat":
+    print("The conclusion is necessarily true.")
+    result = "True"
+elif result1 == "sat" and result2 == "unsat":
+    print("The conclusion is necessarily false.")
+    result = "False"
+elif result1 == "sat" and result2 == "sat":
+    print("The conclusion is uncertain.")
+    result = "Uncertain"
+else:
+    print("Unexpected result, possible logical error.")
+    result = "Error"
 

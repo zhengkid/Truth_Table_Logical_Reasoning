@@ -5,6 +5,25 @@ import requests
 from huggingface_hub import HfApi
 from datasets import load_dataset
 
+import re
+
+def remove_incorrect_code_symbols(text):
+    """
+    Removes incorrect ‘’‘python and ’‘’ symbols used for code blocks.
+
+    Args:
+        text (str): The input text containing incorrectly formatted code blocks.
+
+    Returns:
+        str: Cleaned text with proper formatting.
+    """
+    # Replace incorrect opening ‘’‘python with correct triple backticks ```
+    text = re.sub(r"[‘’`]{3}python", "", text)
+
+    # Replace incorrect closing ’‘’ with correct triple backticks ```
+    text = re.sub(r"[‘’`]{3}", "", text)
+
+    return text
 
 class TimeoutException(Exception):
     pass
@@ -108,6 +127,7 @@ def get_prompt(mode, prompt_mode, use_fewshot=False):
         sys_prompt = f.read()
     with open(example_path, encoding="utf-8") as f:
         example = f.read()
+ 
 
     if use_fewshot:
         fewshot_path = os.path.join('./Prompts', f'prompt_{mode}_star_{prompt_mode}.txt')

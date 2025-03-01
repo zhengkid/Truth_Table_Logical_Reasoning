@@ -6,12 +6,15 @@ import torch
 import tqdm
 import argparse
 from datasets import load_dataset
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils.utils_function import (
     get_prompt,
     execute_with_timeout,
     load_model_inference,
     generate_responses_batch,
-    is_executable
+    is_executable,
+    remove_incorrect_code_symbols
 )
 
 def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
@@ -90,7 +93,8 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                     label = item['label']
                     code_response = code_response.split("<PYTHON>")[-1]
                     code_response = code_response.split("</PYTHON>")[0]
-
+                    code_response = remove_incorrect_code_symbols(code_response)
+                    print(prompt)
                     if not code_response:
                         print("Warning: Empty code response! Counting as incorrect.")
                         predict = "Unknown"
@@ -119,7 +123,7 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                     predict = "Unknown"
                 finally:
                     total_num += 1
-                    accuracy = correct_num / num_exec if total_num > 0 else 0.0
+                    accuracy = correct_num / num_exec if num_exec > 0 else 0.0
                     print(f"{correct_num} out of {num_exec} is correct! Accuracy: {accuracy:.2%}")
                     executable_rate = num_exec / total_num if total_num > 0 else 0.0
                     print(f"{num_exec} out of {total_num} is executable! Executable Rate: {executable_rate:.2%}")

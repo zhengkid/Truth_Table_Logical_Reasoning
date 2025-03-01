@@ -95,7 +95,7 @@ The theistic God is a sophist.
 The theistic God is a sophist and a philosopher.
 </Conclusion>
 <PYTHON>
-from z3 import Solver, DeclareSort, Function, ForAll, Exists, Implies, And, Not, BoolSort, Const
+from z3 import Solver, DeclareSort, Function, ForAll, Exists, Implies, And, Not, Or, BoolSort, Const
 
 Person = DeclareSort("Person")
 
@@ -160,7 +160,7 @@ People who supported the Portland Whigs did not get a seat in the Parliament.
 William Dickinson went to schools located in the United Kingdom for both high school and university.
 </Conclusion>
 <PYTHON>
-from z3 import Solver, DeclareSort, Function, ForAll, Exists, Implies, And, Not, BoolSort, Const
+from z3 import Solver, DeclareSort, Function, ForAll, Exists, Implies, And, Not, Or, BoolSort, Const
 
 Person = DeclareSort("Person")
 School = DeclareSort("School")
