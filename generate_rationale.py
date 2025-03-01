@@ -97,7 +97,8 @@ def obtain_seed_dataset(dataset_name, num_samples, seed=42):
     return seed_dataset
 
 def load_model_inference(model_name_or_path='gemma-2-9b'):
-    gpu_count = torch.cuda.device_count()
+    #gpu_count = torch.cuda.device_count()
+    gpu_count = 4
     model = LLM(model=model_name_or_path, tensor_parallel_size=gpu_count)
     return model
 

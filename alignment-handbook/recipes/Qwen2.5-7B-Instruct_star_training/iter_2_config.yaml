@@ -7,7 +7,7 @@ attn_implementation: flash_attention_2
 
 # Data training arguments
 dataset_mixer:
-  TongZheng1999/Qwen2.5-7B-Instruct_truth_table_rationale_1000_3Rounds_round_2: 1.0
+  TongZheng1999/Qwen2.5-7B-Instruct_code_rationale_1000_3Rounds_round_2: 1.0
 dataset_splits:
 - train
 auto_insert_empty_system_msg: false
@@ -24,17 +24,17 @@ gradient_accumulation_steps: 16
 gradient_checkpointing: true
 gradient_checkpointing_kwargs:
   use_reentrant: false
-hub_model_id: Qwen2.5-7B-Instruct-star-truth_table-3Rounds-iter-2
+hub_model_id: Qwen2.5-7B-Instruct-star-code-3Rounds-iter-2
 hub_strategy: every_save
 learning_rate: 5.0e-06
 log_level: info
 logging_steps: 5
 logging_strategy: steps
 lr_scheduler_type: cosine
-max_seq_length: 3072
+max_seq_length: 4096
 max_steps: -1
 num_train_epochs: 5
-output_dir: /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/truth_table/3Rounds/ft_iter_2
+output_dir: /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/3Rounds/ft_iter_2
 overwrite_output_dir: true
 per_device_eval_batch_size: 4
 per_device_train_batch_size: 1

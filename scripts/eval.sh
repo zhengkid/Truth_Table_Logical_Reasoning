@@ -1,12 +1,12 @@
 #!/bin/bash
 
 
-export CUDA_VISIBLE_DEVICES=0,1,2,3
+export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
 
-MODEL_NAME_AND_PATH="TongZheng1999/gemma-2-9b-it-star-nl-3Rounds-iter-2"
-MODE="nl"
+MODEL_NAME_AND_PATH="TongZheng1999/gemma-2-9b-it-star-truth_table-5120-3Rounds-iter-1"
+MODE="truth_table"
 DATASET_NAME='yale-nlp/FOLIO'
-OUTPUT_DIR="../outputs/prompting/gemma-2-9b-it-nl-star-inter2/5120/few-shot"
+OUTPUT_DIR="./outputs/prompt/gemma-2-9b-it-star-truth_table-5120/5120/zero-shot"
 SAVE_RAW_DATA_PATH="raw_data.json"
 SAVE_RESULT_PATH="result.txt"
 BATCH_SIZE=16
@@ -31,4 +31,3 @@ python ./eval/eval.py \
   --top_k ${TOP_K} \
   --seed ${SEED} \
   --use_fewshot
-

@@ -1,0 +1,49 @@
+100%|██████████| 10/10 [10:07<00:00, 58.65s/it][INFO|trainer.py:2657] 2025-02-28 08:59:03,414 >>
+{'loss': 1.0253, 'grad_norm': 17.077063927991883, 'learning_rate': 4.8776412907378845e-06, 'epoch': 0.47}
+{'loss': 0.6375, 'grad_norm': 6.055123079225774, 'learning_rate': 2.5e-06, 'epoch': 1.94}
+{'loss': 0.2457, 'grad_norm': 7.756094454620945, 'learning_rate': 0.0, 'epoch': 3.47}
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+100%|██████████| 10/10 [10:08<00:00, 60.80s/it]
+{'train_runtime': 609.2434, 'train_samples_per_second': 2.216, 'train_steps_per_second': 0.016, 'train_loss': 0.48041062355041503, 'epoch': 3.47}
+***** train metrics *****
+  epoch                    =     3.4706
+  total_flos               = 40479622GF
+  train_loss               =     0.4804
+  train_runtime            = 0:10:09.24
+  train_samples            =        270
+  train_samples_per_second =      2.216
+  train_steps_per_second   =      0.016
+2025-02-28 08:59:03 - INFO - __main__ - *** Save model ***
+[INFO|trainer.py:3942] 2025-02-28 08:59:14,308 >> Saving model checkpoint to /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/3Rounds/ft_iter_3
+[INFO|configuration_utils.py:423] 2025-02-28 08:59:14,417 >> Configuration saved in /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/3Rounds/ft_iter_3/config.json
+[INFO|configuration_utils.py:909] 2025-02-28 08:59:14,422 >> Configuration saved in /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/3Rounds/ft_iter_3/generation_config.json
+[INFO|modeling_utils.py:3048] 2025-02-28 09:01:34,697 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/3Rounds/ft_iter_3/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2500] 2025-02-28 09:01:34,707 >> tokenizer config file saved in /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/3Rounds/ft_iter_3/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2509] 2025-02-28 09:01:34,711 >> Special tokens file saved in /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/3Rounds/ft_iter_3/special_tokens_map.json
+[INFO|trainer.py:3942] 2025-02-28 09:01:42,511 >> Saving model checkpoint to /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/3Rounds/ft_iter_3
+[INFO|configuration_utils.py:423] 2025-02-28 09:01:42,564 >> Configuration saved in /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/3Rounds/ft_iter_3/config.json
+[INFO|configuration_utils.py:909] 2025-02-28 09:01:42,569 >> Configuration saved in /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/3Rounds/ft_iter_3/generation_config.json
+[INFO|modeling_utils.py:3048] 2025-02-28 09:03:48,737 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/3Rounds/ft_iter_3/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2500] 2025-02-28 09:03:48,744 >> tokenizer config file saved in /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/3Rounds/ft_iter_3/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2509] 2025-02-28 09:03:48,748 >> Special tokens file saved in /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/3Rounds/ft_iter_3/special_tokens_map.json
+events.out.tfevents.1740750534.cbcb27.umiacs.umd.edu.577496.0: 100%|██████████| 7.17k/7.17k [00:00<00:00, 66.7kB/s]
+tokenizer.json: 100%|██████████| 17.2M/17.2M [00:00<00:00, 42.4MB/s]<16:16, 5.10MB/s]
+training_args.bin: 100%|██████████| 7.42k/7.42k [00:00<00:00, 172kB/s]01:29, 55.1MB/s]
+model-00004-of-00004.safetensors: 100%|██████████| 1.17G/1.17G [00:37<00:00, 31.3MB/s]
+model-00003-of-00004.safetensors: 100%|██████████| 4.92G/4.92G [01:58<00:00, 41.6MB/s]
+model-00001-of-00004.safetensors: 100%|██████████| 4.98G/4.98G [02:14<00:00, 37.1MB/s].17k [00:00<?, ?B/s]
+model-00002-of-00004.safetensors: 100%|██████████| 5.00G/5.00G [02:16<00:00, 36.7MB/s]
+Upload 7 LFS files: 100%|██████████| 7/7 [02:16<00:00, 19.50s/it] :14<00:11, 7.53MB/s]
+[INFO|configuration_utils.py:423] 2025-02-28 09:07:00,306 >> Configuration saved in /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/3Rounds/ft_iter_3/config.json
+2025-02-28 09:07:00 - INFO - __main__ - Model saved to /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/3Rounds/ft_iter_3
+2025-02-28 09:07:00 - INFO - __main__ - Pushing to hub...
+[INFO|trainer.py:3942] 2025-02-28 09:07:08,081 >> Saving model checkpoint to /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/3Rounds/ft_iter_3
+[INFO|configuration_utils.py:423] 2025-02-28 09:07:08,097 >> Configuration saved in /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/3Rounds/ft_iter_3/config.json
+[INFO|configuration_utils.py:909] 2025-02-28 09:07:08,107 >> Configuration saved in /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/3Rounds/ft_iter_3/generation_config.json
+[INFO|modeling_utils.py:3048] 2025-02-28 09:09:20,455 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/3Rounds/ft_iter_3/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2500] 2025-02-28 09:09:20,463 >> tokenizer config file saved in /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/3Rounds/ft_iter_3/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2509] 2025-02-28 09:09:20,466 >> Special tokens file saved in /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/3Rounds/ft_iter_3/special_tokens_map.json
+2025-02-28 09:10:27 - INFO - __main__ - *** Training complete ***
