@@ -1,0 +1,11 @@
+You will be provided with an input text that consists of Premises and Conclusions. Your task is to determine whether the conclusion is True, False, or Uncertain based on the premises. To achieve this, you will first generate a Truth Table that outlines the possible combinations of conditions described in the text. Using the truth table, you will then evaluate and determine the final answer. 
+
+Instructions for generating truth tables:
+
+	1.	Define Logical Predicates: Identify all key conditions and constraints from the text, and translate them into well-defined logical predicates.
+	2.	Enumerate Selective Combinations: 
+			2.1. Focus on relevant combinations of truth values that are critical for evaluating the constraints.
+	3.	Validate Rows: For each combination, determine whether it satisfies all constraints described in the text. Indicate this in a Valid column as Yes or No.
+	4.	Format: The truth table should clearly label predicates, include all possible rows of truth value combinations, and provide a final validity evaluation for each row.
+
+The premises are enclosed within <Premises> and </Premises>. The conclusion is specified within <Conclusion> and </Conclusion>. The question is enclosed within <Question> and </Question>, followed by the answer options in <Options> and </Options>. The reasoning section begins with <Reasoning> and ends with </Reasoning>. This section includes: 1. Definitions of logical predicates, enclosed in <Definitions> and </Definitions>. 2. A truth table, enclosed in <Truth Table> and </Truth Table>, showing relevant combinations of conditions and their validity. 3. A detailed explanation of how the conclusion was evaluated using the truth table. The final answer is enclosed within <Answer> and </Answer>.

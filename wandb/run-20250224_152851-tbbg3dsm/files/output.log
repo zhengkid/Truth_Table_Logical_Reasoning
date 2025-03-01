@@ -1,0 +1,57 @@
+  0%|          | 0/45 [00:00<?, ?it/s][WARNING|logging.py:328] 2025-02-24 15:28:51,968 >> It is strongly recommended to train Gemma2 models with the `eager` attention implementation instead of `flash_attention_2`. Use `eager` with `AutoModelForCausalLM.from_pretrained('<path-to-checkpoint>', attn_implementation='eager')`.
+100%|██████████| 45/45 [19:43<00:00, 26.29s/it][INFO|trainer.py:2584] 2025-02-24 15:48:35,743 >>
+{'loss': 1.4819, 'grad_norm': 30.449537226512533, 'learning_rate': 4.993910125649561e-06, 'epoch': 0.11}
+{'loss': 0.5333, 'grad_norm': 3.1754818718420035, 'learning_rate': 4.849231551964771e-06, 'epoch': 0.56}
+{'loss': 0.2593, 'grad_norm': 1.2202879828988669, 'learning_rate': 4.415111107797445e-06, 'epoch': 1.11}
+{'loss': 0.2138, 'grad_norm': 0.9871106376044316, 'learning_rate': 3.7500000000000005e-06, 'epoch': 1.67}
+{'loss': 0.175, 'grad_norm': 0.8938995599981607, 'learning_rate': 2.9341204441673267e-06, 'epoch': 2.22}
+{'loss': 0.1356, 'grad_norm': 0.88323398152778, 'learning_rate': 2.0658795558326745e-06, 'epoch': 2.78}
+{'loss': 0.1098, 'grad_norm': 0.8540196402645683, 'learning_rate': 1.2500000000000007e-06, 'epoch': 3.33}
+{'loss': 0.0936, 'grad_norm': 0.8569647417192884, 'learning_rate': 5.848888922025553e-07, 'epoch': 3.89}
+{'loss': 0.0855, 'grad_norm': 0.6638540203255522, 'learning_rate': 1.507684480352292e-07, 'epoch': 4.44}
+{'loss': 0.0814, 'grad_norm': 0.7276583099530071, 'learning_rate': 0.0, 'epoch': 5.0}
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+100%|██████████| 45/45 [19:43<00:00, 26.31s/it]
+{'train_runtime': 1185.0572, 'train_samples_per_second': 2.426, 'train_steps_per_second': 0.038, 'train_loss': 0.20855783886379667, 'epoch': 5.0}
+***** train metrics *****
+  epoch                    =        5.0
+  total_flos               =    10113GF
+  train_loss               =     0.2086
+  train_runtime            = 0:19:45.05
+  train_samples            =        575
+  train_samples_per_second =      2.426
+  train_steps_per_second   =      0.038
+2025-02-24 15:48:35 - INFO - __main__ - *** Save model ***
+[INFO|trainer.py:3801] 2025-02-24 15:48:41,086 >> Saving model checkpoint to /beacon-scratch/tongzh24//gemma-2-9b-it/truth_table/3Rounds/ft_iter_1
+[INFO|configuration_utils.py:414] 2025-02-24 15:48:41,092 >> Configuration saved in /beacon-scratch/tongzh24//gemma-2-9b-it/truth_table/3Rounds/ft_iter_1/config.json
+[INFO|configuration_utils.py:865] 2025-02-24 15:48:41,094 >> Configuration saved in /beacon-scratch/tongzh24//gemma-2-9b-it/truth_table/3Rounds/ft_iter_1/generation_config.json
+[INFO|modeling_utils.py:3042] 2025-02-24 15:50:11,889 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /beacon-scratch/tongzh24//gemma-2-9b-it/truth_table/3Rounds/ft_iter_1/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2646] 2025-02-24 15:50:11,893 >> tokenizer config file saved in /beacon-scratch/tongzh24//gemma-2-9b-it/truth_table/3Rounds/ft_iter_1/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2025-02-24 15:50:11,896 >> Special tokens file saved in /beacon-scratch/tongzh24//gemma-2-9b-it/truth_table/3Rounds/ft_iter_1/special_tokens_map.json
+[INFO|trainer.py:3801] 2025-02-24 15:50:18,010 >> Saving model checkpoint to /beacon-scratch/tongzh24//gemma-2-9b-it/truth_table/3Rounds/ft_iter_1
+[INFO|configuration_utils.py:414] 2025-02-24 15:50:18,016 >> Configuration saved in /beacon-scratch/tongzh24//gemma-2-9b-it/truth_table/3Rounds/ft_iter_1/config.json
+[INFO|configuration_utils.py:865] 2025-02-24 15:50:18,018 >> Configuration saved in /beacon-scratch/tongzh24//gemma-2-9b-it/truth_table/3Rounds/ft_iter_1/generation_config.json
+[INFO|modeling_utils.py:3042] 2025-02-24 15:51:48,490 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /beacon-scratch/tongzh24//gemma-2-9b-it/truth_table/3Rounds/ft_iter_1/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2646] 2025-02-24 15:51:48,495 >> tokenizer config file saved in /beacon-scratch/tongzh24//gemma-2-9b-it/truth_table/3Rounds/ft_iter_1/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2025-02-24 15:51:48,497 >> Special tokens file saved in /beacon-scratch/tongzh24//gemma-2-9b-it/truth_table/3Rounds/ft_iter_1/special_tokens_map.json
+events.out.tfevents.1740428930.h1compute01.ihc.umd.edu.23211.0: 100%|██████████| 8.53k/8.53k [00:00<00:00, 66.2kB/s]
+tokenizer.json: 100%|██████████| 34.4M/34.4M [00:00<00:00, 63.3MB/s]0<01:36, 50.7MB/s]
+training_args.bin: 100%|██████████| 7.29k/7.29k [00:00<00:00, 134kB/s]01:34, 51.6MB/s]
+model-00004-of-00004.safetensors: 100%|██████████| 3.67G/3.67G [00:54<00:00, 66.9MB/s]
+model-00003-of-00004.safetensors: 100%|██████████| 4.96G/4.96G [01:15<00:00, 65.5MB/s]8.53k [00:00<?, ?B/s]
+model-00002-of-00004.safetensors: 100%|██████████| 4.95G/4.95G [01:16<00:00, 64.3MB/s]
+model-00001-of-00004.safetensors: 100%|██████████| 4.90G/4.90G [01:23<00:00, 58.4MB/s]
+Upload 7 LFS files: 100%|██████████| 7/7 [01:24<00:00, 12.02s/it]
+[INFO|configuration_utils.py:414] 2025-02-24 15:54:00,737 >> Configuration saved in /beacon-scratch/tongzh24//gemma-2-9b-it/truth_table/3Rounds/ft_iter_1/config.json
+[INFO|trainer.py:3801] 2025-02-24 15:54:04,994 >> Saving model checkpoint to /beacon-scratch/tongzh24//gemma-2-9b-it/truth_table/3Rounds/ft_iter_1
+[INFO|configuration_utils.py:414] 2025-02-24 15:54:04,999 >> Configuration saved in /beacon-scratch/tongzh24//gemma-2-9b-it/truth_table/3Rounds/ft_iter_1/config.json
+[INFO|configuration_utils.py:865] 2025-02-24 15:54:05,001 >> Configuration saved in /beacon-scratch/tongzh24//gemma-2-9b-it/truth_table/3Rounds/ft_iter_1/generation_config.json
+[INFO|modeling_utils.py:3042] 2025-02-24 15:55:37,820 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /beacon-scratch/tongzh24//gemma-2-9b-it/truth_table/3Rounds/ft_iter_1/model.safetensors.index.json.
+2025-02-24 15:54:00 - INFO - __main__ - Model saved to /beacon-scratch/tongzh24//gemma-2-9b-it/truth_table/3Rounds/ft_iter_1
+2025-02-24 15:54:00 - INFO - __main__ - Pushing to hub...
+[INFO|tokenization_utils_base.py:2646] 2025-02-24 15:55:37,825 >> tokenizer config file saved in /beacon-scratch/tongzh24//gemma-2-9b-it/truth_table/3Rounds/ft_iter_1/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2025-02-24 15:55:37,826 >> Special tokens file saved in /beacon-scratch/tongzh24//gemma-2-9b-it/truth_table/3Rounds/ft_iter_1/special_tokens_map.json
+2025-02-24 15:56:25 - INFO - __main__ - *** Training complete ***

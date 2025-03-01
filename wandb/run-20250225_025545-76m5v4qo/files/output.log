@@ -1,0 +1,211 @@
+100%|██████████| 55/55 [18:46<00:00, 20.49s/it][INFO|trainer.py:2584] 2025-02-25 03:14:33,450 >>
+{'loss': 1.0797, 'grad_norm': 16.785731577892385, 'learning_rate': 4.9959227598153395e-06, 'epoch': 0.09}
+{'loss': 0.6404, 'grad_norm': 9.101947595086042, 'learning_rate': 4.8987324340362445e-06, 'epoch': 0.45}
+{'loss': 0.3987, 'grad_norm': 2.685330459064198, 'learning_rate': 4.603133832077953e-06, 'epoch': 0.91}
+{'loss': 0.3471, 'grad_norm': 0.9494474718882511, 'learning_rate': 4.137151834863213e-06, 'epoch': 1.36}
+{'loss': 0.3204, 'grad_norm': 0.9994008318096456, 'learning_rate': 3.5385375325047167e-06, 'epoch': 1.82}
+{'loss': 0.2819, 'grad_norm': 0.9247112607263447, 'learning_rate': 2.8557870956832135e-06, 'epoch': 2.27}
+{'loss': 0.245, 'grad_norm': 0.9215873876336423, 'learning_rate': 2.1442129043167877e-06, 'epoch': 2.73}
+{'loss': 0.2159, 'grad_norm': 0.9196509888493151, 'learning_rate': 1.4614624674952843e-06, 'epoch': 3.18}
+{'loss': 0.1881, 'grad_norm': 0.9503046853361223, 'learning_rate': 8.628481651367876e-07, 'epoch': 3.64}
+{'loss': 0.1744, 'grad_norm': 0.8657813113891542, 'learning_rate': 3.9686616792204677e-07, 'epoch': 4.09}
+{'loss': 0.1575, 'grad_norm': 0.8484211360305922, 'learning_rate': 1.0126756596375687e-07, 'epoch': 4.55}
+{'loss': 0.1565, 'grad_norm': 0.8619841182716115, 'learning_rate': 0.0, 'epoch': 5.0}
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+100%|██████████| 55/55 [18:46<00:00, 20.49s/it]
+{'train_runtime': 1127.885, 'train_samples_per_second': 3.112, 'train_steps_per_second': 0.049, 'train_loss': 0.29216036037965254, 'epoch': 5.0}
+***** train metrics *****
+  epoch                    =        5.0
+  total_flos               =     4383GF
+  train_loss               =     0.2922
+  train_runtime            = 0:18:47.88
+  train_samples            =        702
+  train_samples_per_second =      3.112
+  train_steps_per_second   =      0.049
+2025-02-25 03:14:33 - INFO - __main__ - *** Save model ***
+[INFO|trainer.py:3801] 2025-02-25 03:14:37,898 >> Saving model checkpoint to /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/nl/3Rounds/ft_iter_1
+[INFO|configuration_utils.py:414] 2025-02-25 03:14:37,904 >> Configuration saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/nl/3Rounds/ft_iter_1/config.json
+[INFO|configuration_utils.py:865] 2025-02-25 03:14:37,906 >> Configuration saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/nl/3Rounds/ft_iter_1/generation_config.json
+[INFO|modeling_utils.py:3042] 2025-02-25 03:15:52,064 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/nl/3Rounds/ft_iter_1/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2646] 2025-02-25 03:15:52,067 >> tokenizer config file saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/nl/3Rounds/ft_iter_1/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2025-02-25 03:15:52,069 >> Special tokens file saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/nl/3Rounds/ft_iter_1/special_tokens_map.json
+[INFO|trainer.py:3801] 2025-02-25 03:15:56,825 >> Saving model checkpoint to /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/nl/3Rounds/ft_iter_1
+[INFO|configuration_utils.py:414] 2025-02-25 03:15:56,831 >> Configuration saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/nl/3Rounds/ft_iter_1/config.json
+[INFO|configuration_utils.py:865] 2025-02-25 03:15:56,833 >> Configuration saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/nl/3Rounds/ft_iter_1/generation_config.json
+[INFO|modeling_utils.py:3042] 2025-02-25 03:17:12,757 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/nl/3Rounds/ft_iter_1/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2646] 2025-02-25 03:17:12,760 >> tokenizer config file saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/nl/3Rounds/ft_iter_1/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2025-02-25 03:17:12,762 >> Special tokens file saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/nl/3Rounds/ft_iter_1/special_tokens_map.json
+events.out.tfevents.1740470008.h1compute01.ihc.umd.edu.101329.0: 100%|██████████| 5.95k/5.95k [00:00<00:00, 52.5kB/s]
+events.out.tfevents.1740470145.h1compute01.ihc.umd.edu.103267.0: 100%|██████████| 8.58k/8.58k [00:00<00:00, 154kB/s]
+model-00004-of-00004.safetensors: 100%|██████████| 1.09G/1.09G [00:20<00:00, 52.4MB/s]
+tokenizer.json: 100%|██████████| 11.4M/11.4M [00:00<00:00, 53.3MB/s]1<01:23, 45.4MB/s]
+training_args.bin: 100%|██████████| 7.03k/7.03k [00:00<00:00, 32.6kB/s]1:15, 50.0MB/s]
+model-00003-of-00004.safetensors: 100%|██████████| 4.33G/4.33G [01:22<00:00, 52.7MB/s]/5.95k [00:00<?, ?B/s]
+model-00001-of-00004.safetensors: 100%|██████████| 4.87G/4.87G [01:35<00:00, 51.1MB/s]/8.58k [00:00<?, ?B/s]
+model-00002-of-00004.safetensors: 100%|██████████| 4.93G/4.93G [01:40<00:00, 49.0MB/s]
+Upload 8 LFS files:  62%|██████▎   | 5/8 [02:01<01:12, 24.23s/it]1:40<00:00, 56.1MB/s]
+Traceback (most recent call last):
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_http.py", line 409, in hf_raise_for_status
+    response.raise_for_status()    | 1/8 [01:35<11:10, 95.74s/it]
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/requests/models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 504 Server Error: Gateway Time-out for url: https://huggingface.co/api/complete_multipart?uploadId=0Rl6RgqdFLwYklQ.UlzqMfcyrZT_DhPZXcRsUGjEgHF79QAMcQD3v_Ov8l8UPfWJt9afNYJN72HkcNAfygSLLQ9lMZlhYFwpi.EaI0AsZ9e..PmZlfPRX5btTuBev8sc&bucket=hf-hub-lfs-us-east-1&prefix=repos%2F64%2Fcb%2F64cbc4c655bb3bbf205a9efdc002e14dcfbbf7e8d80379d16bae53b254349883&expiration=Wed%2C+26+Feb+2025+08%3A17%3A49+GMT&signature=e568108aba68d3d8a46c4d0fd52d944df6ab5405409c0de619f5dd8611d44e0b
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/_commit_api.py", line 437, in _wrapped_lfs_upload
+    lfs_upload(operation=operation, lfs_batch_action=batch_action, headers=headers, endpoint=endpoint)
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/lfs.py", line 246, in lfs_upload
+    _upload_multi_part(operation=operation, header=header, chunk_size=chunk_size, upload_url=upload_url)
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/lfs.py", line 355, in _upload_multi_part
+    hf_raise_for_status(completion_res)
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_http.py", line 481, in hf_raise_for_status
+    raise _format(HfHubHTTPError, str(e), response) from e
+huggingface_hub.errors.HfHubHTTPError: 504 Server Error: Gateway Time-out for url: https://huggingface.co/api/complete_multipart?uploadId=0Rl6RgqdFLwYklQ.UlzqMfcyrZT_DhPZXcRsUGjEgHF79QAMcQD3v_Ov8l8UPfWJt9afNYJN72HkcNAfygSLLQ9lMZlhYFwpi.EaI0AsZ9e..PmZlfPRX5btTuBev8sc&bucket=hf-hub-lfs-us-east-1&prefix=repos%2F64%2Fcb%2F64cbc4c655bb3bbf205a9efdc002e14dcfbbf7e8d80379d16bae53b254349883&expiration=Wed%2C+26+Feb+2025+08%3A17%3A49+GMT&signature=e568108aba68d3d8a46c4d0fd52d944df6ab5405409c0de619f5dd8611d44e0b
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/ihchomes/tongzh24/logical_reasoning/new/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 225, in <module>
+    main()
+  File "/ihchomes/tongzh24/logical_reasoning/new/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 191, in main
+    trainer.save_model(training_args.output_dir)
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 3723, in save_model
+    self.push_to_hub(commit_message="Model save")
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 4651, in push_to_hub
+    return upload_folder(
+           ^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_api.py", line 1551, in _inner
+    return fn(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_api.py", line 4707, in upload_folder
+    commit_info = self.create_commit(
+                  ^^^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_api.py", line 1551, in _inner
+    return fn(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_api.py", line 3991, in create_commit
+    self.preupload_lfs_files(
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_api.py", line 4245, in preupload_lfs_files
+    _upload_lfs_files(
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/_commit_api.py", line 452, in _upload_lfs_files
+    thread_map(
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/tqdm/contrib/concurrent.py", line 69, in thread_map
+    return _executor_map(ThreadPoolExecutor, fn, *iterables, **tqdm_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/tqdm/contrib/concurrent.py", line 51, in _executor_map
+    return list(tqdm_class(ex.map(fn, *iterables, chunksize=chunksize), **kwargs))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/tqdm/std.py", line 1181, in __iter__
+    for obj in iterable:
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/concurrent/futures/_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/concurrent/futures/_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/concurrent/futures/_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/_commit_api.py", line 439, in _wrapped_lfs_upload
+    raise RuntimeError(f"Error while uploading '{operation.path_in_repo}' to the Hub.") from exc
+RuntimeError: Error while uploading 'runs/Feb25_02-55-32_h1compute01.ihc.umd.edu/events.out.tfevents.1740470145.h1compute01.ihc.umd.edu.103267.0' to the Hub.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_http.py", line 409, in hf_raise_for_status
+[rank0]:     response.raise_for_status()
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/requests/models.py", line 1024, in raise_for_status
+[rank0]:     raise HTTPError(http_error_msg, response=self)
+[rank0]: requests.exceptions.HTTPError: 504 Server Error: Gateway Time-out for url: https://huggingface.co/api/complete_multipart?uploadId=0Rl6RgqdFLwYklQ.UlzqMfcyrZT_DhPZXcRsUGjEgHF79QAMcQD3v_Ov8l8UPfWJt9afNYJN72HkcNAfygSLLQ9lMZlhYFwpi.EaI0AsZ9e..PmZlfPRX5btTuBev8sc&bucket=hf-hub-lfs-us-east-1&prefix=repos%2F64%2Fcb%2F64cbc4c655bb3bbf205a9efdc002e14dcfbbf7e8d80379d16bae53b254349883&expiration=Wed%2C+26+Feb+2025+08%3A17%3A49+GMT&signature=e568108aba68d3d8a46c4d0fd52d944df6ab5405409c0de619f5dd8611d44e0b
+
+[rank0]: The above exception was the direct cause of the following exception:
+
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/_commit_api.py", line 437, in _wrapped_lfs_upload
+[rank0]:     lfs_upload(operation=operation, lfs_batch_action=batch_action, headers=headers, endpoint=endpoint)
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/lfs.py", line 246, in lfs_upload
+[rank0]:     _upload_multi_part(operation=operation, header=header, chunk_size=chunk_size, upload_url=upload_url)
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/lfs.py", line 355, in _upload_multi_part
+[rank0]:     hf_raise_for_status(completion_res)
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_http.py", line 481, in hf_raise_for_status
+[rank0]:     raise _format(HfHubHTTPError, str(e), response) from e
+[rank0]: huggingface_hub.errors.HfHubHTTPError: 504 Server Error: Gateway Time-out for url: https://huggingface.co/api/complete_multipart?uploadId=0Rl6RgqdFLwYklQ.UlzqMfcyrZT_DhPZXcRsUGjEgHF79QAMcQD3v_Ov8l8UPfWJt9afNYJN72HkcNAfygSLLQ9lMZlhYFwpi.EaI0AsZ9e..PmZlfPRX5btTuBev8sc&bucket=hf-hub-lfs-us-east-1&prefix=repos%2F64%2Fcb%2F64cbc4c655bb3bbf205a9efdc002e14dcfbbf7e8d80379d16bae53b254349883&expiration=Wed%2C+26+Feb+2025+08%3A17%3A49+GMT&signature=e568108aba68d3d8a46c4d0fd52d944df6ab5405409c0de619f5dd8611d44e0b
+
+[rank0]: The above exception was the direct cause of the following exception:
+
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/ihchomes/tongzh24/logical_reasoning/new/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 225, in <module>
+[rank0]:     main()
+[rank0]:   File "/ihchomes/tongzh24/logical_reasoning/new/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 191, in main
+[rank0]:     trainer.save_model(training_args.output_dir)
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 3723, in save_model
+[rank0]:     self.push_to_hub(commit_message="Model save")
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 4651, in push_to_hub
+[rank0]:     return upload_folder(
+[rank0]:            ^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+[rank0]:     return fn(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_api.py", line 1551, in _inner
+[rank0]:     return fn(self, *args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_api.py", line 4707, in upload_folder
+[rank0]:     commit_info = self.create_commit(
+[rank0]:                   ^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+[rank0]:     return fn(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_api.py", line 1551, in _inner
+[rank0]:     return fn(self, *args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_api.py", line 3991, in create_commit
+[rank0]:     self.preupload_lfs_files(
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_api.py", line 4245, in preupload_lfs_files
+[rank0]:     _upload_lfs_files(
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+[rank0]:     return fn(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/_commit_api.py", line 452, in _upload_lfs_files
+[rank0]:     thread_map(
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/tqdm/contrib/concurrent.py", line 69, in thread_map
+[rank0]:     return _executor_map(ThreadPoolExecutor, fn, *iterables, **tqdm_kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/tqdm/contrib/concurrent.py", line 51, in _executor_map
+[rank0]:     return list(tqdm_class(ex.map(fn, *iterables, chunksize=chunksize), **kwargs))
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/tqdm/std.py", line 1181, in __iter__
+[rank0]:     for obj in iterable:
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/concurrent/futures/_base.py", line 619, in result_iterator
+[rank0]:     yield _result_or_cancel(fs.pop())
+[rank0]:           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/concurrent/futures/_base.py", line 317, in _result_or_cancel
+[rank0]:     return fut.result(timeout)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/concurrent/futures/_base.py", line 456, in result
+[rank0]:     return self.__get_result()
+[rank0]:            ^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/concurrent/futures/_base.py", line 401, in __get_result
+[rank0]:     raise self._exception
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/concurrent/futures/thread.py", line 58, in run
+[rank0]:     result = self.fn(*self.args, **self.kwargs)
+[rank0]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/_commit_api.py", line 439, in _wrapped_lfs_upload
+[rank0]:     raise RuntimeError(f"Error while uploading '{operation.path_in_repo}' to the Hub.") from exc
+[rank0]: RuntimeError: Error while uploading 'runs/Feb25_02-55-32_h1compute01.ihc.umd.edu/events.out.tfevents.1740470145.h1compute01.ihc.umd.edu.103267.0' to the Hub.

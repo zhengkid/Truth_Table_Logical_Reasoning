@@ -1,0 +1,12 @@
+You will be provided with an input text that consists of Premises and Conclusions. Your task is to determine whether the conclusion is True, False, or Uncertain based solely on the premises. To do this, generate natural language reasoning steps that lead to your final answer.
+
+The input text is structured as follows:
+- The premises are enclosed within <Premises> and </Premises>.
+- The conclusion is enclosed within <Conclusion> and </Conclusion>.
+- The question is enclosed within <Question> and </Question>.
+- The answer options are provided within <Options> and </Options>.
+
+Your output should include:
+1. A reasoning section enclosed within <Reasoning> and </Reasoning> that explains your thought process.
+2. The final answer enclosed within <Answer> and </Answer>.
+

@@ -1,0 +1,66 @@
+{
+  "os":  "Linux-5.14.0-503.26.1.el9_5.x86_64-x86_64-with-glibc2.34",
+  "python":  "CPython 3.11.11",
+  "startedAt":  "2025-02-25T04:31:03.224148Z",
+  "args":  [
+    "alignment-handbook/recipes//gemma-2-9b-it_star_training/iter_1_config.yaml"
+  ],
+  "program":  "/ihchomes/tongzh24/logical_reasoning/new/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py",
+  "codePath":  "alignment-handbook/scripts/run_sft.py",
+  "git":  {
+    "remote":  "git@github.com:zhengkid/Truth_Table_Logical_Reasoning.git",
+    "commit":  "27b5f2a2edcce908c4cd918437ae0d13521e968e"
+  },
+  "email":  "zhengtong12356@gmail.com",
+  "root":  "/ihchomes/tongzh24/logical_reasoning/new/new/Truth_Table_Logical_Reasoning",
+  "host":  "h1compute01.ihc.umd.edu",
+  "executable":  "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/bin/python",
+  "codePathLocal":  "alignment-handbook/scripts/run_sft.py",
+  "cpu_count":  64,
+  "cpu_count_logical":  64,
+  "gpu":  "NVIDIA H100 80GB HBM3",
+  "gpu_count":  4,
+  "disk":  {
+    "/":  {
+      "total":  "75094818816",
+      "used":  "11869319168"
+    }
+  },
+  "memory":  {
+    "total":  "1081151172608"
+  },
+  "cpu":  {
+    "count":  64,
+    "countLogical":  64
+  },
+  "gpu_nvidia":  [
+    {
+      "name":  "NVIDIA H100 80GB HBM3",
+      "memoryTotal":  "85520809984",
+      "cudaCores":  16896,
+      "architecture":  "Hopper"
+    },
+    {
+      "name":  "NVIDIA H100 80GB HBM3",
+      "memoryTotal":  "85520809984",
+      "cudaCores":  16896,
+      "architecture":  "Hopper"
+    },
+    {
+      "name":  "NVIDIA H100 80GB HBM3",
+      "memoryTotal":  "85520809984",
+      "cudaCores":  16896,
+      "architecture":  "Hopper"
+    },
+    {
+      "name":  "NVIDIA H100 80GB HBM3",
+      "memoryTotal":  "85520809984",
+      "cudaCores":  16896,
+      "architecture":  "Hopper"
+    }
+  ],
+  "slurm":  {
+    "job_id":  "20472"
+  },
+  "cudaVersion":  "12.8"
+}

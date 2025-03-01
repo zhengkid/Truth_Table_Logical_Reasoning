@@ -1,0 +1,9 @@
+The following is the problem you need to solve.
+
+<Premises>
+{Premises}
+</Premises>
+<Conclusion>
+{Conclusions}
+</Conclusion>
+<PYTHON>

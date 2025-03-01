@@ -1,0 +1,217 @@
+Below are three examples that demonstrate the desired style:
+
+<EXAMPLE 1>
+<Premises>
+Peter Parker is either a superhero or a civilian.
+The Hulk is a destroyer.
+The Hulk wakes up when he is angry.
+If the Hulk wakes up, then he will break a bridge.
+Thor is a god.
+Thor will break a bridge when he is happy.
+A god is not a destroyer.
+Peter Parker wears a uniform when he is a superhero.
+Peter Parker is not a civilian if a destroyer is breaking a bridge.
+If Thor is happy, the Hulk is angry.
+</Premises>
+<Conclusion>
+If Thor is happy, then Peter Parker wears a uniform.
+</Conclusion>
+<PYTHON>
+from z3 import Solver, DeclareSort, Function, ForAll, Exists, Implies, And, Not, Or, BoolSort, Const
+
+# Define the domain of discourse (entities)
+Person = DeclareSort("Person")
+
+# Define predicates
+Superhero = Function("Superhero", Person, BoolSort())
+Civilian = Function("Civilian", Person, BoolSort())
+Destroyer = Function("Destroyer", Person, BoolSort())
+God = Function("God", Person, BoolSort())
+Wakes_up = Function("Wakes_up", Person, BoolSort())
+Angry = Function("Angry", Person, BoolSort())
+Breaks_bridge = Function("Breaks_bridge", Person, BoolSort())
+Happy = Function("Happy", Person, BoolSort())
+Wears_uniform = Function("Wears_uniform", Person, BoolSort())
+
+# Define constants
+Peter_Parker = Const("Peter_Parker", Person)
+Hulk = Const("Hulk", Person)
+Thor = Const("Thor", Person)
+
+# Initialize solver
+solver = Solver()
+
+# Premises
+solver.add(ForAll([Peter_Parker], Or(Superhero(Peter_Parker), Civilian(Peter_Parker))))  # Peter Parker is either a superhero or a civilian
+solver.add(Destroyer(Hulk))  # The Hulk is a destroyer
+solver.add(ForAll([Hulk], Implies(Angry(Hulk), Wakes_up(Hulk))))  # The Hulk wakes up when he is angry
+solver.add(ForAll([Hulk], Implies(Wakes_up(Hulk), Breaks_bridge(Hulk))))  # If Hulk wakes up, he will break a bridge
+solver.add(God(Thor))  # Thor is a god
+solver.add(ForAll([Thor], Implies(Happy(Thor), Breaks_bridge(Thor))))  # Thor will break a bridge when he is happy
+solver.add(ForAll([Thor], Implies(God(Thor), Not(Destroyer(Thor)))))  # A god is not a destroyer
+solver.add(ForAll([Peter_Parker], Implies(Superhero(Peter_Parker), Wears_uniform(Peter_Parker))))  # Peter Parker wears a uniform when he is a superhero
+solver.add(ForAll([Peter_Parker, Hulk], Implies(And(Destroyer(Hulk), Breaks_bridge(Hulk)), Not(Civilian(Peter_Parker)))))  # Peter Parker is not a civilian if a destroyer is breaking a bridge
+solver.add(ForAll([Thor, Hulk], Implies(Happy(Thor), Angry(Hulk))))  # If Thor is happy, then the Hulk is angry
+
+# Define the conclusion
+conclusion = Implies(Happy(Thor), Wears_uniform(Peter_Parker))
+
+# Check if the conclusion is necessarily true
+solver.push()
+solver.add(Not(conclusion))
+result1 = str(solver.check())
+solver.pop()
+
+solver.push()
+solver.add(conclusion)
+result2 = str(solver.check())
+solver.pop()
+
+if result1 == "unsat":
+    print("The conclusion is necessarily true: If Thor is happy, then Peter Parker wears a uniform. (True)")
+    result = "True"
+elif result1 == "sat" and result2 == "unsat":
+    print("The conclusion is necessarily false: If Thor is happy, Peter Parker may not wear a uniform. (False)")
+    result = "False"
+elif result1 == "sat" and result2 == "sat":
+    print("The conclusion is uncertain: It depends on additional unstated assumptions. (Uncertain)")
+    result = "Uncertain"
+else:
+    print("Unexpected result, possible logical error.")
+    result = "Error"
+</PYTHON>
+</EXAMPLE 1>
+
+<EXAMPLE 2>
+<Premises>
+All philosophers reason.
+Some sophists reason.
+All who can reason can distinguish truth from falsehood.
+Nobody who can distinguish truth from falsehood is morally perfect.
+The theistic God is morally perfect.
+The theistic God is a sophist.
+</Premises>
+<Conclusion>
+The theistic God is a sophist and a philosopher.
+</Conclusion>
+<PYTHON>
+from z3 import Solver, DeclareSort, Function, ForAll, Exists, Implies, And, Not, BoolSort, Const
+
+Person = DeclareSort("Person")
+
+Philosopher = Function("Philosopher", Person, BoolSort())
+Sophist = Function("Sophist", Person, BoolSort())
+Can_reason = Function("Can_reason", Person, BoolSort())
+Distinguish_truth = Function("Distinguish_truth", Person, BoolSort())
+Morally_perfect = Function("Morally_perfect", Person, BoolSort())
+
+Theistic_God = Const("Theistic_God", Person)
+
+solver = Solver()
+
+x = Const("x", Person)
+
+solver.add(ForAll([x], Implies(Philosopher(x), Can_reason(x))))
+solver.add(Exists([x], And(Sophist(x), Can_reason(x))))
+solver.add(ForAll([x], Implies(Can_reason(x), Distinguish_truth(x))))
+
+solver.add(Exists([x], Philosopher(x)))
+solver.add(Exists([x], Sophist(x)))
+solver.add(Sophist(Theistic_God))
+
+# **New constraint: All sophists are not philosophers**
+solver.add(ForAll([x], Implies(Sophist(x), Not(Philosopher(x)))))
+
+conclusion = And(Sophist(Theistic_God), Philosopher(Theistic_God))
+
+solver.push()
+solver.add(Not(conclusion))
+result1 = str(solver.check())
+solver.pop()
+
+solver.push()
+solver.add(conclusion)
+result2 = str(solver.check())
+solver.pop()
+
+if result1 == "sat" and result2 == "unsat":
+    print("The conclusion is necessarily false: Theistic God cannot be both a sophist and a philosopher. (False)")
+    result = "False"
+elif result1 == "unsat":
+    print("The conclusion is necessarily true: Theistic God is both a sophist and a philosopher. (True)")
+    result = "True"
+elif result1 == "sat" and result2 == "sat":
+    print("The conclusion is uncertain: It depends on additional unstated assumptions. (Uncertain)")
+    result = "Uncertain"
+else:
+    print("Unexpected result, possible logical error.")
+    result = "Error"
+</PYTHON>
+</EXAMPLE 2>
+
+<EXAMPLE 3>
+<Premises>
+William Dickinson was a British politician who sat in the House of Commons William Dickinson attended Westminster school for high school and then the University of Edinburgh. 
+The University of Edinburgh is a university located in the United Kingdom. 
+William Dickinson supported the Portland Whigs. 
+People who supported the Portland Whigs did not get a seat in the Parliament.
+</Premises>
+<Conclusion>
+William Dickinson went to schools located in the United Kingdom for both high school and university.
+</Conclusion>
+<PYTHON>
+from z3 import Solver, DeclareSort, Function, ForAll, Exists, Implies, And, Not, BoolSort, Const
+
+Person = DeclareSort("Person")
+School = DeclareSort("School")
+PoliticalParty = DeclareSort("PoliticalParty")
+
+Attended = Function("Attended", Person, School, BoolSort())
+Located_in_UK = Function("Located_in_UK", School, BoolSort())
+Supported = Function("Supported", Person, PoliticalParty, BoolSort())
+Sat_in_Parliament = Function("Sat_in_Parliament", Person, BoolSort())
+
+William_Dickinson = Const("William_Dickinson", Person)
+Westminster_School = Const("Westminster_School", School)
+University_of_Edinburgh = Const("University_of_Edinburgh", School)
+Portland_Whigs = Const("Portland_Whigs", PoliticalParty)
+
+solver = Solver()
+
+p = Const("p", Person)
+s = Const("s", School)
+
+solver.add(Attended(William_Dickinson, Westminster_School))
+solver.add(Attended(William_Dickinson, University_of_Edinburgh))
+solver.add(Located_in_UK(University_of_Edinburgh))
+solver.add(Supported(William_Dickinson, Portland_Whigs))
+solver.add(ForAll([p], Implies(Supported(p, Portland_Whigs), Not(Sat_in_Parliament(p)))))
+
+conclusion = And(Located_in_UK(Westminster_School), Located_in_UK(University_of_Edinburgh))
+
+solver.push()
+solver.add(Not(conclusion))
+result1 = str(solver.check())
+solver.pop()
+
+solver.push()
+solver.add(conclusion)
+result2 = str(solver.check())
+solver.pop()
+
+if result1 == "unsat":
+    print("The conclusion is necessarily true: William Dickinson attended schools in the UK for both high school and university. (True)")
+    result = "True"
+elif result1 == "sat" and result2 == "unsat":
+    print("The conclusion is necessarily false: William Dickinson did not attend schools in the UK for both high school and university. (False)")
+    result = "False"
+elif result1 == "sat" and result2 == "sat":
+    print("The conclusion is uncertain: It depends on additional unstated assumptions. (Uncertain)")
+    result = "Uncertain"
+else:
+    print("Unexpected result, possible logical error.")
+    result = "Error"
+</PYTHON>
+</EXAMPLE 3>
+
+
