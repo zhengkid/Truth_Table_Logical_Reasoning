@@ -6,7 +6,7 @@
 MODEL_NAME_AND_PATH="google/gemma-2-9b-it"
 MODE="code"
 DATASET_NAME='yale-nlp/FOLIO'
-OUTPUT_DIR="./outputs/prompt/google/gemma-2-9b-it-star/2048/few-shot"
+OUTPUT_DIR="./outputs/prompt/google/gemma-2-9b-it-star-1/2048/few-shot"
 SAVE_RAW_DATA_PATH="raw_data.json"
 SAVE_RESULT_PATH="result.txt"
 PROMPT_MODE='v2'

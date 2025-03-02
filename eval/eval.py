@@ -94,7 +94,7 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                     code_response = code_response.split("<PYTHON>")[-1]
                     code_response = code_response.split("</PYTHON>")[0]
                     code_response = remove_incorrect_code_symbols(code_response)
-                    print(prompt)
+                    print(code_response)
                     if not code_response:
                         print("Warning: Empty code response! Counting as incorrect.")
                         predict = "Unknown"
