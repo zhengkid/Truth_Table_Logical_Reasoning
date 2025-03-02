@@ -1,4 +1,4 @@
-Below are three examples that demonstrate the desired style:
+Below are eight examples that demonstrate the desired style:
 
 <EXAMPLE 1>
 <Premises>
@@ -214,4 +214,223 @@ else:
 </PYTHON>
 </EXAMPLE 3>
 
+<EXAMPLE 4>
+<Premises>
+All of Michael's neighbors who grow their own fresh vegetables in their home gardens also have ample space.
+All of Michael's neighbors who are young working professionals and live in large cities, do not have ample space.
+All of Michael's neighbors who order takeout from delivery services often grow their own fresh vegetables in their home garden.
+All of Michael's neighbors who enjoy going out often to restaurants with friends order takeout from delivery services often.
+All of Michael's neighbors who regularly tout the benefits of homegrown and homecooked meals over fast food enjoy going out often to restaurants with friends.
+Peter, Michael's neighbor, grows his own fresh vegetables in his home garden, or regularly touts the benefits of homegrown and homecooked meals over fast food, or both.
+</Premises>
+<Conclusion>
+Peter is a young working professional who lives in large cities.
+</Conclusion>
+<PYTHON>
+from z3 import Solver, DeclareSort, Function, ForAll, Implies, And, Or, Not, BoolSort, Const
 
+# Declare sorts
+Person = DeclareSort("Person")
+
+# Define predicates
+Grows_Vegetables = Function("Grows_Vegetables", Person, BoolSort())
+Has_Ample_Space = Function("Has_Ample_Space", Person, BoolSort())
+Young_Working_Professional = Function("Young_Working_Professional", Person, BoolSort())
+Lives_In_Large_City = Function("Lives_In_Large_City", Person, BoolSort())
+Orders_Takeout = Function("Orders_Takeout", Person, BoolSort())
+Enjoys_Restaurants = Function("Enjoys_Restaurants", Person, BoolSort())
+Touts_Homegrown_Meals = Function("Touts_Homegrown_Meals", Person, BoolSort())
+
+# Declare constants
+Michael = Const("Michael", Person)
+Peter = Const("Peter", Person)
+
+# Define solver
+solver = Solver()
+
+# Premises
+solver.add(ForAll([Michael], Implies(Grows_Vegetables(Michael), Has_Ample_Space(Michael))))
+solver.add(ForAll([Michael], Implies(And(Young_Working_Professional(Michael), Lives_In_Large_City(Michael)), Not(Has_Ample_Space(Michael)))))
+solver.add(ForAll([Michael], Implies(Orders_Takeout(Michael), Grows_Vegetables(Michael))))
+solver.add(ForAll([Michael], Implies(Enjoys_Restaurants(Michael), Orders_Takeout(Michael))))
+solver.add(ForAll([Michael], Implies(Touts_Homegrown_Meals(Michael), Enjoys_Restaurants(Michael))))
+
+# Peter's conditions
+solver.add(Or(Grows_Vegetables(Peter), Touts_Homegrown_Meals(Peter)))
+
+# Conclusion: Peter is a young working professional who lives in large cities
+conclusion = And(Young_Working_Professional(Peter), Lives_In_Large_City(Peter))
+
+# Check validity
+solver.push()
+solver.add(Not(conclusion))
+result1 = str(solver.check())
+solver.pop()
+
+solver.push()
+solver.add(conclusion)
+result2 = str(solver.check())
+solver.pop()
+
+if result1 == "unsat":
+    print("The conclusion is necessarily true: Peter is a young working professional who lives in large cities. (True)")
+    result = "True"
+elif result1 == "sat" and result2 == "unsat":
+    print("The conclusion is necessarily false: Peter is not a young working professional who lives in large cities. (False)")
+    result = "False"
+elif result1 == "sat" and result2 == "sat":
+    print("The conclusion is uncertain: It depends on additional unstated assumptions. (Uncertain)")
+    result = "Uncertain"
+else:
+    print("Unexpected result, possible logical error.")
+    result = "Error"
+
+</PYTHON>
+</EXAMPLE 4>
+
+<EXAMPLE 5>
+<Premises>
+All functions that represent straight lines on the coordinate plane are linear functions.
+No linear functions are non-convex functions.
+A function is either a non-convex fuction or a convex function.
+All quasi-convex functions are real-valued functions.
+All convex functions are quasi-convex functions.
+The maximum of quasiconvex functions is a function.
+The maximum of quasiconvex functions is a function that represents straight lines on the coordinate plane or it is a convex function or it is not a non-convex function.
+</Premises>
+<Conclusion>
+The maximum of quasiconvex functions is a quasi-convex function or it is not a real-valued function.
+</Conclusion>
+<PYTHON>
+from z3 import Solver, DeclareSort, Function, ForAll, Implies, And, Or, Not, BoolSort, Const
+
+# Declare sorts
+FunctionType = DeclareSort("FunctionType")
+
+# Define predicates
+Straight_Line = Function("Straight_Line", FunctionType, BoolSort())
+Linear_Function = Function("Linear_Function", FunctionType, BoolSort())
+Non_Convex_Function = Function("Non_Convex_Function", FunctionType, BoolSort())
+Convex_Function = Function("Convex_Function", FunctionType, BoolSort())
+Quasi_Convex_Function = Function("Quasi_Convex_Function", FunctionType, BoolSort())
+Real_Valued_Function = Function("Real_Valued_Function", FunctionType, BoolSort())
+Maximum_Function = Function("Maximum_Function", FunctionType, FunctionType)
+
+# Declare constants
+Max_QC = Const("Max_QC", FunctionType)
+
+# Define solver
+solver = Solver()
+
+# Premises
+solver.add(ForAll([Max_QC], Implies(Straight_Line(Max_QC), Linear_Function(Max_QC))))
+solver.add(ForAll([Max_QC], Implies(Linear_Function(Max_QC), Not(Non_Convex_Function(Max_QC)))))
+solver.add(ForAll([Max_QC], Or(Non_Convex_Function(Max_QC), Convex_Function(Max_QC))))
+solver.add(ForAll([Max_QC], Implies(Quasi_Convex_Function(Max_QC), Real_Valued_Function(Max_QC))))
+solver.add(ForAll([Max_QC], Implies(Convex_Function(Max_QC), Quasi_Convex_Function(Max_QC))))
+solver.add(ForAll([Max_QC], Straight_Line(Maximum_Function(Max_QC)) ))
+solver.add(Or(Straight_Line(Maximum_Function(Max_QC)), Convex_Function(Maximum_Function(Max_QC)), Not(Non_Convex_Function(Maximum_Function(Max_QC)))))
+
+# Conclusion: The maximum of quasiconvex functions is a quasi-convex function or it is not a real-valued function
+conclusion = Or(Quasi_Convex_Function(Maximum_Function(Max_QC)), Not(Real_Valued_Function(Maximum_Function(Max_QC))))
+
+# Check validity
+solver.push()
+solver.add(Not(conclusion))
+result1 = str(solver.check())
+solver.pop()
+
+solver.push()
+solver.add(conclusion)
+result2 = str(solver.check())
+solver.pop()
+
+if result1 == "unsat":
+    print("The conclusion is necessarily true: The maximum of quasiconvex functions is a quasi-convex function or it is not a real-valued function. (True)")
+    result = "True"
+elif result1 == "sat" and result2 == "unsat":
+    print("The conclusion is necessarily false: The maximum of quasiconvex functions is neither a quasi-convex function nor not a real-valued function. (False)")
+    result = "False"
+elif result1 == "sat" and result2 == "sat":
+    print("The conclusion is uncertain: It depends on additional unstated assumptions. (Uncertain)")
+    result = "Uncertain"
+else:
+    print("Unexpected result, possible logical error.")
+    result = "Error"
+</PYTHON>
+</EXAMPLE 5>
+
+
+<EXAMPLE 6>
+<Premises>
+If Emily's friends publish journals, then they do not work in the entertainment industry.
+All of Emily's friends who are award-winning novelists publish journals.
+Emily's friends work in the entertainment industry or are highly acclaimed in their profession.
+If Emily's friends are highly acclaimed in their profession, then they often hold tenured and high-ranking positions at their workplace.
+If Emily's friends are highly acclaimed in their profession, then they often receive glowing feedback and recommendations from their colleagues.
+Taylor is Emily's friend.
+It is not true that Taylor both holds highly acclaimed in her profession and often holds tenured and high-ranking positions at her workplace.
+</Premises>
+<Conclusion>
+Taylor is Emily's friend and she often holds tenured and high-ranking positions at her workplace.
+</Conclusion>
+<PYTHON>
+from z3 import Solver, DeclareSort, Function, ForAll, Implies, And, Or, Not, BoolSort, Const
+
+# Declare sorts
+Person = DeclareSort("Person")
+
+# Define predicates
+Publishes_Journals = Function("Publishes_Journals", Person, BoolSort())
+Works_In_Entertainment = Function("Works_In_Entertainment", Person, BoolSort())
+Award_Winning_Novelist = Function("Award_Winning_Novelist", Person, BoolSort())
+Highly_Acclaimed = Function("Highly_Acclaimed", Person, BoolSort())
+Holds_Tenured_Position = Function("Holds_Tenured_Position", Person, BoolSort())
+Receives_Glowing_Feedback = Function("Receives_Glowing_Feedback", Person, BoolSort())
+
+# Declare constants
+Emily = Const("Emily", Person)
+Taylor = Const("Taylor", Person)
+
+# Define solver
+solver = Solver()
+
+# Premises
+solver.add(ForAll([Emily], Implies(Publishes_Journals(Emily), Not(Works_In_Entertainment(Emily)))))
+solver.add(ForAll([Emily], Implies(Award_Winning_Novelist(Emily), Publishes_Journals(Emily))))
+solver.add(ForAll([Emily], Or(Works_In_Entertainment(Emily), Highly_Acclaimed(Emily))))
+solver.add(ForAll([Emily], Implies(Highly_Acclaimed(Emily), Holds_Tenured_Position(Emily))))
+solver.add(ForAll([Emily], Implies(Highly_Acclaimed(Emily), Receives_Glowing_Feedback(Emily))))
+
+# Taylor's conditions
+solver.add(Taylor == Emily)
+solver.add(Not(And(Highly_Acclaimed(Taylor), Holds_Tenured_Position(Taylor))))
+
+# Conclusion: Taylor is Emily's friend and she often holds tenured and high-ranking positions at her workplace
+conclusion = And(Taylor == Emily, Holds_Tenured_Position(Taylor))
+
+# Check validity
+solver.push()
+solver.add(Not(conclusion))
+result1 = str(solver.check())
+solver.pop()
+
+solver.push()
+solver.add(conclusion)
+result2 = str(solver.check())
+solver.pop()
+
+if result1 == "unsat":
+    print("The conclusion is necessarily true: Taylor is Emily's friend and she often holds tenured and high-ranking positions at her workplace. (True)")
+    result = "True"
+elif result1 == "sat" and result2 == "unsat":
+    print("The conclusion is necessarily false: Taylor is not Emily's friend or does not hold tenured and high-ranking positions at her workplace. (False)")
+    result = "False"
+elif result1 == "sat" and result2 == "sat":
+    print("The conclusion is uncertain: It depends on additional unstated assumptions. (Uncertain)")
+    result = "Uncertain"
+else:
+    print("Unexpected result, possible logical error.")
+    result = "Error"
+</PYTHON>
+</EXAMPLE 6>
