@@ -3,15 +3,15 @@
 
 
 
-MODEL_NAME_AND_PATH="google/gemma-2-9b-it"
+MODEL_NAME_AND_PATH="NousResearch/Meta-Llama-3.1-8B-Instruct"
 MODE="code"
 DATASET_NAME='yale-nlp/FOLIO'
-OUTPUT_DIR="./outputs/prompt/google/gemma-2-9b-it-star-1/2048/few-shot"
+OUTPUT_DIR="./outputs2/prompt/google/Meta-Llama-3.1-8B-Instruct-star-1/2048/few-shot"
 SAVE_RAW_DATA_PATH="raw_data.json"
 SAVE_RESULT_PATH="result.txt"
 PROMPT_MODE='v2'
-NUM_CANDIDATES=5
-BATCH_SIZE=8
+NUM_CANDIDATES=10
+BATCH_SIZE=4
 MAX_TOKENS=2048
 GPU_COUNR=4
 TEMPERATURE=0.7

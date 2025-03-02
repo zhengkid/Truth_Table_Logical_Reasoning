@@ -101,6 +101,8 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                         code_response_sample_j = code_response_sample_j.split("<PYTHON>")[-1]
                         code_response_sample_j = code_response_sample_j.split("</PYTHON>")[0]
                         code_response_sample_j = remove_incorrect_code_symbols(code_response_sample_j)
+
+                        code_response_sample_j = code_response_sample_j.split("result = 'Unknown'")[0] + "result = 'Unknown'"
                         print(j)
                         print(code_response_sample_j)
                         if not code_response_sample_j:
