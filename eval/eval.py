@@ -94,6 +94,8 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
             for prompt, item, code_response in zip(batch_prompts, batch_items, batch_responses):            
                 try:
                     label = item['label']
+                    if code_response:
+                        total_num += 1
                     for j in range(len(code_response)):
                         code_response_sample_j = code_response[j]
                         code_response_sample_j = code_response_sample_j.split("<PYTHON>")[-1]
@@ -119,21 +121,20 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                     rationales.append({
                         "premises": item['premises'],
                         "conclusions": item['conclusion'],
-                        "rationale": code_response.strip(),
+                        "rationale": code_response_sample_j.strip(),
                         "label": label,
                         "predict": predict,
                         "user_prompt": prompt,
                     })
-                    
+
                 except Exception as e:
                     print(f"Unexpected error in processing item: {e}")
                     predict = "Unknown"
                 finally:
-                    total_num += 1
-                    accuracy = correct_num / num_exec if num_exec > 0 else 0.0
-                    print(f"{correct_num} out of {num_exec} is correct! Accuracy: {accuracy:.2%}")
-                    executable_rate = num_exec / total_num if total_num > 0 else 0.0
-                    print(f"{num_exec} out of {total_num} is executable! Executable Rate: {executable_rate:.2%}")
+
+                    accuracy = correct_num / total_num if total_num > 0 else 0.0
+                    print(f"{correct_num} out of {total_num} is correct! Accuracy: {accuracy:.2%}")
+
     with open(os.path.join(output_dir, raw_data_path), 'w') as f:
         json.dump(rationales, f, indent=4)
     print(f"Rationales saved to {os.path.join(output_dir, raw_data_path)}")
