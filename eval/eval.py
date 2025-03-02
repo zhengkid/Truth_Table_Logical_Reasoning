@@ -19,7 +19,7 @@ from utils.utils_function import (
 
 def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None,
-               mode='truth_table', is_chat_model=False, batch_size=16, use_fewshot=True,prompt_mode='v1'):
+               mode='truth_table', is_chat_model=False, batch_size=16, use_fewshot=True,prompt_mode='v1', number_candidates=10):
     rationales = []
     correct_num = 0
     total_num = 0   
@@ -51,39 +51,41 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                     top_p=top_p,
                     top_k=top_k,
                     stop=stop,
-                    is_chat_model=is_chat_model
+                    is_chat_model=is_chat_model,
+                    number_candidates=number_candidates,
                 )
         except Exception as e:
             print(f"Error generating responses for batch starting at index {batch_start}: {e}")
             tqdm.tqdm.update(1)
             continue 
         if mode != 'code':
-            for prompt, item, rationale_response in zip(batch_prompts, batch_items, batch_responses):            
-                rationale_response = rationale_response.split("<Reasoning>")[-1]
-                rationale_response = rationale_response.split("</Answer>")[0] + "</Answer>"
-                answer_response = rationale_response.split("<Answer>")[-1]
-                print(prompt)
-                print(rationale_response)
+            for prompt, item, rationale_response in zip(batch_prompts, batch_items, batch_responses):
                 label = item['label']
-                if "(A)" in answer_response:
-                    predict = "True"
-                elif "(B)" in answer_response:
-                    predict = "False"
-                elif "(C)" in answer_response:
-                    predict = "Uncertain"
-                else:
-                    predict = "Unknown"
+                for j in range(len(rationale_response)):
+                    rationale_response_sample_j = rationale_response[j]
+                    rationale_response_sample_j = rationale_response_sample_j.split("<Reasoning>")[-1]
+                    rationale_response_sample_j = rationale_response_sample_j.split("</Answer>")[0] + "</Answer>"
+                    answer_response_sample_j = rationale_response_sample_j.split("<Answer>")[-1]
+                    if "(A)" in answer_response_sample_j:
+                        predict = "True"
+                    elif "(B)" in answer_response_sample_j:
+                        predict = "False"
+                    elif "(C)" in answer_response_sample_j:
+                        predict = "Uncertain"
+                    else:
+                        predict = "Unknown"
+                    
+                    if predict == label:
+                        correct_num += 1
+                        break
                 rationales.append({
-                    "premises": item['premises'],
-                    "conclusions": item['conclusion'],
-                    "rationale": rationale_response.strip(),
-                    "label": item['label'],
-                    "predict": predict,
-                    "user_prompt": prompt
-                })
-
-                if predict == label:
-                    correct_num += 1
+                        "premises": item['premises'],
+                        "conclusions": item['conclusion'],
+                        "rationale": rationale_response.strip(),
+                        "label": item['label'],
+                        "predict": predict,
+                        "user_prompt": prompt
+                    })
                 total_num += 1
                 print(f"{correct_num} out of {total_num} is correct!")
                 accuracy = correct_num / total_num if total_num > 0 else 0.0
@@ -91,6 +93,18 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
             for prompt, item, code_response in zip(batch_prompts, batch_items, batch_responses):            
                 try:
                     label = item['label']
+<<<<<<< HEAD
+
+                    for j in range(len(code_response)):
+                        code_response_sample_j = code_response[j]
+                        code_response_sample_j = code_response_sample_j.split("<PYTHON>")[-1]
+                        code_response_sample_j = code_response_sample_j.split("</PYTHON>")[0]
+                        code_response_sample_j = remove_incorrect_code_symbols(code_response_sample_j)
+                        print(prompt)
+                        if not code_response_sample_j:
+                            print("Warning: Empty code response! Counting as incorrect.")
+                            predict = "Unknown"
+=======
                     code_response = code_response.split("<PYTHON>")[-1]
                     code_response = code_response.split("</PYTHON>")[0]
                     code_response = remove_incorrect_code_symbols(code_response)
@@ -103,10 +117,19 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                             print("Executing code!")
                             predict = execute_with_timeout(code_response, timeout_seconds=3)
                             num_exec += 1
+>>>>>>> ce180fb8fcb87a3cddf45bc7b05fd1d386c55741
                         else:
-                            print("Warning: the code is not executable")
-                            predict = "Unexecutable"
-                    print(predict)
+                            if is_executable(code_response_sample_j):
+                                print("Executing code!")
+                                predict = execute_with_timeout(code_response_sample_j, timeout_seconds=3)
+                                num_exec += 1
+                            else:
+                                print("Warning: the code is not executable")
+                                predict = "Unexecutable"
+                        print(predict)
+                        if str(predict) == str(label):
+                            correct_num += 1
+                            break
                     rationales.append({
                         "premises": item['premises'],
                         "conclusions": item['conclusion'],
@@ -115,8 +138,6 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                         "predict": predict,
                         "user_prompt": prompt,
                     })
-                    if str(predict) == str(label):
-                        correct_num += 1
                     
                 except Exception as e:
                     print(f"Unexpected error in processing item: {e}")
@@ -145,7 +166,7 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
     print(f"Correct predictions: {correct_num}")
     print(f"Accuracy report saved to {accuracy_path}")
 
-def eval_performance(model_name_and_path, dataset_name, output_dir, save_raw_data_path, save_result_path, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False, batch_size=16, use_fewshot=False, gpu_count=4, prompt_mode="v1"):
+def eval_performance(model_name_and_path, dataset_name, output_dir, save_raw_data_path, save_result_path, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False, batch_size=16, use_fewshot=False, gpu_count=4, prompt_mode="v1", number_candidates=10):
     """
     Implements the STaR pipeline where each fine-tuning starts from the initial base model.
 
@@ -193,6 +214,7 @@ def eval_performance(model_name_and_path, dataset_name, output_dir, save_raw_dat
                 batch_size=batch_size,
                 use_fewshot=use_fewshot,
                 prompt_mode=prompt_mode,
+                number_candidates=number_candidates,
         )
 def set_seed(seed):
     random.seed(seed)
@@ -238,6 +260,8 @@ def main():
                         help="Random seed for reproducibility.")
     parser.add_argument("--gpu_count", type=int, default=4, 
                         help="the number of gpus for inference.")
+    parser.add_argument("--number_candidates", type=int, default=10, 
+                        help="the number of candidates.")
 
     # Parse arguments
     args = parser.parse_args()
@@ -291,6 +315,7 @@ def main():
         use_fewshot=args.use_fewshot,
         gpu_count=args.gpu_count,
         prompt_mode=args.prompt_mode,
+        number_candidates=args.number_candidates,
     )
 
 if __name__ == "__main__":
