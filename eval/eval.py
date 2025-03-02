@@ -93,8 +93,6 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
             for prompt, item, code_response in zip(batch_prompts, batch_items, batch_responses):            
                 try:
                     label = item['label']
-<<<<<<< HEAD
-
                     for j in range(len(code_response)):
                         code_response_sample_j = code_response[j]
                         code_response_sample_j = code_response_sample_j.split("<PYTHON>")[-1]
@@ -104,20 +102,6 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                         if not code_response_sample_j:
                             print("Warning: Empty code response! Counting as incorrect.")
                             predict = "Unknown"
-=======
-                    code_response = code_response.split("<PYTHON>")[-1]
-                    code_response = code_response.split("</PYTHON>")[0]
-                    code_response = remove_incorrect_code_symbols(code_response)
-                    print(code_response)
-                    if not code_response:
-                        print("Warning: Empty code response! Counting as incorrect.")
-                        predict = "Unknown"
-                    else:
-                        if is_executable(code_response):
-                            print("Executing code!")
-                            predict = execute_with_timeout(code_response, timeout_seconds=3)
-                            num_exec += 1
->>>>>>> ce180fb8fcb87a3cddf45bc7b05fd1d386c55741
                         else:
                             if is_executable(code_response_sample_j):
                                 print("Executing code!")
