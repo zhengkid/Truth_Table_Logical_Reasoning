@@ -85,7 +85,7 @@ def load_model_inference(model_name_or_path='gemma-2-9b', gpu_count=4):
     model = LLM(model=model_name_or_path, tensor_parallel_size=gpu_count)
     return model
 
-def generate_responses_batch(model, user_prompts, max_tokens, temperature, top_p, top_k, stop, is_chat_model):
+def generate_responses_batch(model, user_prompts, max_tokens, temperature, top_p, top_k, stop, is_chat_model, number_candidates):
     """
     Generates responses in batch from the model based on user prompts.
 
@@ -103,6 +103,7 @@ def generate_responses_batch(model, user_prompts, max_tokens, temperature, top_p
         list: A list of generated responses.
     """
     sampling_params = SamplingParams(
+        n=number_candidates,
         temperature=temperature,
         top_p=top_p,
         top_k=top_k,
@@ -113,7 +114,7 @@ def generate_responses_batch(model, user_prompts, max_tokens, temperature, top_p
     else:
         outputs = model.generate(user_prompts, sampling_params)
 
-    responses = [output.outputs[0].text for output in outputs]
+    responses = [[candidate.text for candidate in output.outputs] for output in outputs]
     return responses
 
 def get_prompt(mode, prompt_mode, use_fewshot=False):

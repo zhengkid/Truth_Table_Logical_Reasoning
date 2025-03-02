@@ -54,6 +54,7 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                     is_chat_model=is_chat_model,
                     number_candidates=number_candidates,
                 )
+                print(batch_responses)
         except Exception as e:
             print(f"Error generating responses for batch starting at index {batch_start}: {e}")
             tqdm.tqdm.update(1)
@@ -98,7 +99,8 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                         code_response_sample_j = code_response_sample_j.split("<PYTHON>")[-1]
                         code_response_sample_j = code_response_sample_j.split("</PYTHON>")[0]
                         code_response_sample_j = remove_incorrect_code_symbols(code_response_sample_j)
-                        print(prompt)
+                        print(j)
+                        print(code_response_sample_j)
                         if not code_response_sample_j:
                             print("Warning: Empty code response! Counting as incorrect.")
                             predict = "Unknown"

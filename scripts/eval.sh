@@ -10,7 +10,8 @@ OUTPUT_DIR="./outputs/prompt/google/gemma-2-9b-it-star-1/2048/few-shot"
 SAVE_RAW_DATA_PATH="raw_data.json"
 SAVE_RESULT_PATH="result.txt"
 PROMPT_MODE='v2'
-BATCH_SIZE=16
+NUM_CANDIDATES=10
+BATCH_SIZE=1
 MAX_TOKENS=2048
 GPU_COUNR=4
 TEMPERATURE=0.7
@@ -34,4 +35,5 @@ python ./eval/eval.py \
   --top_p ${TOP_P} \
   --top_k ${TOP_K} \
   --seed ${SEED} \
+  --number_candidates ${NUM_CANDIDATES} \
   --use_fewshot
