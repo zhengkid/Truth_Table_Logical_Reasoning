@@ -14,7 +14,8 @@ from utils.utils_function import (
     load_model_inference,
     generate_responses_batch,
     is_executable,
-    remove_incorrect_code_symbols
+    remove_incorrect_code_symbols,
+    post_process_batch_data_eval,
 )
 
 def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
@@ -24,23 +25,23 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
     correct_num = 0
     total_num = 0   
     num_exec = 0
-    rationale_prompt = get_prompt(mode=mode, prompt_mode=prompt_mode, use_fewshot=use_fewshot)
+    rationale_prompt, _ = get_prompt(mode=mode, prompt_mode=prompt_mode, use_fewshot=use_fewshot)
     prompts = []
     dataset_list = []
-    for item in dataset:
-        premises = item.get("premises", "")
-        conclusions = item.get("conclusion", "")
-        prompt = rationale_prompt.format(Premises=premises, Conclusions=conclusions)
-        if is_chat_model:
-            prompt = [{"role": "user","content": prompt}]
-        prompts.append(prompt)
-        dataset_list.append(item)
-
-    for batch_start in tqdm.tqdm(range(0, len(dataset_list), batch_size)):
-        batch_prompts = prompts[batch_start: batch_start + batch_size]
-        batch_items = dataset_list[batch_start: batch_start + batch_size]
-        print(batch_start, len(batch_items))
-
+    for batch_start in tqdm.tqdm(range(0, len(dataset), batch_size)):
+        batch_dataset = dataset[batch_start: batch_start + batch_size]
+        batch_prompts = []
+        batch_items = []
+        # Accumulate batch data 
+        for item in batch_dataset:
+            premises = item.get("premises", "")
+            conclusions = item.get("conclusion", "")
+            prompt = rationale_prompt.format(Premises=premises, Conclusions=conclusions)
+            if is_chat_model:
+                prompt = [{"role": "user","content": prompt}]
+            batch_prompts.append(prompt)
+            batch_items.append(item)
+        # Process batch data via LLM
         try:
             with torch.no_grad():
                 batch_responses = generate_responses_batch(
@@ -54,84 +55,92 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                     is_chat_model=is_chat_model,
                     number_candidates=number_candidates,
                 )
-                print(batch_responses)
         except Exception as e:
             print(f"Error generating responses for batch starting at index {batch_start}: {e}")
             tqdm.tqdm.update(1)
             continue 
-        if mode != 'code':
-            for prompt, item, rationale_response in zip(batch_prompts, batch_items, batch_responses):
-                label = item['label']
-                for j in range(len(rationale_response)):
-                    rationale_response_sample_j = rationale_response[j]
-                    rationale_response_sample_j = rationale_response_sample_j.split("<Reasoning>")[-1]
-                    rationale_response_sample_j = rationale_response_sample_j.split("</Answer>")[0] + "</Answer>"
-                    answer_response_sample_j = rationale_response_sample_j.split("<Answer>")[-1]
-                    if "(A)" in answer_response_sample_j:
-                        predict = "True"
-                    elif "(B)" in answer_response_sample_j:
-                        predict = "False"
-                    elif "(C)" in answer_response_sample_j:
-                        predict = "Uncertain"
-                    else:
-                        predict = "Unknown"
-                    
-                    if predict == label:
-                        correct_num += 1
-                        break
-                rationales.append({
-                        "premises": item['premises'],
-                        "conclusions": item['conclusion'],
-                        "rationale": rationale_response.strip(),
-                        "label": item['label'],
-                        "predict": predict,
-                        "user_prompt": prompt
-                    })
-                total_num += 1
-                print(f"{correct_num} out of {total_num} is correct!")
-                accuracy = correct_num / total_num if total_num > 0 else 0.0
-        else:
-            for prompt, item, code_response in zip(batch_prompts, batch_items, batch_responses):            
-                try:
-                    label = item['label']
-                    if code_response:
-                        total_num += 1
-                    for j in range(len(code_response)):
-                        code_response_sample_j = code_response[j]
-                        code_response_sample_j = code_response_sample_j.split("<PYTHON>")[-1]
-                        code_response_sample_j = code_response_sample_j.split("</PYTHON>")[0]
-                        code_response_sample_j = remove_incorrect_code_symbols(code_response_sample_j)
-                        code_response_sample_j = code_response_sample_j.split("result = 'Unknown'")[0] + "result = 'Unknown'"
-                        if not code_response_sample_j:
-                            print("Warning: Empty code response! Counting as incorrect.")
-                            predict = "Unknown"
-                        else:
-                            if is_executable(code_response_sample_j):
-                                print("Executing code!")
-                                predict = execute_with_timeout(code_response_sample_j, timeout_seconds=3)
-                                num_exec += 1
-                            else:
-                                print("Warning: the code is not executable")
-                                predict = "Unexecutable"
-                        print(predict)
-                        if str(predict) == str(label):
-                            correct_num += 1
-                            break
-                    rationales.append({
-                        "premises": item['premises'],
-                        "conclusions": item['conclusion'],
-                        "rationale": code_response_sample_j.strip(),
-                        "label": label,
-                        "predict": predict,
-                        "user_prompt": prompt,
-                    })
+        batch_rationales, correct_num, total_num, accuracy = post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mode, total_num, correct_num)
+        rationales.extend(batch_rationales)
 
-                except Exception as e:
-                    print(f"Unexpected error in processing item: {e}")
-                    predict = "Unknown"
-                finally:
-                    accuracy = correct_num / total_num if total_num > 0 else 0.0
-                    print(f"{correct_num} out of {total_num} is correct! Accuracy: {accuracy:.2%}")
+    # for batch_start in tqdm.tqdm(range(0, len(dataset_list), batch_size)):
+    #     batch_prompts = prompts[batch_start: batch_start + batch_size]
+    #     batch_items = dataset_list[batch_start: batch_start + batch_size]
+    #     print(batch_start, len(batch_items))
+
+
+    #     if mode != 'code':
+    #         for prompt, item, rationale_response in zip(batch_prompts, batch_items, batch_responses):
+    #             label = item['label']
+    #             for j in range(len(rationale_response)):
+    #                 rationale_response_sample_j = rationale_response[j]
+    #                 rationale_response_sample_j = rationale_response_sample_j.split("<Reasoning>")[-1]
+    #                 rationale_response_sample_j = rationale_response_sample_j.split("</Answer>")[0] + "</Answer>"
+    #                 answer_response_sample_j = rationale_response_sample_j.split("<Answer>")[-1]
+    #                 if "(A)" in answer_response_sample_j:
+    #                     predict = "True"
+    #                 elif "(B)" in answer_response_sample_j:
+    #                     predict = "False"
+    #                 elif "(C)" in answer_response_sample_j:
+    #                     predict = "Uncertain"
+    #                 else:
+    #                     predict = "Unknown"
+                    
+    #                 if predict == label:
+    #                     correct_num += 1
+    #                     break
+    #             rationales.append({
+    #                     "premises": item['premises'],
+    #                     "conclusions": item['conclusion'],
+    #                     "rationale": rationale_response.strip(),
+    #                     "label": item['label'],
+    #                     "predict": predict,
+    #                     "user_prompt": prompt
+    #                 })
+    #             total_num += 1
+    #             print(f"{correct_num} out of {total_num} is correct!")
+    #             accuracy = correct_num / total_num if total_num > 0 else 0.0
+    #     else:
+    #         for prompt, item, code_response in zip(batch_prompts, batch_items, batch_responses):            
+    #             try:
+    #                 label = item['label']
+    #                 if code_response:
+    #                     total_num += 1
+    #                 for j in range(len(code_response)):
+    #                     code_response_sample_j = code_response[j]
+    #                     code_response_sample_j = code_response_sample_j.split("<PYTHON>")[-1]
+    #                     code_response_sample_j = code_response_sample_j.split("</PYTHON>")[0]
+    #                     code_response_sample_j = remove_incorrect_code_symbols(code_response_sample_j)
+    #                     code_response_sample_j = code_response_sample_j.split("result = 'Unknown'")[0] + "result = 'Unknown'"
+    #                     if not code_response_sample_j:
+    #                         print("Warning: Empty code response! Counting as incorrect.")
+    #                         predict = "Unknown"
+    #                     else:
+    #                         if is_executable(code_response_sample_j):
+    #                             print("Executing code!")
+    #                             predict = execute_with_timeout(code_response_sample_j, timeout_seconds=3)
+    #                             num_exec += 1
+    #                         else:
+    #                             print("Warning: the code is not executable")
+    #                             predict = "Unexecutable"
+    #                     print(predict)
+    #                     if str(predict) == str(label):
+    #                         correct_num += 1
+    #                         break
+    #                 rationales.append({
+    #                     "premises": item['premises'],
+    #                     "conclusions": item['conclusion'],
+    #                     "rationale": code_response_sample_j.strip(),
+    #                     "label": label,
+    #                     "predict": predict,
+    #                     "user_prompt": prompt,
+    #                 })
+
+    #             except Exception as e:
+    #                 print(f"Unexpected error in processing item: {e}")
+    #                 predict = "Unknown"
+    #             finally:
+    #                 accuracy = correct_num / total_num if total_num > 0 else 0.0
+    #                 print(f"{correct_num} out of {total_num} is correct! Accuracy: {accuracy:.2%}")
 
     with open(os.path.join(output_dir, raw_data_path), 'w') as f:
         json.dump(rationales, f, indent=4)

@@ -8,7 +8,7 @@ from utils.utils_function import (
     get_prompt,
     load_model_inference,
     generate_responses_batch,
-    post_process_batch_data,
+    post_process_batch_data_generate_rationale,
     check_huggingface_repo_exists,
     obtain_seed_dataset,
 )
@@ -58,7 +58,7 @@ def generate_rationales(model, dataset, max_tokens=512, temperature=0.7, top_p=0
             tqdm.tqdm.update(1)
             continue 
         # Post-process batch data
-        batch_rationales, correct, total_num = post_process_batch_data(batch_prompts_only_example, batch_items, batch_responses, mode, total_num, correct, dataset_len)
+        batch_rationales, correct, total_num = post_process_batch_data_generate_rationale(batch_prompts_only_example, batch_items, batch_responses, mode, total_num, correct, dataset_len)
         rationales.extend(batch_rationales)
 
     ds = Dataset.from_list(rationales)

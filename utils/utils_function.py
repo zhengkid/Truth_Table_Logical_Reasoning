@@ -216,7 +216,7 @@ def parse_answer(rationale_response, mode):
         return rationale_response, predict, error_message
     
 
-def post_process_batch_data(batch_prompts_only_example, batch_items, batch_responses, mode, total_num, correct, dataset_len):
+def post_process_batch_data_generate_rationale(batch_prompts_only_example, batch_items, batch_responses, mode, total_num, correct, dataset_len):
     rationales = []
     for prompt_only_example, item, rationale_response in zip(batch_prompts_only_example, batch_items, batch_responses):
         label = item['label']
@@ -237,3 +237,26 @@ def post_process_batch_data(batch_prompts_only_example, batch_items, batch_respo
                 print(f"Filter out the data point due to poor quality.") 
         total_num += 1
     return rationales, correct, total_num
+
+def post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mode, total_num, correct):
+    rationales = []
+    for prompt, item, rationale_response in zip(batch_prompts, batch_items, batch_responses):
+        label = item['label']
+        for j in range(len(rationale_response)):
+            rationale_response_sample_j = rationale_response[j]
+            rationale_response_sample_j, predict_j, error_message = parse_answer(rationale_response_sample_j, mode)
+            if predict_j == label:
+                correct += 1
+                break
+        rationales.append({
+                        "premises": item['premises'],
+                        "conclusions": item['conclusion'],
+                        "rationale": rationale_response.strip(),
+                        "label": item['label'],
+                        "predict": predict_j,
+                        "user_prompt": prompt,
+                    })
+        total_num += 1
+        print(f"{correct} out of {total_num} is correct!")
+        accuracy = correct / total_num if total_num > 0 else 0.0
+    return rationales, correct, total_num, accuracy
