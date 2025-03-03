@@ -33,14 +33,15 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
         batch_prompts = []
         batch_items = []
         # Accumulate batch data 
-        for item in batch_dataset:
-            premises = item.get("premises", "")
-            conclusions = item.get("conclusion", "")
-            prompt = rationale_prompt.format(Premises=premises, Conclusions=conclusions)
+        batch_premises = batch_dataset['premises']
+        batch_conclusions = batch_dataset['conclusion']
+        batch_labels = batch_dataset['label']
+        for premise, conclusion, label  in zip(batch_premises, batch_conclusions, batch_labels):
+            prompt = rationale_prompt.format(Premises=premise, Conclusions=conclusion)
             if is_chat_model:
                 prompt = [{"role": "user","content": prompt}]
             batch_prompts.append(prompt)
-            batch_items.append(item)
+            batch_items.append({'premises':premise, 'conclusion': conclusion, 'label': label})
         # Process batch data via LLM
         try:
             with torch.no_grad():
@@ -148,15 +149,12 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
 
     with open(os.path.join(output_dir, accuracy_path), 'w') as f:
         f.write(f"Accuracy: {accuracy:.4f}\n")
-        f.write(f"Executable Rate: {executable_rate:.4f}\n")
-        f.write(f"Total samples that is executable: {num_exec}\n")
         f.write(f"Total samples: {total_num}\n")
         f.write(f"Correct predictions: {correct_num}\n")
 
     print(f"Accuracy: {accuracy:.4f}")
-    print(f"Executable Rate: {executable_rate:.4f}")
+
     print(f"Total samples: {total_num}")
-    print(f"Total samples that is executable: {num_exec}")
     print(f"Correct predictions: {correct_num}")
     print(f"Accuracy report saved to {accuracy_path}")
 

@@ -291,7 +291,7 @@ def main():
             use_fewshot=args.use_fewshot,
             huggingface_repo=args.huggingface_repo,
             gpu_count=args.gpu_count,
-            prompt_mode=arg.prompt_mode,
+            prompt_mode=args.prompt_mode,
             number_candidates=args.number_candidates,
         )
     else:

@@ -4,16 +4,16 @@
 
 
 MODEL_NAME_AND_PATH="NousResearch/Meta-Llama-3.1-8B-Instruct"
-MODE="code"
+MODE="nl"
 DATASET_NAME='yale-nlp/FOLIO'
-OUTPUT_DIR="./outputs2/prompt/google/Meta-Llama-3.1-8B-Instruct-star-1/2048/few-shot"
+OUTPUT_DIR="./outputs3/prompt/google/Meta-Llama-3.1-8B-Instruct-star-1/2048/few-shot"
 SAVE_RAW_DATA_PATH="raw_data.json"
 SAVE_RESULT_PATH="result.txt"
-PROMPT_MODE='v2'
-NUM_CANDIDATES=10
-BATCH_SIZE=4
+PROMPT_MODE='v1'
+NUM_CANDIDATES=1
+BATCH_SIZE=24
 MAX_TOKENS=2048
-GPU_COUNR=4
+GPU_COUNR=8
 TEMPERATURE=0.7
 TOP_P=0.9
 TOP_K=50

@@ -181,6 +181,7 @@ def check_huggingface_repo_exists(huggingface_repo: str) -> bool:
     
 
 def parse_answer(rationale_response, mode):
+    predict = None
     if mode != 'code':
         rationale_response = rationale_response.split("<Reasoning>")[-1]
         rationale_response = rationale_response.split("</Answer>")[0] + "</Answer>"
@@ -242,6 +243,7 @@ def post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mo
     rationales = []
     for prompt, item, rationale_response in zip(batch_prompts, batch_items, batch_responses):
         label = item['label']
+        predict_j = None
         for j in range(len(rationale_response)):
             rationale_response_sample_j = rationale_response[j]
             rationale_response_sample_j, predict_j, error_message = parse_answer(rationale_response_sample_j, mode)
@@ -251,7 +253,7 @@ def post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mo
         rationales.append({
                         "premises": item['premises'],
                         "conclusions": item['conclusion'],
-                        "rationale": rationale_response.strip(),
+                        "rationale": rationale_response_sample_j.strip(),
                         "label": item['label'],
                         "predict": predict_j,
                         "user_prompt": prompt,

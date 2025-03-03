@@ -1,0 +1,987 @@
+Phase -1: Evaluating few-shot performance with base model...
+Running with the following arguments:
+model_name_and_path: NousResearch/Meta-Llama-3.1-8B-Instruct
+mode: code
+prompt_mode: v2
+dataset_name: yale-nlp/FOLIO
+output_dir: star_pipeline_outputs/Meta-Llama-3.1-8B-Instruct/code/v2_10_3Rounds
+save_raw_data_path: Eval_Rationale_Raw_Data_round_0.txt
+save_result_path: Result_round_0.txt
+batch_size: 32
+use_fewshot: True
+max_tokens: 2048
+temperature: 0.7
+top_p: 0.9
+top_k: 50
+seed: 42
+gpu_count: 8
+number_candidates: 1
+Loading dataset 'yale-nlp/FOLIO'...
+INFO 03-03 02:20:34 __init__.py:207] Automatically detected platform cuda.
+INFO 03-03 02:20:57 config.py:549] This model supports multiple tasks: {'reward', 'generate', 'classify', 'score', 'embed'}. Defaulting to 'generate'.
+INFO 03-03 02:20:57 config.py:1382] Defaulting to use mp for distributed inference
+WARNING 03-03 02:20:57 arg_utils.py:1187] Chunked prefill is enabled by default for models with max_model_len > 32K. Currently, chunked prefill might not work with some features or models. If you encounter any issues, please disable chunked prefill by setting --enable-chunked-prefill=False.
+INFO 03-03 02:20:57 config.py:1555] Chunked prefill is enabled with max_num_batched_tokens=2048.
+INFO 03-03 02:20:57 llm_engine.py:234] Initializing a V0 LLM engine (v0.7.3) with config: model='NousResearch/Meta-Llama-3.1-8B-Instruct', speculative_config=None, tokenizer='NousResearch/Meta-Llama-3.1-8B-Instruct', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, override_neuron_config=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=131072, download_dir=None, load_format=LoadFormat.AUTO, tensor_parallel_size=8, pipeline_parallel_size=1, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, kv_cache_dtype=auto,  device_config=cuda, decoding_config=DecodingConfig(guided_decoding_backend='xgrammar'), observability_config=ObservabilityConfig(otlp_traces_endpoint=None, collect_model_forward_time=False, collect_model_execute_time=False), seed=0, served_model_name=NousResearch/Meta-Llama-3.1-8B-Instruct, num_scheduler_steps=1, multi_step_stream_outputs=True, enable_prefix_caching=False, chunked_prefill_enabled=True, use_async_output_proc=True, disable_mm_preprocessor_cache=False, mm_processor_kwargs=None, pooler_config=None, compilation_config={"splitting_ops":[],"compile_sizes":[],"cudagraph_capture_sizes":[256,248,240,232,224,216,208,200,192,184,176,168,160,152,144,136,128,120,112,104,96,88,80,72,64,56,48,40,32,24,16,8,4,2,1],"max_capture_size":256}, use_cached_outputs=False, 
+WARNING 03-03 02:20:57 multiproc_worker_utils.py:300] Reducing Torch parallelism from 32 threads to 1 to avoid unnecessary CPU contention. Set OMP_NUM_THREADS in the external environment to tune this value as needed.
+INFO 03-03 02:20:57 custom_cache_manager.py:19] Setting Triton cache manager to: vllm.triton_utils.custom_cache_manager:CustomCacheManager
+[1;36m(VllmWorkerProcess pid=874651)[0;0m INFO 03-03 02:20:57 multiproc_worker_utils.py:229] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=874652)[0;0m INFO 03-03 02:20:57 multiproc_worker_utils.py:229] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=874653)[0;0m INFO 03-03 02:20:57 multiproc_worker_utils.py:229] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=874654)[0;0m INFO 03-03 02:20:57 multiproc_worker_utils.py:229] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=874655)[0;0m INFO 03-03 02:20:57 multiproc_worker_utils.py:229] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=874656)[0;0m INFO 03-03 02:20:57 multiproc_worker_utils.py:229] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=874657)[0;0m INFO 03-03 02:20:57 multiproc_worker_utils.py:229] Worker ready; awaiting tasks
+INFO 03-03 02:20:59 cuda.py:229] Using Flash Attention backend.
+[1;36m(VllmWorkerProcess pid=874652)[0;0m INFO 03-03 02:20:59 cuda.py:229] Using Flash Attention backend.
+[1;36m(VllmWorkerProcess pid=874655)[0;0m INFO 03-03 02:20:59 cuda.py:229] Using Flash Attention backend.
+[1;36m(VllmWorkerProcess pid=874654)[0;0m INFO 03-03 02:20:59 cuda.py:229] Using Flash Attention backend.
+[1;36m(VllmWorkerProcess pid=874656)[0;0m INFO 03-03 02:20:59 cuda.py:229] Using Flash Attention backend.
+[1;36m(VllmWorkerProcess pid=874653)[0;0m INFO 03-03 02:20:59 cuda.py:229] Using Flash Attention backend.
+[1;36m(VllmWorkerProcess pid=874651)[0;0m INFO 03-03 02:20:59 cuda.py:229] Using Flash Attention backend.
+[1;36m(VllmWorkerProcess pid=874657)[0;0m INFO 03-03 02:21:00 cuda.py:229] Using Flash Attention backend.
+INFO 03-03 02:21:01 utils.py:916] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=874655)[0;0m INFO 03-03 02:21:01 utils.py:916] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=874656)[0;0m INFO 03-03 02:21:01 utils.py:916] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=874653)[0;0m INFO 03-03 02:21:01 utils.py:916] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=874654)[0;0m INFO 03-03 02:21:01 utils.py:916] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=874652)[0;0m INFO 03-03 02:21:01 utils.py:916] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=874651)[0;0m INFO 03-03 02:21:01 utils.py:916] Found nccl from library libnccl.so.2
+INFO 03-03 02:21:01 pynccl.py:69] vLLM is using nccl==2.21.5
+[1;36m(VllmWorkerProcess pid=874656)[0;0m INFO 03-03 02:21:01 pynccl.py:69] vLLM is using nccl==2.21.5
+[1;36m(VllmWorkerProcess pid=874653)[0;0m INFO 03-03 02:21:01 pynccl.py:69] vLLM is using nccl==2.21.5
+[1;36m(VllmWorkerProcess pid=874654)[0;0m INFO 03-03 02:21:01 pynccl.py:69] vLLM is using nccl==2.21.5
+[1;36m(VllmWorkerProcess pid=874655)[0;0m INFO 03-03 02:21:01 pynccl.py:69] vLLM is using nccl==2.21.5
+[1;36m(VllmWorkerProcess pid=874652)[0;0m INFO 03-03 02:21:01 pynccl.py:69] vLLM is using nccl==2.21.5
+[1;36m(VllmWorkerProcess pid=874651)[0;0m INFO 03-03 02:21:01 pynccl.py:69] vLLM is using nccl==2.21.5
+[1;36m(VllmWorkerProcess pid=874657)[0;0m INFO 03-03 02:21:01 utils.py:916] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=874657)[0;0m INFO 03-03 02:21:01 pynccl.py:69] vLLM is using nccl==2.21.5
+[1;36m(VllmWorkerProcess pid=874654)[0;0m WARNING 03-03 02:21:02 custom_all_reduce.py:136] Custom allreduce is disabled because it's not supported on more than two PCIe-only GPUs. To silence this warning, specify disable_custom_all_reduce=True explicitly.
+[1;36m(VllmWorkerProcess pid=874655)[0;0m WARNING 03-03 02:21:02 custom_all_reduce.py:136] Custom allreduce is disabled because it's not supported on more than two PCIe-only GPUs. To silence this warning, specify disable_custom_all_reduce=True explicitly.
+[1;36m(VllmWorkerProcess pid=874656)[0;0m WARNING 03-03 02:21:02 custom_all_reduce.py:136] Custom allreduce is disabled because it's not supported on more than two PCIe-only GPUs. To silence this warning, specify disable_custom_all_reduce=True explicitly.
+[1;36m(VllmWorkerProcess pid=874653)[0;0m WARNING 03-03 02:21:02 custom_all_reduce.py:136] Custom allreduce is disabled because it's not supported on more than two PCIe-only GPUs. To silence this warning, specify disable_custom_all_reduce=True explicitly.
+WARNING 03-03 02:21:02 custom_all_reduce.py:136] Custom allreduce is disabled because it's not supported on more than two PCIe-only GPUs. To silence this warning, specify disable_custom_all_reduce=True explicitly.
+[1;36m(VllmWorkerProcess pid=874651)[0;0m WARNING 03-03 02:21:02 custom_all_reduce.py:136] Custom allreduce is disabled because it's not supported on more than two PCIe-only GPUs. To silence this warning, specify disable_custom_all_reduce=True explicitly.
+[1;36m(VllmWorkerProcess pid=874652)[0;0m WARNING 03-03 02:21:02 custom_all_reduce.py:136] Custom allreduce is disabled because it's not supported on more than two PCIe-only GPUs. To silence this warning, specify disable_custom_all_reduce=True explicitly.
+[1;36m(VllmWorkerProcess pid=874657)[0;0m WARNING 03-03 02:21:02 custom_all_reduce.py:136] Custom allreduce is disabled because it's not supported on more than two PCIe-only GPUs. To silence this warning, specify disable_custom_all_reduce=True explicitly.
+INFO 03-03 02:21:02 shm_broadcast.py:258] vLLM message queue communication handle: Handle(connect_ip='127.0.0.1', local_reader_ranks=[1, 2, 3, 4, 5, 6, 7], buffer_handle=(7, 4194304, 6, 'psm_21f68f82'), local_subscribe_port=52957, remote_subscribe_port=None)
+INFO 03-03 02:21:02 model_runner.py:1110] Starting to load model NousResearch/Meta-Llama-3.1-8B-Instruct...
+[1;36m(VllmWorkerProcess pid=874651)[0;0m INFO 03-03 02:21:02 model_runner.py:1110] Starting to load model NousResearch/Meta-Llama-3.1-8B-Instruct...
+[1;36m(VllmWorkerProcess pid=874652)[0;0m INFO 03-03 02:21:02 model_runner.py:1110] Starting to load model NousResearch/Meta-Llama-3.1-8B-Instruct...
+[1;36m(VllmWorkerProcess pid=874654)[0;0m INFO 03-03 02:21:02 model_runner.py:1110] Starting to load model NousResearch/Meta-Llama-3.1-8B-Instruct...
+[1;36m(VllmWorkerProcess pid=874655)[0;0m INFO 03-03 02:21:02 model_runner.py:1110] Starting to load model NousResearch/Meta-Llama-3.1-8B-Instruct...
+[1;36m(VllmWorkerProcess pid=874653)[0;0m INFO 03-03 02:21:02 model_runner.py:1110] Starting to load model NousResearch/Meta-Llama-3.1-8B-Instruct...
+[1;36m(VllmWorkerProcess pid=874657)[0;0m INFO 03-03 02:21:02 model_runner.py:1110] Starting to load model NousResearch/Meta-Llama-3.1-8B-Instruct...
+[1;36m(VllmWorkerProcess pid=874656)[0;0m INFO 03-03 02:21:02 model_runner.py:1110] Starting to load model NousResearch/Meta-Llama-3.1-8B-Instruct...
+[1;36m(VllmWorkerProcess pid=874654)[0;0m INFO 03-03 02:21:09 weight_utils.py:254] Using model weights format ['*.safetensors']
+INFO 03-03 02:21:09 weight_utils.py:254] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=874653)[0;0m INFO 03-03 02:21:09 weight_utils.py:254] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=874656)[0;0m INFO 03-03 02:21:09 weight_utils.py:254] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=874652)[0;0m INFO 03-03 02:21:09 weight_utils.py:254] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=874655)[0;0m INFO 03-03 02:21:09 weight_utils.py:254] Using model weights format ['*.safetensors']
+Loading safetensors checkpoint shards:   0% Completed | 0/4 [00:00<?, ?it/s]
+[1;36m(VllmWorkerProcess pid=874651)[0;0m INFO 03-03 02:21:10 weight_utils.py:254] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242] Exception in worker VllmWorkerProcess while processing method load_model.
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242] Traceback (most recent call last):
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/urllib3/connectionpool.py", line 534, in _make_request
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     response = conn.getresponse()
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]                ^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/urllib3/connection.py", line 516, in getresponse
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     httplib_response = super().getresponse()
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]                        ^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/http/client.py", line 1395, in getresponse
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     response.begin()
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/http/client.py", line 325, in begin
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     version, status, reason = self._read_status()
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]                               ^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/http/client.py", line 286, in _read_status
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/socket.py", line 718, in readinto
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     return self._sock.recv_into(b)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]            ^^^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/ssl.py", line 1314, in recv_into
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     return self.read(nbytes, buffer)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]            ^^^^^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/ssl.py", line 1166, in read
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     return self._sslobj.read(len, buffer)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242] TimeoutError: The read operation timed out
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242] 
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242] The above exception was the direct cause of the following exception:
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242] 
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242] Traceback (most recent call last):
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/requests/adapters.py", line 667, in send
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     resp = conn.urlopen(
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]            ^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     retries = retries.increment(
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]               ^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/urllib3/util/retry.py", line 474, in increment
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     raise reraise(type(error), error, _stacktrace)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/urllib3/util/util.py", line 39, in reraise
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     raise value
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     response = self._make_request(
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]                ^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/urllib3/connectionpool.py", line 536, in _make_request
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/urllib3/connectionpool.py", line 367, in _raise_timeout
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     raise ReadTimeoutError(
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242] urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='huggingface.co', port=443): Read timed out. (read timeout=10)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242] 
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242] During handling of the above exception, another exception occurred:
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242] 
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242] Traceback (most recent call last):
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/executor/multiproc_worker_utils.py", line 236, in _run_worker_process
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     output = run_method(worker, method, args, kwargs)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/utils.py", line 2196, in run_method
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     return func(*args, **kwargs)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]            ^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/worker/worker.py", line 183, in load_model
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     self.model_runner.load_model()
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/worker/model_runner.py", line 1112, in load_model
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     self.model = get_model(vllm_config=self.vllm_config)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/model_executor/model_loader/__init__.py", line 14, in get_model
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     return loader.load_model(vllm_config=vllm_config)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/model_executor/model_loader/loader.py", line 409, in load_model
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     loaded_weights = model.load_weights(
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]                      ^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/model_executor/models/llama.py", line 573, in load_weights
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     return loader.load_weights(
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]            ^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/model_executor/models/utils.py", line 235, in load_weights
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     autoloaded_weights = set(self._load_module("", self.module, weights))
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/model_executor/models/utils.py", line 187, in _load_module
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     for child_prefix, child_weights in self._groupby_prefix(weights):
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/model_executor/models/utils.py", line 101, in _groupby_prefix
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     for prefix, group in itertools.groupby(weights_by_parts,
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/model_executor/models/utils.py", line 98, in <genexpr>
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     weights_by_parts = ((weight_name.split(".", 1), weight_data)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/model_executor/models/llama.py", line 573, in <genexpr>
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     return loader.load_weights(
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]                               ^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/model_executor/model_loader/loader.py", line 385, in _get_all_weights
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     yield from self._get_weights_iterator(primary_weights)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/model_executor/model_loader/loader.py", line 338, in _get_weights_iterator
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     hf_folder, hf_weights_files, use_safetensors = self._prepare_weights(
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]                                                    ^^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/model_executor/model_loader/loader.py", line 291, in _prepare_weights
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     hf_folder = download_weights_from_hf(
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/model_executor/model_loader/weight_utils.py", line 245, in download_weights_from_hf
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     file_list = fs.ls(model_name_or_path, detail=False, revision=revision)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_file_system.py", line 368, in ls
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     resolved_path = self.resolve_path(path, revision=revision)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_file_system.py", line 209, in resolve_path
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     repo_and_revision_exist, err = self._repo_and_revision_exist(repo_type, repo_id, revision)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_file_system.py", line 125, in _repo_and_revision_exist
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     self._api.repo_info(
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     return fn(*args, **kwargs)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]            ^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_api.py", line 2734, in repo_info
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     return method(
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]            ^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     return fn(*args, **kwargs)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]            ^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/hf_api.py", line 2518, in model_info
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     r = get_session().get(path, headers=headers, timeout=timeout, params=params)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/requests/sessions.py", line 602, in get
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     return self.request("GET", url, **kwargs)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/requests/sessions.py", line 589, in request
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     resp = self.send(prep, **send_kwargs)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/requests/sessions.py", line 703, in send
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     r = adapter.send(request, **kwargs)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_http.py", line 96, in send
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     return super().send(request, *args, **kwargs)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/requests/adapters.py", line 713, in send
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242]     raise ReadTimeout(e, request=request)
+[1;36m(VllmWorkerProcess pid=874657)[0;0m ERROR 03-03 02:21:19 multiproc_worker_utils.py:242] requests.exceptions.ReadTimeout: (ReadTimeoutError("HTTPSConnectionPool(host='huggingface.co', port=443): Read timed out. (read timeout=10)"), '(Request ID: e67da2f5-ae7e-4cf9-8242-c6b0e42c2494)')
+Loading safetensors checkpoint shards:  25% Completed | 1/4 [00:33<01:41, 33.90s/it]
+Loading safetensors checkpoint shards:  50% Completed | 2/4 [01:00<00:59, 29.68s/it]
+Loading safetensors checkpoint shards:  75% Completed | 3/4 [01:04<00:17, 17.72s/it]
+Loading safetensors checkpoint shards: 100% Completed | 4/4 [01:36<00:00, 23.43s/it]
+Loading safetensors checkpoint shards: 100% Completed | 4/4 [01:36<00:00, 24.08s/it]
+
+[1;36m(VllmWorkerProcess pid=874651)[0;0m INFO 03-03 02:22:45 model_runner.py:1115] Loading model weights took 1.9029 GB
+[1;36m(VllmWorkerProcess pid=874656)[0;0m INFO 03-03 02:22:45 model_runner.py:1115] Loading model weights took 1.9029 GB
+[1;36m(VllmWorkerProcess pid=874654)[0;0m INFO 03-03 02:22:45 model_runner.py:1115] Loading model weights took 1.9029 GB
+[1;36m(VllmWorkerProcess pid=874652)[0;0m INFO 03-03 02:22:46 model_runner.py:1115] Loading model weights took 1.9029 GB
+INFO 03-03 02:22:46 model_runner.py:1115] Loading model weights took 1.9029 GB
+[1;36m(VllmWorkerProcess pid=874653)[0;0m INFO 03-03 02:22:46 model_runner.py:1115] Loading model weights took 1.9029 GB
+[1;36m(VllmWorkerProcess pid=874655)[0;0m INFO 03-03 02:22:46 model_runner.py:1115] Loading model weights took 1.9029 GB
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/eval/eval.py", line 314, in <module>
+[rank0]:     main()
+[rank0]:   File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/eval/eval.py", line 294, in main
+[rank0]:     eval_performance(
+[rank0]:   File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/eval/eval.py", line 188, in eval_performance
+[rank0]:     base_model = load_model_inference(model_name_or_path=model_name_and_path, gpu_count=gpu_count)
+[rank0]:                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/utils/utils_function.py", line 85, in load_model_inference
+[rank0]:     model = LLM(model=model_name_or_path, tensor_parallel_size=gpu_count)
+[rank0]:             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/utils.py", line 1022, in inner
+[rank0]:     return fn(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/entrypoints/llm.py", line 242, in __init__
+[rank0]:     self.llm_engine = self.engine_class.from_engine_args(
+[rank0]:                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/engine/llm_engine.py", line 489, in from_engine_args
+[rank0]:     engine = cls(
+[rank0]:              ^^^^
+[rank0]:   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/engine/llm_engine.py", line 273, in __init__
+[rank0]:     self.model_executor = executor_class(vllm_config=vllm_config, )
+[rank0]:                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/executor/executor_base.py", line 271, in __init__
+[rank0]:     super().__init__(*args, **kwargs)
+[rank0]:   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/executor/executor_base.py", line 52, in __init__
+[rank0]:     self._init_executor()
+[rank0]:   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/executor/mp_distributed_executor.py", line 125, in _init_executor
+[rank0]:     self._run_workers("load_model",
+[rank0]:   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/executor/mp_distributed_executor.py", line 190, in _run_workers
+[rank0]:     ] + [output.get() for output in worker_outputs]
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/executor/mp_distributed_executor.py", line 190, in <listcomp>
+[rank0]:     ] + [output.get() for output in worker_outputs]
+[rank0]:          ^^^^^^^^^^^^
+[rank0]:   File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/executor/multiproc_worker_utils.py", line 62, in get
+[rank0]:     raise self.result.exception
+[rank0]: requests.exceptions.ReadTimeout: [Errno None: None] (Request ID: e67da2f5-ae7e-4cf9-8242-c6b0e42c2494)
+ERROR 03-03 02:22:46 multiproc_worker_utils.py:124] Worker VllmWorkerProcess pid 874656 died, exit code: -15
+INFO 03-03 02:22:46 multiproc_worker_utils.py:128] Killing local vLLM worker processes
+[rank0]:[W303 02:22:47.049050494 ProcessGroupNCCL.cpp:1496] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 1 leaked shared_memory objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
+===== Round 1 =====
+Stage 1: Generating rationales for round 1 using model: NousResearch/Meta-Llama-3.1-8B-Instruct
+Running with the following arguments:
+model_name_and_path: NousResearch/Meta-Llama-3.1-8B-Instruct
+mode: code
+dataset_name: yale-nlp/FOLIO
+huggingface_repo: TongZheng1999/Meta-Llama-3.1-8B-Instruct_code_rationale_1000_v2_10_3Rounds_round_1
+prompt_mode: v2
+n_samples: 1000
+batch_size: 32
+use_fewshot: True
+max_tokens: 2048
+temperature: 1.0
+top_p: 0.9
+top_k: 50
+seed: 42
+gpu_count: 8
+number_candidates: 10
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/generate_rationale.py", line 301, in <module>
+    main()
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/generate_rationale.py", line 294, in main
+    prompt_mode=arg.prompt_mode,
+                ^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'prompt_mode'
+Directory already exists: alignment-handbook/recipes//Meta-Llama-3.1-8B-Instruct_star_training
+Updated: alignment-handbook/recipes//Meta-Llama-3.1-8B-Instruct_star_training/iter_1_config.yaml
+/fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/v2_10_3Rounds/ft_iter_1
+Stage 2: Fine-tuning base model with rationales (round 1)...
+[2025-03-03 02:23:16,999] [INFO] [real_accelerator.py:222:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+W0303 02:23:19.908000 875174 site-packages/torch/distributed/run.py:792] 
+W0303 02:23:19.908000 875174 site-packages/torch/distributed/run.py:792] *****************************************
+W0303 02:23:19.908000 875174 site-packages/torch/distributed/run.py:792] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0303 02:23:19.908000 875174 site-packages/torch/distributed/run.py:792] *****************************************
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+    import transformers
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+    from . import dependency_versions_check
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+    from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    import transformers
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+    from . import dependency_versions_check
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+    from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+    import transformers
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    from . import dependency_versions_check
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+    from PIL.Image import Image    
+from PIL.Image import Image
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+    from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    import transformers
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+    from PIL.Image import Image
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+    from . import dependency_versions_check
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+    from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+    from . import _imaging as core        
+from . import _imaging as corefrom . import _imaging as core
+
+ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)ImportError
+: ImportError    /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4): from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+/lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)
+
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    from PIL.Image import Image
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+    from . import _imaging as core
+ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)
+    import transformers
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+    from . import dependency_versions_check
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+    from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    from PIL.Image import Image
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+    from . import _imaging as core
+ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)
+    import transformers
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+    from . import dependency_versions_check
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+    from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    from PIL.Image import Image
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+    from . import _imaging as core
+ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+    import transformers
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+    from . import dependency_versions_check
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+    from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    from PIL.Image import Image
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+    from . import _imaging as core
+ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+    import transformers
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+    from . import dependency_versions_check
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+    from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    from PIL.Image import Image
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+    from . import _imaging as core
+ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)
+W0303 02:23:23.033000 875174 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 875293 closing signal SIGTERM
+W0303 02:23:23.034000 875174 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 875294 closing signal SIGTERM
+W0303 02:23:23.034000 875174 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 875296 closing signal SIGTERM
+W0303 02:23:23.034000 875174 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 875297 closing signal SIGTERM
+W0303 02:23:23.034000 875174 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 875298 closing signal SIGTERM
+W0303 02:23:23.035000 875174 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 875299 closing signal SIGTERM
+W0303 02:23:23.035000 875174 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 875300 closing signal SIGTERM
+E0303 02:23:23.099000 875174 site-packages/torch/distributed/elastic/multiprocessing/api.py:869] failed (exitcode: 1) local_rank: 2 (pid: 875295) of binary: /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/bin/python
+Warning: The cache directory for DeepSpeed Triton autotune, /nfshomes/tongzh24/.triton/autotune, appears to be on an NFS system. While this is generally acceptable, if you experience slowdowns or hanging when DeepSpeed exits, it is recommended to set the TRITON_CACHE_DIR environment variable to a non-NFS path.
+Traceback (most recent call last):
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/bin/accelerate", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/accelerate/commands/accelerate_cli.py", line 48, in main
+    args.func(args)
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/accelerate/commands/launch.py", line 1182, in launch_command
+    deepspeed_launcher(args)
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/accelerate/commands/launch.py", line 861, in deepspeed_launcher
+    distrib_run.run(args)
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/torch/distributed/run.py", line 909, in run
+    elastic_launch(
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 269, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+alignment-handbook/scripts/run_sft.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-03-03_02:23:23
+  host      : cbcb27.umiacs.umd.edu
+  rank      : 2 (local_rank: 2)
+  exitcode  : 1 (pid: 875295)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+Stage 3: Evaluating fine-tuned model for round 1 using model: /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/v2_10_3Rounds/ft_iter_1
+Running with the following arguments:
+model_name_and_path: /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/v2_10_3Rounds/ft_iter_1
+mode: code
+prompt_mode: v2
+dataset_name: yale-nlp/FOLIO
+output_dir: star_pipeline_outputs/Meta-Llama-3.1-8B-Instruct/code/v2_10_3Rounds
+save_raw_data_path: Eval_Rationale_Raw_Data_round_1.txt
+save_result_path: Result_round_1.txt
+batch_size: 32
+use_fewshot: False
+max_tokens: 2048
+temperature: 0.7
+top_p: 0.9
+top_k: 50
+seed: 42
+gpu_count: 8
+number_candidates: 1
+Loading dataset 'yale-nlp/FOLIO'...
+INFO 03-03 02:23:50 __init__.py:207] Automatically detected platform cuda.
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/eval/eval.py", line 314, in <module>
+    main()
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/eval/eval.py", line 294, in main
+    eval_performance(
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/eval/eval.py", line 188, in eval_performance
+    base_model = load_model_inference(model_name_or_path=model_name_and_path, gpu_count=gpu_count)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/utils/utils_function.py", line 85, in load_model_inference
+    model = LLM(model=model_name_or_path, tensor_parallel_size=gpu_count)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/utils.py", line 1022, in inner
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/entrypoints/llm.py", line 242, in __init__
+    self.llm_engine = self.engine_class.from_engine_args(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/engine/llm_engine.py", line 486, in from_engine_args
+    engine_config = engine_args.create_engine_config(usage_context)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/engine/arg_utils.py", line 1127, in create_engine_config
+    model_config = self.create_model_config()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/engine/arg_utils.py", line 1047, in create_model_config
+    return ModelConfig(
+           ^^^^^^^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/config.py", line 304, in __init__
+    hf_config = get_config(self.model, trust_remote_code, revision,
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/transformers_utils/config.py", line 256, in get_config
+    if is_gguf or file_or_path_exists(
+                  ^^^^^^^^^^^^^^^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/transformers_utils/config.py", line 168, in file_or_path_exists
+    cached_filepath = try_to_load_from_cache(repo_id=model,
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 106, in _inner_fn
+    validate_repo_id(arg_value)
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 154, in validate_repo_id
+    raise HFValidationError(
+huggingface_hub.errors.HFValidationError: Repo id must be in the form 'repo_name' or 'namespace/repo_name': '/fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/v2_10_3Rounds/ft_iter_1'. Use `repo_type` argument if needed.
+===== Round 1 complete =====
+
+===== Round 2 =====
+Stage 1: Generating rationales for round 2 using model: /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/v2_10_3Rounds/ft_iter_1
+Running with the following arguments:
+model_name_and_path: /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/v2_10_3Rounds/ft_iter_1
+mode: code
+dataset_name: yale-nlp/FOLIO
+huggingface_repo: TongZheng1999/Meta-Llama-3.1-8B-Instruct_code_rationale_1000_v2_10_3Rounds_round_2
+prompt_mode: v2
+n_samples: 1000
+batch_size: 32
+use_fewshot: False
+max_tokens: 2048
+temperature: 1.0
+top_p: 0.9
+top_k: 50
+seed: 42
+gpu_count: 8
+number_candidates: 10
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/generate_rationale.py", line 301, in <module>
+    main()
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/generate_rationale.py", line 294, in main
+    prompt_mode=arg.prompt_mode,
+                ^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'prompt_mode'
+Directory already exists: alignment-handbook/recipes//Meta-Llama-3.1-8B-Instruct_star_training
+Updated: alignment-handbook/recipes//Meta-Llama-3.1-8B-Instruct_star_training/iter_2_config.yaml
+/fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/v2_10_3Rounds/ft_iter_2
+Stage 2: Fine-tuning base model with rationales (round 2)...
+[2025-03-03 02:24:17,174] [INFO] [real_accelerator.py:222:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+W0303 02:24:19.080000 875455 site-packages/torch/distributed/run.py:792] 
+W0303 02:24:19.080000 875455 site-packages/torch/distributed/run.py:792] *****************************************
+W0303 02:24:19.080000 875455 site-packages/torch/distributed/run.py:792] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0303 02:24:19.080000 875455 site-packages/torch/distributed/run.py:792] *****************************************
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+    import transformers
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+    from . import dependency_versions_check
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+    from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    from PIL.Image import Image
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+    from . import _imaging as core
+ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+    import transformers
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+    from . import dependency_versions_check
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+    import transformers
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+    from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+    from . import dependency_versions_check
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+    from PIL.Image import Image
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    from . import _imaging as core
+ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)
+    from PIL.Image import Image
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+    from . import _imaging as core
+ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+    import transformers
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+    from . import dependency_versions_check
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+    from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    from PIL.Image import Image
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+    from . import _imaging as core
+ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)
+    import transformers
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+    from . import dependency_versions_check
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+    from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    from PIL.Image import Image
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+    from . import _imaging as core
+ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+    import transformers
+    import transformers
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+    from . import dependency_versions_check
+    from . import dependency_versions_check
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+    from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+    from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+    import transformers
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    from . import dependency_versions_check
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+    from PIL.Image import Image
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+    from PIL.Image import Image
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+    from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+    from . import _imaging as core
+    from . import _imaging as coreImportError
+: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)
+ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    from PIL.Image import Image
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+    from . import _imaging as core
+ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)
+W0303 02:24:22.305000 875455 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 875578 closing signal SIGTERM
+W0303 02:24:22.306000 875455 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 875579 closing signal SIGTERM
+W0303 02:24:22.306000 875455 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 875580 closing signal SIGTERM
+W0303 02:24:22.306000 875455 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 875581 closing signal SIGTERM
+W0303 02:24:22.306000 875455 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 875582 closing signal SIGTERM
+W0303 02:24:22.307000 875455 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 875583 closing signal SIGTERM
+W0303 02:24:22.307000 875455 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 875584 closing signal SIGTERM
+E0303 02:24:22.371000 875455 site-packages/torch/distributed/elastic/multiprocessing/api.py:869] failed (exitcode: 1) local_rank: 7 (pid: 875585) of binary: /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/bin/python
+Warning: The cache directory for DeepSpeed Triton autotune, /nfshomes/tongzh24/.triton/autotune, appears to be on an NFS system. While this is generally acceptable, if you experience slowdowns or hanging when DeepSpeed exits, it is recommended to set the TRITON_CACHE_DIR environment variable to a non-NFS path.
+Traceback (most recent call last):
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/bin/accelerate", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/accelerate/commands/accelerate_cli.py", line 48, in main
+    args.func(args)
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/accelerate/commands/launch.py", line 1182, in launch_command
+    deepspeed_launcher(args)
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/accelerate/commands/launch.py", line 861, in deepspeed_launcher
+    distrib_run.run(args)
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/torch/distributed/run.py", line 909, in run
+    elastic_launch(
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 269, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+alignment-handbook/scripts/run_sft.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-03-03_02:24:22
+  host      : cbcb27.umiacs.umd.edu
+  rank      : 7 (local_rank: 7)
+  exitcode  : 1 (pid: 875585)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+Stage 3: Evaluating fine-tuned model for round 2 using model: /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/v2_10_3Rounds/ft_iter_2
+Running with the following arguments:
+model_name_and_path: /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/v2_10_3Rounds/ft_iter_2
+mode: code
+prompt_mode: v2
+dataset_name: yale-nlp/FOLIO
+output_dir: star_pipeline_outputs/Meta-Llama-3.1-8B-Instruct/code/v2_10_3Rounds
+save_raw_data_path: Eval_Rationale_Raw_Data_round_2.txt
+save_result_path: Result_round_2.txt
+batch_size: 32
+use_fewshot: False
+max_tokens: 2048
+temperature: 0.7
+top_p: 0.9
+top_k: 50
+seed: 42
+gpu_count: 8
+number_candidates: 1
+Loading dataset 'yale-nlp/FOLIO'...
+INFO 03-03 02:24:50 __init__.py:207] Automatically detected platform cuda.
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/eval/eval.py", line 314, in <module>
+    main()
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/eval/eval.py", line 294, in main
+    eval_performance(
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/eval/eval.py", line 188, in eval_performance
+    base_model = load_model_inference(model_name_or_path=model_name_and_path, gpu_count=gpu_count)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/utils/utils_function.py", line 85, in load_model_inference
+    model = LLM(model=model_name_or_path, tensor_parallel_size=gpu_count)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/utils.py", line 1022, in inner
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/entrypoints/llm.py", line 242, in __init__
+    self.llm_engine = self.engine_class.from_engine_args(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/engine/llm_engine.py", line 486, in from_engine_args
+    engine_config = engine_args.create_engine_config(usage_context)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/engine/arg_utils.py", line 1127, in create_engine_config
+    model_config = self.create_model_config()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/engine/arg_utils.py", line 1047, in create_model_config
+    return ModelConfig(
+           ^^^^^^^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/config.py", line 304, in __init__
+    hf_config = get_config(self.model, trust_remote_code, revision,
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/transformers_utils/config.py", line 256, in get_config
+    if is_gguf or file_or_path_exists(
+                  ^^^^^^^^^^^^^^^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/vllm/transformers_utils/config.py", line 168, in file_or_path_exists
+    cached_filepath = try_to_load_from_cache(repo_id=model,
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 106, in _inner_fn
+    validate_repo_id(arg_value)
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 154, in validate_repo_id
+    raise HFValidationError(
+huggingface_hub.errors.HFValidationError: Repo id must be in the form 'repo_name' or 'namespace/repo_name': '/fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/v2_10_3Rounds/ft_iter_2'. Use `repo_type` argument if needed.
+===== Round 2 complete =====
+
+===== Round 3 =====
+Stage 1: Generating rationales for round 3 using model: /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/v2_10_3Rounds/ft_iter_2
+Running with the following arguments:
+model_name_and_path: /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/v2_10_3Rounds/ft_iter_2
+mode: code
+dataset_name: yale-nlp/FOLIO
+huggingface_repo: TongZheng1999/Meta-Llama-3.1-8B-Instruct_code_rationale_1000_v2_10_3Rounds_round_3
+prompt_mode: v2
+n_samples: 1000
+batch_size: 32
+use_fewshot: False
+max_tokens: 2048
+temperature: 1.0
+top_p: 0.9
+top_k: 50
+seed: 42
+gpu_count: 8
+number_candidates: 10
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/generate_rationale.py", line 301, in <module>
+    main()
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/generate_rationale.py", line 294, in main
+    prompt_mode=arg.prompt_mode,
+                ^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'prompt_mode'
+Directory already exists: alignment-handbook/recipes//Meta-Llama-3.1-8B-Instruct_star_training
+Updated: alignment-handbook/recipes//Meta-Llama-3.1-8B-Instruct_star_training/iter_3_config.yaml
+/fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/v2_10_3Rounds/ft_iter_3
+Stage 2: Fine-tuning base model with rationales (round 3)...
+[2025-03-03 02:25:10,989] [INFO] [real_accelerator.py:222:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+W0303 02:25:13.062000 875750 site-packages/torch/distributed/run.py:792] 
+W0303 02:25:13.062000 875750 site-packages/torch/distributed/run.py:792] *****************************************
+W0303 02:25:13.062000 875750 site-packages/torch/distributed/run.py:792] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0303 02:25:13.062000 875750 site-packages/torch/distributed/run.py:792] *****************************************
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+Traceback (most recent call last):
+  File "/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 26, in <module>
+    import transformers
+    import transformers
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+    import transformers
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+    import transformers  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+    from . import dependency_versions_check
+    from . import dependency_versions_check
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+    import transformers
+    import transformers
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+    import transformers  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+
+    from . import dependency_versions_check    
+import transformers  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/__init__.py", line 26, in <module>
+    from . import dependency_versions_check
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+    from . import dependency_versions_check
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+    from . import dependency_versions_check
+    from . import dependency_versions_check
+    from . import dependency_versions_check
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/dependency_versions_check.py", line 16, in <module>
+    from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+    from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+    from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+    from .utils.versions import require_version, require_version_core    
+from .utils.versions import require_version, require_version_core
+    from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+      File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+    from .utils.versions import require_version, require_version_core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/__init__.py", line 27, in <module>
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    from .chat_template_utils import DocstringParsingException, TypeHintParsingException, get_json_schema
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/chat_template_utils.py", line 37, in <module>
+    from PIL.Image import Image
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+    from PIL.Image import Image
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+    from PIL.Image import Image
+    from PIL.Image import Image    
+from PIL.Image import Image
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+    from PIL.Image import Image  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+    from PIL.Image import Image
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+    from . import _imaging as core
+ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)
+        from PIL.Image import Imagefrom . import _imaging as core
+
+    from . import _imaging as core
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/Image.py", line 97, in <module>
+ImportError: ImportError/lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4): 
+/lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)
+    from . import _imaging as core
+ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)    
+from . import _imaging as core
+        from . import _imaging as corefrom . import _imaging as core
+
+ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)
+ImportErrorImportError: : /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)/lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)
+
+    from . import _imaging as core
+ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/PIL/../../.././libLerc.so.4)
+W0303 02:25:16.791000 875750 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 875869 closing signal SIGTERM
+W0303 02:25:16.791000 875750 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 875870 closing signal SIGTERM
+E0303 02:25:16.807000 875750 site-packages/torch/distributed/elastic/multiprocessing/api.py:869] failed (exitcode: 1) local_rank: 2 (pid: 875871) of binary: /fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/bin/python
+Warning: The cache directory for DeepSpeed Triton autotune, /nfshomes/tongzh24/.triton/autotune, appears to be on an NFS system. While this is generally acceptable, if you experience slowdowns or hanging when DeepSpeed exits, it is recommended to set the TRITON_CACHE_DIR environment variable to a non-NFS path.
+Traceback (most recent call last):
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/bin/accelerate", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/accelerate/commands/accelerate_cli.py", line 48, in main
+    args.func(args)
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/accelerate/commands/launch.py", line 1182, in launch_command
+    deepspeed_launcher(args)
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/accelerate/commands/launch.py", line 861, in deepspeed_launcher
+    distrib_run.run(args)
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/torch/distributed/run.py", line 909, in run
+    elastic_launch(
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/fs/nexus-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 269, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+alignment-handbook/scripts/run_sft.py FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2025-03-03_02:25:16
+  host      : cbcb27.umiacs.umd.edu
+  rank      : 4 (local_rank: 4)
+  exitcode  : 1 (pid: 875873)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[2]:
+  time      : 2025-03-03_02:25:16
+  host      : cbcb27.umiacs.umd.edu
+  rank      : 5 (local_rank: 5)
+  exitcode  : 1 (pid: 875875)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[3]:
+  time      : 2025-03-03_02:25:16
+  host      : cbcb27.umiacs.umd.edu
+  rank      : 6 (local_rank: 6)
+  exitcode  : 1 (pid: 875876)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[4]:
+  time      : 2025-03-03_02:25:16
+  host      : cbcb27.umiacs.umd.edu
+  rank      : 7 (local_rank: 7)
+  exitcode  : 1 (pid: 875877)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-03-03_02:25:16
+  host      : cbcb27.umiacs.umd.edu
+  rank      : 2 (local_rank: 2)
+  exitcode  : 1 (pid: 875871)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+Stage 3: Evaluating fine-tuned model for round 3 using model: /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/v2_10_3Rounds/ft_iter_3
+scripts/star_pipeline_v2_code.sh: line 145: 875903 Killed                  python eval/eval.py --model_name_and_path "$CURRENT_MODEL" --dataset_name "$DATASET" --seed "$SEED" --output_dir "$OUTPUT_DIR" --save_raw_data_path "${SAVE_RAW_DATA_PATH}${round}.txt" --save_result_path "${SAVE_RESULT_PATH}${round}.txt" --batch_size "$INFERENCE_BATCH_SIZE" --max_tokens "$MAX_TOKENS" --temperature "$TEST_TEMP" --prompt_mode ${PROMPT_MODE} --top_p "$TOP_P" --top_k "$TOP_K" --gpu_count ${GPU_COUNR} --number_candidates ${NUM_CANDIDATES_EVAL} --mode "$MODE"
+===== Round 3 complete =====
+
+STaR pipeline completed.
