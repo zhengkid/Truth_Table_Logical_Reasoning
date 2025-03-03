@@ -137,8 +137,8 @@ def get_prompt(mode, prompt_mode, use_fewshot=False):
         full_prompt = sys_prompt + '\n\n' + fewshot_example + '\n\n' + example
     else:
         full_prompt = sys_prompt + '\n\n' + example
-    
-    return full_prompt
+    full_prompt_without_few_shot = sys_prompt + '\n\n' + example
+    return full_prompt, full_prompt_without_few_shot
 
 def obtain_seed_dataset(dataset_name, num_samples, seed=42):
     """
@@ -180,3 +180,60 @@ def check_huggingface_repo_exists(huggingface_repo: str) -> bool:
         return False
     
 
+def parse_answer(rationale_response, mode):
+    if mode != 'code':
+        rationale_response = rationale_response.split("<Reasoning>")[-1]
+        rationale_response = rationale_response.split("</Answer>")[0] + "</Answer>"
+        answer_response = rationale_response.split("<Answer>")[-1]
+        if "(A)" in answer_response:
+            predict = "True"
+        elif "(B)" in answer_response:
+            predict = "False"
+        elif "(C)" in answer_response:
+            predict = "Uncertain"
+        else:
+            predict = "Unknown"
+        return rationale_response, predict, None
+    else:
+        error_message = None
+        rationale_response = rationale_response.split("<PYTHON>")[-1]
+        rationale_response = rationale_response.split("</PYTHON>")[0]
+        if not rationale_response.strip():
+            print("Warning: Empty code response! Counting as incorrect.")
+            error_message = "Warning: Empty code response! Counting as incorrect."
+            return rationale_response, "Unknown", error_message
+        try:
+            if is_executable(rationale_response):
+                print("Executing code!")
+                predict = execute_with_timeout(rationale_response, timeout_seconds=3)
+            else:
+                print("Warning: the code is not executable")
+                predict = "Unexecutable"
+        except Exception as e:
+            print(f"Error executing code: {e}")
+            predict = "Execution Error"
+            error_message = f"Error executing code: {e}"
+        return rationale_response, predict, error_message
+    
+
+def post_process_batch_data(batch_prompts_only_example, batch_items, batch_responses, mode, total_num, correct, dataset_len):
+    rationales = []
+    for prompt_only_example, item, rationale_response in zip(batch_prompts_only_example, batch_items, batch_responses):
+        label = item['label']
+        for j in range(len(rationale_response)):
+            rationale_response_sample_j = rationale_response[j]
+            rationale_response_sample_j, predict_j, error_message = parse_answer(rationale_response_sample_j, mode)
+            if predict_j == label:
+                rationales.append({
+                    'prompt_id': str(total_num),
+                    'prompt': prompt_only_example, #prompt[0]['content'],
+                    'messages': [{"role": "user","content": prompt_only_example}, { "content":rationale_response_sample_j.strip(), "role": "assistant" }],
+                })
+                print(f"Generated rationale for data point {total_num + 1}/{dataset_len}")
+                correct += 1
+                print("correct_number:", correct)
+                break
+            else:
+                print(f"Filter out the data point due to poor quality.") 
+        total_num += 1
+    return rationales, correct, total_num

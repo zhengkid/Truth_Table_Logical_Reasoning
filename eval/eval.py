@@ -101,10 +101,7 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                         code_response_sample_j = code_response_sample_j.split("<PYTHON>")[-1]
                         code_response_sample_j = code_response_sample_j.split("</PYTHON>")[0]
                         code_response_sample_j = remove_incorrect_code_symbols(code_response_sample_j)
-
                         code_response_sample_j = code_response_sample_j.split("result = 'Unknown'")[0] + "result = 'Unknown'"
-                        print(j)
-                        print(code_response_sample_j)
                         if not code_response_sample_j:
                             print("Warning: Empty code response! Counting as incorrect.")
                             predict = "Unknown"
@@ -133,7 +130,6 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
                     print(f"Unexpected error in processing item: {e}")
                     predict = "Unknown"
                 finally:
-
                     accuracy = correct_num / total_num if total_num > 0 else 0.0
                     print(f"{correct_num} out of {total_num} is correct! Accuracy: {accuracy:.2%}")
 

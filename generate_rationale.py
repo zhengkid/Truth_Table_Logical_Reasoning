@@ -6,42 +6,40 @@ import argparse
 from datasets import Dataset, DatasetDict
 from utils.utils_function import (
     get_prompt,
-    execute_with_timeout,
     load_model_inference,
     generate_responses_batch,
-    is_executable,
+    post_process_batch_data,
     check_huggingface_repo_exists,
-    obtain_seed_dataset
+    obtain_seed_dataset,
 )
 
-def generate_rationales(model, dataset, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False, batch_size=16,use_fewshot=True, huggingface_repo="", prompt_mode='v1'):
+def generate_rationales(model, dataset, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False, batch_size=16,use_fewshot=True, huggingface_repo="", prompt_mode='v1', number_candidates=10):
     """
     Generate rationales for each data point in the dataset.
     """
     rationales = []
-    total_num = 0
-    correct = 0
-    rationale_prompt = get_prompt(mode=mode, prompt_mode=prompt_mode, use_fewshot=use_fewshot)
-    full_prompt = rationale_prompt[0]
-    full_prompt_only_example = rationale_prompt[1]
-    prompts = []
-    prompts_only_example = []
-    dataset_list = []
-    for item in dataset:
-        premises = item.get("premises", "")
-        conclusions = item.get("conclusion", "")
-        prompt = full_prompt.format(Premises=premises, Conclusions=conclusions)
-        prompt_only_example = full_prompt_only_example.format(Premises=premises, Conclusions=conclusions)
-        if is_chat_model:
-            prompt = [{"role": "user","content": prompt}]
-        prompts.append(prompt)
-        prompts_only_example.append(prompt_only_example)
-        dataset_list.append(item)
+    total_num, correct, dataset_len = 0, 0, len(dataset)
+    # load prompts 0: full prompt with few shot 1: prompt without few shot
+    full_prompt, full_prompt_only_example = get_prompt(mode=mode, prompt_mode=prompt_mode, use_fewshot=use_fewshot)
+    # Prepare prompts for datasets
+    for batch_start in tqdm.tqdm(range(0, len(dataset), batch_size)):
+        batch_dataset = dataset[batch_start: batch_start + batch_size]
+        batch_prompts = []
+        batch_prompts_only_example = []
+        batch_items = []
+        # Accumulate batch data 
+        for item in batch_dataset:
+            premises = item.get("premises", "")
+            conclusions = item.get("conclusion", "")
+            prompt = full_prompt.format(Premises=premises, Conclusions=conclusions)
+            prompt_only_example = full_prompt_only_example.format(Premises=premises, Conclusions=conclusions)
+            if is_chat_model:
+                prompt = [{"role": "user","content": prompt}]
+            batch_prompts.append(prompt)
+            batch_prompts_only_example.append(prompt_only_example)
+            batch_items.append(item)
 
-    for batch_start in tqdm.tqdm(range(0, len(dataset_list), batch_size)):
-        batch_prompts = prompts[batch_start: batch_start + batch_size]
-        batch_prompts_only_example = prompts_only_example[batch_start: batch_start + batch_size]
-        batch_items = dataset_list[batch_start: batch_start + batch_size]
+        # Process batch data via LLM
         try:
             with torch.no_grad():
                 batch_responses = generate_responses_batch(
@@ -52,90 +50,105 @@ def generate_rationales(model, dataset, max_tokens=512, temperature=0.7, top_p=0
                     top_p=top_p,
                     top_k=top_k,
                     stop=stop,
-                    is_chat_model=is_chat_model
+                    is_chat_model=is_chat_model,
+                    number_candidates=number_candidates,
                 )
         except Exception as e:
             print(f"Error generating responses for batch starting at index {batch_start}: {e}")
+            tqdm.tqdm.update(1)
             continue 
-        if mode != 'code':
-            for prompt, prompt_only_example, item, rationale_response in zip(batch_prompts, batch_prompts_only_example, batch_items, batch_responses):            
-                rationale_response = rationale_response.split("<Reasoning>")[-1]
-                rationale_response = rationale_response.split("</Answer>")[0] + "</Answer>"
-                answer_response = rationale_response.split("<Answer>")[-1]
-                if "(A)" in answer_response:
-                    predict = "True"
-                elif "(B)" in answer_response:
-                    predict = "False"
-                elif "(C)" in answer_response:
-                    predict = "Uncertain"
-                else:
-                    predict = "Unknown"
-                label = item['label']
-                if predict == label:
-                    rationales.append({
-                        'prompt_id': str(total_num),
-                        'prompt': prompt_only_example, #prompt[0]['content'],
-                        'messages': [{"role": "user","content": prompt_only_example}, { "content":rationale_response.strip(), "role": "assistant" }],
-                    })
-                    print(f"Generated rationale for data point {total_num + 1}/{len(dataset)}")
-                    correct += 1
-                    print("correct_number:", correct)
-                else:
-                    print(f"Filter out the data point due to poor quality.") 
-                total_num += 1
+        # Post-process batch data
+        batch_rationales, correct, total_num = post_process_batch_data(batch_prompts_only_example, batch_items, batch_responses, mode, total_num, correct, dataset_len)
+        rationales.extend(batch_rationales)
 
-        else:
-            for prompt, prompt_only_example, item, code_response in zip(batch_prompts, batch_prompts_only_example, batch_items, batch_responses):            
-                try:
-                    label = item['label']
-                    code_response = code_response.split("<PYTHON>")[-1]
-                    code_response = code_response.split("</PYTHON>")[0]
-
-                    if not code_response:
-                        print("Warning: Empty code response! Counting as incorrect.")
-                        predict = "Unknown"
-                    else:
-                        if is_executable(code_response):
-                            print("Executing code!")
-                            predict = execute_with_timeout(code_response, timeout_seconds=3)
-                        else:
-                            print("Warning: the code is not executable")
-                            predict = "Unexecutable"
-                    print(predict)
-                    if predict == label:
-                        rationales.append({
-                            'prompt_id': str(total_num),
-                            'prompt': prompt_only_example, #prompt[0]['content'],
-                            'messages': [{"role": "user","content": prompt_only_example}, { "content":code_response.strip(), "role": "assistant" }],
-                        })
-                        print(f"Generated rationale for data point {total_num + 1}/{len(dataset)}")
-                        correct += 1
-                        print("correct_number:", correct)
-                    else:
-                        print(f"Filter out the data point due to poor quality.")
-                    total_num += 1
-                except Exception as e:
-                    print(f"Unexpected error in processing item: {e}")
-                    print(f"Filter out the data point due to poor quality.")
-                    total_num += 1
-
-    
     ds = Dataset.from_list(rationales)
     ds_dict = DatasetDict({'train': ds})
     ds_dict.push_to_hub(
         repo_id=huggingface_repo,
         private=True
     )
-    
+
     print(
         f"Successfully pushed dataset to Hugging Face Hub: {huggingface_repo} "
         f"(train split, private={True})."
     )
+
+    # for item in dataset:
+    #     premises = item.get("premises", "")
+    #     conclusions = item.get("conclusion", "")
+    #     prompt = full_prompt.format(Premises=premises, Conclusions=conclusions)
+    #     prompt_only_example = full_prompt_only_example.format(Premises=premises, Conclusions=conclusions)
+    #     if is_chat_model:
+    #         prompt = [{"role": "user","content": prompt}]
+    #     prompts.append(prompt)
+    #     prompts_only_example.append(prompt_only_example)
+    #     dataset_list.append(item)
+
+    # for batch_start in tqdm.tqdm(range(0, len(dataset_list), batch_size)):
+    #     batch_prompts = prompts[batch_start: batch_start + batch_size]
+    #     batch_prompts_only_example = prompts_only_example[batch_start: batch_start + batch_size]
+    #     batch_items = dataset_list[batch_start: batch_start + batch_size]
+    #     try:
+    #         with torch.no_grad():
+    #             batch_responses = generate_responses_batch(
+    #                 model=model,
+    #                 user_prompts=batch_prompts,
+    #                 max_tokens=max_tokens,
+    #                 temperature=temperature,
+    #                 top_p=top_p,
+    #                 top_k=top_k,
+    #                 stop=stop,
+    #                 is_chat_model=is_chat_model
+    #             )
+    #     except Exception as e:
+    #         print(f"Error generating responses for batch starting at index {batch_start}: {e}")
+    #         tqdm.tqdm.update(1)
+    #         continue 
+    #     if mode != 'code':
+    #         for prompt, prompt_only_example, item, rationale_response in zip(batch_prompts, batch_prompts_only_example, batch_items, batch_responses):            
+    #             label = item['label']
+    #             for j in range(len(rationale_response)):
+    #                 rationale_response_sample_j = rationale_response[j]
+    #                 rationale_response_sample_j, predict_j = parse_answer(rationale_response_sample_j, mode)
+    #                 if predict_j == label:
+    #                     rationales.append({
+    #                         'prompt_id': str(total_num),
+    #                         'prompt': prompt_only_example, #prompt[0]['content'],
+    #                         'messages': [{"role": "user","content": prompt_only_example}, { "content":rationale_response_sample_j.strip(), "role": "assistant" }],
+    #                     })
+    #                     print(f"Generated rationale for data point {total_num + 1}/{len(dataset)}")
+    #                     correct += 1
+    #                     print("correct_number:", correct)
+    #                     break
+    #                 else:
+    #                     print(f"Filter out the data point due to poor quality.") 
+    #             total_num += 1
+    #     else:
+    #         for prompt, prompt_only_example, item, code_response in zip(batch_prompts, batch_prompts_only_example, batch_items, batch_responses):            
+    #             try:
+    #                 label = item['label']
+    #                 code_response, predict = parse_answer(code_response, mode)
+    #                 if predict == label:
+    #                     rationales.append({
+    #                         'prompt_id': str(total_num),
+    #                         'prompt': prompt_only_example, #prompt[0]['content'],
+    #                         'messages': [{"role": "user","content": prompt_only_example}, { "content":code_response.strip(), "role": "assistant" }],
+    #                     })
+    #                     print(f"Generated rationale for data point {total_num + 1}/{len(dataset)}")
+    #                     correct += 1
+    #                     print("correct_number:", correct)
+    #                 else:
+    #                     print(f"Filter out the data point due to poor quality.")
+    #                 total_num += 1
+    #             except Exception as e:
+    #                 print(f"Unexpected error in processing item: {e}")
+    #                 print(f"Filter out the data point due to poor quality.")
+    #                 total_num += 1
    
 
 ################################################# Star Pipeline #############################################################
 
-def generate_rationale_data(model_name_and_path, dataset_name, n_samples=200, batch_size=16, seed=42, max_tokens=512, temperature=1.0, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False, use_fewshot=False, huggingface_repo="", gpu_count=4, prompt_mode='v1'):
+def generate_rationale_data(model_name_and_path, dataset_name, n_samples=200, batch_size=16, seed=42, max_tokens=512, temperature=1.0, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False, use_fewshot=False, huggingface_repo="", gpu_count=4, prompt_mode='v1', number_candidates=10):
     """
     Implements the STaR pipeline where each fine-tuning starts from the initial base model.
 
@@ -173,6 +186,7 @@ def generate_rationale_data(model_name_and_path, dataset_name, n_samples=200, ba
         use_fewshot=use_fewshot,
         huggingface_repo=huggingface_repo,
         prompt_mode=prompt_mode,
+        number_candidates=number_candidates,
     )
 
    
@@ -218,6 +232,8 @@ def main():
                         help="Random seed for reproducibility.")
     parser.add_argument("--gpu_count", type=int, default=4, 
                         help="the number of gpus for inference.")
+    parser.add_argument("--number_candidates", type=int, default=10, 
+                        help="the number of candidates.")
     
 
     # Parse arguments
@@ -276,6 +292,7 @@ def main():
             huggingface_repo=args.huggingface_repo,
             gpu_count=args.gpu_count,
             prompt_mode=arg.prompt_mode,
+            number_candidates=args.number_candidates,
         )
     else:
         print(f"Dataset {args.huggingface_repo} already exists. Skipping generation.")
