@@ -24,10 +24,7 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
     rationales = []
     correct_num = 0
     total_num = 0   
-    num_exec = 0
     rationale_prompt, _ = get_prompt(mode=mode, prompt_mode=prompt_mode, use_fewshot=use_fewshot)
-    prompts = []
-    dataset_list = []
     for batch_start in tqdm.tqdm(range(0, len(dataset), batch_size)):
         batch_dataset = dataset[batch_start: batch_start + batch_size]
         batch_prompts = []

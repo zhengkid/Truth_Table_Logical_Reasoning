@@ -27,17 +27,18 @@ def generate_rationales(model, dataset, max_tokens=512, temperature=0.7, top_p=0
         batch_prompts = []
         batch_prompts_only_example = []
         batch_items = []
+        batch_premises = batch_dataset['premises']
+        batch_conclusions = batch_dataset['conclusion']
+        batch_labels = batch_dataset['label']
         # Accumulate batch data 
-        for item in batch_dataset:
-            premises = item.get("premises", "")
-            conclusions = item.get("conclusion", "")
-            prompt = full_prompt.format(Premises=premises, Conclusions=conclusions)
-            prompt_only_example = full_prompt_only_example.format(Premises=premises, Conclusions=conclusions)
+        for premise, conclusion, label  in zip(batch_premises, batch_conclusions, batch_labels):
+            prompt = full_prompt.format(Premises=premise, Conclusions=conclusion)
+            prompt_only_example = full_prompt_only_example.format(Premises=premise, Conclusions=conclusion)
             if is_chat_model:
                 prompt = [{"role": "user","content": prompt}]
             batch_prompts.append(prompt)
             batch_prompts_only_example.append(prompt_only_example)
-            batch_items.append(item)
+            batch_items.append({'premises':premise, 'conclusion': conclusion, 'label': label})
 
         # Process batch data via LLM
         try:
