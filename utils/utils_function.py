@@ -4,7 +4,7 @@ import os
 import requests
 from huggingface_hub import HfApi
 from datasets import load_dataset
-
+import traceback
 import re
 
 def remove_incorrect_code_symbols(text):
@@ -28,6 +28,51 @@ def remove_incorrect_code_symbols(text):
 class TimeoutException(Exception):
     pass
 
+#def run_code(code_str, return_dict):
+#    """
+#    Executes the given code string in a controlled environment and stores the result.
+#
+#    Args:
+#        code_str (str): The code to be executed.
+#        return_dict (dict): A shared dictionary to store the execution result.
+#
+#    Returns:
+#        None
+#    """
+#    try:
+#        exec(code_str, globals())
+#        return_dict["result"] = globals().get("result", "Unknown")
+#    except Exception as e:
+#        print("Error during execution:", e)
+#        return_dict["result"] = "Unknown"
+
+#def execute_with_timeout(code_str, timeout_seconds=3):
+#    """
+#    Executes code with a timeout to prevent infinite loops or excessive execution time.
+#
+#    Args:
+#        code_str (str): The code to be executed.
+#        timeout_seconds (int): Maximum execution time before termination.
+#
+#    Returns:
+#        str: The execution result or "Unknown" if timed out.
+#    """
+#    manager = multiprocessing.Manager()
+#    return_dict = manager.dict()
+#
+#    proc = multiprocessing.Process(target=run_code, args=(code_str, return_dict))
+#    proc.start()
+#    proc.join(timeout_seconds)  
+#
+#    if proc.is_alive():
+#        print("Timeout reached! Terminating process...")
+#        proc.terminate()
+#        proc.join() 
+#        return "Unknown" 
+
+#    return return_dict.get("result", "Unknown") 
+
+
 def run_code(code_str, return_dict):
     """
     Executes the given code string in a controlled environment and stores the result.
@@ -40,10 +85,18 @@ def run_code(code_str, return_dict):
         None
     """
     try:
-        exec(code_str, globals())
-        return_dict["result"] = globals().get("result", "Unknown")
+
+        local_vars = {}
+        exec(code_str, {}, local_vars)
+
+
+        return_dict["result"] = local_vars.get("result", "Unknown")
+        return_dict["error"] = None 
     except Exception as e:
+
         print("Error during execution:", e)
+
+        return_dict["error"] = traceback.format_exc()  
         return_dict["result"] = "Unknown"
 
 def execute_with_timeout(code_str, timeout_seconds=3):
@@ -55,22 +108,28 @@ def execute_with_timeout(code_str, timeout_seconds=3):
         timeout_seconds (int): Maximum execution time before termination.
 
     Returns:
-        str: The execution result or "Unknown" if timed out.
+        tuple: (result, error_message)
+               - result: The execution result or "Unknown" if timed out or error.
+               - error_message: None if no error, or the error traceback string.
     """
     manager = multiprocessing.Manager()
     return_dict = manager.dict()
 
     proc = multiprocessing.Process(target=run_code, args=(code_str, return_dict))
     proc.start()
-    proc.join(timeout_seconds)  
+    proc.join(timeout_seconds)
 
     if proc.is_alive():
         print("Timeout reached! Terminating process...")
         proc.terminate()
-        proc.join() 
-        return "Unknown" 
+        proc.join()
 
-    return return_dict.get("result", "Unknown") 
+        return "Unknown", "Timeout"
+
+
+    result = return_dict.get("result", "Unknown")
+    error_message = return_dict.get("error", None)
+    return result, error_message
 
 def load_model_inference(model_name_or_path='gemma-2-9b', gpu_count=4):
     """
@@ -128,7 +187,7 @@ def get_prompt(mode, prompt_mode, use_fewshot=False):
         sys_prompt = f.read()
     with open(example_path, encoding="utf-8") as f:
         example = f.read()
- 
+    sys_prompt = "" 
 
     if use_fewshot:
         fewshot_path = os.path.join('./Prompts', f'prompt_{mode}_star_{prompt_mode}.txt')
@@ -204,16 +263,19 @@ def parse_answer(rationale_response, mode):
             error_message = "Warning: Empty code response! Counting as incorrect."
             return rationale_response, "Unknown", error_message
         try:
-            if is_executable(rationale_response):
-                print("Executing code!")
-                predict = execute_with_timeout(rationale_response, timeout_seconds=3)
-            else:
-                print("Warning: the code is not executable")
-                predict = "Unexecutable"
+            #if is_executable(rationale_response):
+            print("Executing code!")
+            predict, err = execute_with_timeout(rationale_response, timeout_seconds=3)
+            #else:
+            #print("Warning: the code is not executable")
+            #predict = "Unexecutable"
+            #error_message = traceback.format_exc()
+            error_message = err
         except Exception as e:
             print(f"Error executing code: {e}")
             predict = "Execution Error"
             error_message = f"Error executing code: {e}"
+
         return rationale_response, predict, error_message
     
 
@@ -488,6 +550,7 @@ def self_refine(
     refine_prompt = [{"role": "user","content": refine_prompt}]
 
     # 3) Use generate_responses_batch to have your model produce a refined candidate
+    print(refine_prompt)
     refined_candidates = generate_responses_batch(
         model=model,
         user_prompts=[refine_prompt],  # only one prompt here
@@ -498,16 +561,16 @@ def self_refine(
         stop=stop,
         is_chat_model=is_chat_model,
         number_candidates=1
-    )
+     )
 
-    # refined_candidates is a list of lists because generate_responses_batch
-    # returns multiple outputs for multiple prompts. We only have one prompt,
-    # so we take refined_candidates[0][0].
+     # refined_candidates is a list of lists because generate_responses_batch
+     # returns multiple outputs for multiple prompts. We only have one prompt,
+     # so we take refined_candidates[0][0].
     raw_refined_code = refined_candidates[0][0]
 
-    # 4) (Optional) You could parse out the text inside <SOLUTION>...</SOLUTION> immediately here,
-    # or do it later in your parse_answer logic. For example:
-    # refined_code = extract_solution_content(raw_refined_code)
+     # 4) (Optional) You could parse out the text inside <SOLUTION>...</SOLUTION> immediately here,
+     # or do it later in your parse_answer logic. For example:
+     # refined_code = extract_solution_content(raw_refined_code)
     print(raw_refined_code)
     return raw_refined_code
 
