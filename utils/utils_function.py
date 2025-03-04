@@ -240,9 +240,9 @@ def check_huggingface_repo_exists(huggingface_repo: str) -> bool:
         return False
     
 
-def parse_answer(rationale_response, mode):
+def parse_answer(rationale_response, mode, prompt_mode):
     predict = None
-    if mode != 'code':
+    if mode != 'code' or (mode == 'code' and prompt_mode == 'v3'):
         rationale_response = rationale_response.split("<Reasoning>")[-1]
         rationale_response = rationale_response.split("</Answer>")[0] + "</Answer>"
         answer_response = rationale_response.split("<Answer>")[-1]
@@ -432,7 +432,8 @@ def post_process_batch_data_generate_rationale(
     top_k=40,
     stop=None,
     is_chat_model=False,
-    max_refine=10,  # <-- New parameter for maximum refine attempts
+    max_refine=0,  # <-- New parameter for maximum refine attempts
+    prompt_mode='v1'
 ):
     """
     For each sample, iterate over multiple candidate rationales. If any candidate
@@ -452,7 +453,7 @@ def post_process_batch_data_generate_rationale(
         # 1) Try each candidate response
         for j in range(len(rationale_response)):
             response_text = rationale_response[j]
-            parsed_rationale, predict_j, error_message = parse_answer(response_text, mode)
+            parsed_rationale, predict_j, error_message = parse_answer(response_text, mode, prompt_mode)
 
             if predict_j == label:
                 found_correct = True
@@ -496,7 +497,7 @@ def post_process_batch_data_generate_rationale(
                 )
 
                 # Parse the refined output
-                refined_rationale, refined_predict, refined_error_message = parse_answer(refined_code, mode)
+                refined_rationale, refined_predict, refined_error_message = parse_answer(refined_code, mode, prompt_mode)
 
                 if refined_predict == label:
                     correct += 1
@@ -552,7 +553,7 @@ def post_process_batch_data_generate_rationale(
 #         accuracy = correct / total_num if total_num > 0 else 0.0
 #     return rationales, correct, total_num, accuracy
 
-def post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mode, total_num, correct, model, max_tokens=2048, temperature=0.7, top_p=0.9, top_k=40, stop=None, is_chat_model=False, max_refine=0, ):
+def post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mode, total_num, correct, model, max_tokens=2048, temperature=0.7, top_p=0.9, top_k=40, stop=None, is_chat_model=False, max_refine=0, prompt_mode='v1'):
     rationales = []
     for prompt, item, rationale_response in zip(batch_prompts, batch_items, batch_responses):
         label = item['label']
@@ -568,7 +569,7 @@ def post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mo
         for j in range(len(rationale_response)):
             rationale_response_sample_j = rationale_response[j]
             # parse_answer should return: (parsed_text, predicted_label, error_message)
-            rationale_response_sample_j, predict_j, error_message = parse_answer(rationale_response_sample_j, mode)
+            rationale_response_sample_j, predict_j, error_message = parse_answer(rationale_response_sample_j, mode, prompt_mode=prompt_mode)
 
             if predict_j == label:
                 correct += 1
@@ -596,7 +597,7 @@ def post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mo
                     stop,
                     is_chat_model
                 )
-                rationale_response_sample_j, refined_predict, refined_error_message = parse_answer(refined_code, mode)
+                rationale_response_sample_j, refined_predict, refined_error_message = parse_answer(refined_code, mode, prompt_mode)
                 predict_j = refined_predict
                 
                 if refined_predict == label:

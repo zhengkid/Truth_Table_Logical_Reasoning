@@ -59,7 +59,7 @@ def generate_rationales(model, dataset, max_tokens=512, temperature=0.7, top_p=0
             tqdm.tqdm.update(1)
             continue 
         # Post-process batch data
-        batch_rationales, correct, total_num = post_process_batch_data_generate_rationale(batch_prompts_only_example, batch_items, batch_responses, mode, total_num, correct, dataset_len, model, max_tokens, temperature, top_p, top_k, stop, is_chat_model)
+        batch_rationales, correct, total_num = post_process_batch_data_generate_rationale(batch_prompts_only_example, batch_items, batch_responses, mode, total_num, correct, dataset_len, model, max_tokens, temperature, top_p, top_k, stop, is_chat_model, prompt_mode=prompt_mode)
         rationales.extend(batch_rationales)
 
     ds = Dataset.from_list(rationales)
