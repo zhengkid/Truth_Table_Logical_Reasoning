@@ -87,11 +87,12 @@ def run_code(code_str, return_dict):
     try:
 
         local_vars = {}
-        exec(code_str, {}, local_vars)
-
+        print(repr(code_str))
+        exec(code_str, local_vars, local_vars)
 
         return_dict["result"] = local_vars.get("result", "Unknown")
-        return_dict["error"] = None 
+        return_dict["error"] = None
+        print(return_dict["result"])
     except Exception as e:
 
         print("Error during execution:", e)
@@ -187,7 +188,7 @@ def get_prompt(mode, prompt_mode, use_fewshot=False):
         sys_prompt = f.read()
     with open(example_path, encoding="utf-8") as f:
         example = f.read()
-    sys_prompt = "" 
+
 
     if use_fewshot:
         fewshot_path = os.path.join('./Prompts', f'prompt_{mode}_star_{prompt_mode}.txt')
@@ -551,7 +552,7 @@ def post_process_batch_data_generate_rationale(
 #         accuracy = correct / total_num if total_num > 0 else 0.0
 #     return rationales, correct, total_num, accuracy
 
-def post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mode, total_num, correct, model, max_tokens=2048, temperature=0.7, top_p=0.9, top_k=40, stop=None, is_chat_model=False, max_refine=10, ):
+def post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mode, total_num, correct, model, max_tokens=2048, temperature=0.7, top_p=0.9, top_k=40, stop=None, is_chat_model=False, max_refine=0, ):
     rationales = []
     for prompt, item, rationale_response in zip(batch_prompts, batch_items, batch_responses):
         label = item['label']
@@ -718,6 +719,24 @@ def self_refine(
      # 4) (Optional) You could parse out the text inside <SOLUTION>...</SOLUTION> immediately here,
      # or do it later in your parse_answer logic. For example:
      # refined_code = extract_solution_content(raw_refined_code)
-    print(raw_refined_code)
+
     return raw_refined_code
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

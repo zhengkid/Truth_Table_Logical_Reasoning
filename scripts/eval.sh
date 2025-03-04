@@ -11,7 +11,7 @@ SAVE_RAW_DATA_PATH="raw_data.json"
 SAVE_RESULT_PATH="result.txt"
 PROMPT_MODE='v2'
 NUM_CANDIDATES=1
-BATCH_SIZE=1
+BATCH_SIZE=16
 MAX_TOKENS=2048
 GPU_COUNR=8
 TEMPERATURE=0.7
@@ -35,5 +35,4 @@ python ./eval/eval.py \
   --top_p ${TOP_P} \
   --top_k ${TOP_K} \
   --seed ${SEED} \
-  --number_candidates ${NUM_CANDIDATES} \
-  --use_fewshot
+  --number_candidates ${NUM_CANDIDATES} 

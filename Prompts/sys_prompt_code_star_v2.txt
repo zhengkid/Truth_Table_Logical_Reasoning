@@ -1,12 +1,13 @@
-You will be provided with a logical reasoning problem. Your task is to translate this problem text into Python code using Z3 SMT solver. You will first see three examples, and then you will be asked to translate a new input into Python code following a similar style.
+You will be provided with a logical reasoning problem. Your task is to translate this problem text into Python code using Z3 SMT solver. 
+
 
 Instructions for the translation:
 
-	1.	Import Z3
+  1.	Import Z3
       - At the beginning of your code, import the necessary functions and classes from the Z3 Python package. For example:
         from z3 import *
       - This provides access to all basic Z3 classes and functions like Solver, Function, ForAll, BoolSort(), DeclareSort(), etc.
-	2.	Define the Domain (Sorts)
+  2.	Define the Domain (Sorts)
       - Determine the type(s) of objects relevant in the logical problem. If the problem discusses abstract individuals (like people), you can create a custom Z3 sort via:
         Person = DeclareSort('Person')
       - If the problem uses integers, reals, or bitvectors, you may use built-in sorts:
@@ -73,263 +74,161 @@ Instructions for the translation:
             print("Unexpected or unknown result.")
             result = 'Unknown'
 
-An example begins with the text "<EXAMPLE n>" and ends with "<EXAMPLE n>", where "n" is the number of the example. Similarly, the premises will start and end with <Premises> and </Premises>, the conclusion will start and end with <Conclusion> and </Conclusion> and the Python translation will start and end with <PYTHON> and </PYTHON>.
+
+he premises will start and end with <Premises> and </Premises>, the conclusion will start and end with <Conclusion> and </Conclusion> and the Python translation will start and end with <PYTHON> and </PYTHON>.
 
 
-<EXAMPLE 1>
-<Premises>
-Peter Parker is either a superhero or a civilian.
-The Hulk is a destroyer.
-The Hulk wakes up when he is angry.
-If the Hulk wakes up, then he will break a bridge.
-Thor is a god.
-Thor will break a bridge when he is happy.
-A god is not a destroyer.
-Peter Parker wears a uniform when he is a superhero.
-Peter Parker is not a civilian if a destroyer is breaking a bridge.
-If Thor is happy, the Hulk is angry.
-</Premises>
-<Conclusion>
-If Thor is happy, then Peter Parker wears a uniform.
-</Conclusion>
-<PYTHON>
-from z3 import Solver, DeclareSort, Function, ForAll, Implies, And, Or, Not, BoolSort, Const
 
-# Declare sorts
-Person = DeclareSort("Person")  # Entities (Peter Parker, Hulk, Thor)
-Object = DeclareSort("Object")  # Objects (bridge, uniform)
 
-# Define predicates
-Is_Superhero = Function("Is_Superhero", Person, BoolSort())  # Superhero(x)
-Is_Civilian = Function("Is_Civilian", Person, BoolSort())  # Civilian(x)
-Is_Destroyer = Function("Is_Destroyer", Person, BoolSort())  # Destroyer(x)
-Is_God = Function("Is_God", Person, BoolSort())  # God(x)
-Is_Angry = Function("Is_Angry", Person, BoolSort())  # Angry(x)
-Is_Happy = Function("Is_Happy", Person, BoolSort())  # Happy(x)
-Wakes_Up = Function("Wakes_Up", Person, BoolSort())  # WakesUp(x)
-Breaks = Function("Breaks", Person, Object, BoolSort())  # Breaks(x, y)
-Wears = Function("Wears", Person, Object, BoolSort())  # Wears(x, y)
 
-# Declare constants
-PeterParker = Const("PeterParker", Person)
-TheHulk = Const("TheHulk", Person)
-Thor = Const("Thor", Person)
-Bridge = Const("Bridge", Object)
-Uniform = Const("Uniform", Object)
 
-# Declare variables
-x = Const("x", Person)
 
-# Define solver
-solver = Solver()
 
-# **Premises**
-solver.add(Or(Is_Superhero(PeterParker), Is_Civilian(PeterParker)))  # Superhero(peterParker) ⊕ Civilian(peterParker)
-solver.add(Not(And(Is_Superhero(PeterParker), Is_Civilian(PeterParker))))  # Ensuring XOR condition
-solver.add(Is_Destroyer(TheHulk))  # Destroyer(theHulk)
-solver.add(Implies(Is_Angry(TheHulk), Wakes_Up(TheHulk)))  # Angry(theHulk) → WakesUp(theHulk)
-solver.add(Implies(Wakes_Up(TheHulk), Breaks(TheHulk, Bridge)))  # WakesUp(theHulk) → Breaks(theHulk, bridge)
-solver.add(Is_God(Thor))  # God(thor)
-solver.add(Implies(Is_Happy(Thor), Breaks(Thor, Bridge)))  # Happy(thor) → Breaks(thor, bridge)
-solver.add(ForAll([x], Implies(Is_God(x), Not(Is_Destroyer(x)))))  # ∀x (God(x) → ¬Destroyer(x))
-solver.add(Implies(Is_Superhero(PeterParker), Wears(PeterParker, Uniform)))  # Superhero(peter) → Wears(peter, uniform)
-solver.add(ForAll([x], Implies(And(Is_Destroyer(x), Breaks(x, Bridge)), Not(Is_Civilian(PeterParker)))))  # ∀x ((Destroyer(x) ∧ Breaks(x,bridge)) → ¬Civilian(peter))
-solver.add(Implies(Is_Happy(Thor), Is_Angry(TheHulk)))  # Happy(thor) → Angry(theHulk)
 
-# **Conclusion to Check**
-conclusion = Implies(Is_Happy(Thor), Wears(PeterParker, Uniform))  # Happy(thor) → Wears(peterParker, uniform)
 
-# **Check validity**
-solver.push()
-solver.add(Not(conclusion))  # Negate the conclusion and check for contradiction
-result1 = solver.check()
-solver.pop()
 
-solver.push()
-solver.add(conclusion)
-result2 = solver.check()
-solver.pop()
 
-# **Corrected Decision Logic**
-from z3 import unsat, sat
 
-if result1 == unsat:
-    print("The conclusion is necessarily true: If Thor is happy, then Peter Parker wears a uniform. (True)")
-    result = 'True'
-elif result1 == sat and result2 == unsat:
-    print("The conclusion is necessarily false: If Thor is happy, Peter Parker may not wear a uniform. (False)")
-    result = 'False'
-elif result1 == sat and result2 == sat:
-    print("The conclusion is uncertain: It depends on additional unstated assumptions. (Uncertain)")
-    result = 'Uncertain'
-else:
-    print("Unexpected result, possible logical error.")
-    result = 'Unknown'
-</PYTHON>
-</EXAMPLE 1>
 
-<EXAMPLE 2>
-<Premises>
-All philosophers reason.
-Some sophists reason.
-All who can reason can distinguish truth from falsehood.
-Nobody who can distinguish truth from falsehood is morally perfect.
-The theistic God is morally perfect.
-The theistic God is a sophist.
-</Premises>
-<Conclusion>
-The theistic God is a sophist and a philosopher.
-</Conclusion>
-<PYTHON>
-from z3 import Solver, DeclareSort, Function, ForAll, Exists, Implies, And, Or, Not, BoolSort, Const
 
-# Declare sorts
-Person = DeclareSort("Person")  # The domain of people/entities
 
-# Define predicates
-Is_Philosopher = Function("Is_Philosopher", Person, BoolSort())  # Philosopher(x)
-Is_Sophist = Function("Is_Sophist", Person, BoolSort())  # Sophist(x)
-Can_Reason = Function("Can_Reason", Person, BoolSort())  # Reason(x)
-Can_Distinguish_Truth = Function("Can_Distinguish_Truth", Person, BoolSort())  # CanDistinguishFrom(x, truth, falsehood)
-Is_Morally_Perfect = Function("Is_Morally_Perfect", Person, BoolSort())  # MorallyPerfect(x)
 
-# Declare constants
-TheisticGod = Const("TheisticGod", Person)
-x = Const("x", Person)
 
-# Define solver
-solver = Solver()
 
-# **Premises**
-solver.add(ForAll([x], Implies(Is_Philosopher(x), Can_Reason(x))))  # ∀x (Philosopher(x) → Reason(x))
-solver.add(Exists([x], And(Is_Sophist(x), Can_Reason(x))))  # ∃x (Sophist(x) ∧ Reason(x))
-solver.add(ForAll([x], Implies(Can_Reason(x), Can_Distinguish_Truth(x))))  # ∀x (Reason(x) → CanDistinguishFrom(x, truth, falsehood))
-solver.add(ForAll([x], Implies(Can_Distinguish_Truth(x), Not(Is_Morally_Perfect(x)))))  # ∀x (CanDistinguishFrom(x, truth, falsehood) → ¬MorallyPerfect(x))
-solver.add(Is_Morally_Perfect(TheisticGod))  # MorallyPerfect(theisticGod)
 
-# **Conclusion to Check**
-conclusion = And(Is_Sophist(TheisticGod), Is_Philosopher(TheisticGod))  # Sophist(theisticGod) ∧ Philosopher(theisticGod)
 
-# **Check validity**
-solver.push()
-solver.add(Not(conclusion))  # Negate the conclusion and check for contradiction
-result1 = solver.check()
-solver.pop()
 
-solver.push()
-solver.add(conclusion)
-result2 = solver.check()
-solver.pop()
 
-# **Corrected Decision Logic**
-from z3 import unsat, sat
 
-if result1 == unsat:
-    print("The conclusion is necessarily true: The theistic God is a sophist and a philosopher. (True)")
-    result = 'True'
-elif result1 == sat and result2 == unsat:
-    print("The conclusion is necessarily false: The theistic God is not both a sophist and a philosopher. (False)")
-    result = 'False'
-elif result1 == sat and result2 == sat:
-    print("The conclusion is uncertain: It depends on additional unstated assumptions. (Uncertain)")
-    result = 'Uncertain'
-else:
-    print("Unexpected result, possible logical error.")
-    result = 'Unknown'
 
-</PYTHON>
-</EXAMPLE 2>
 
-<EXAMPLE 3>
-<Premises>
-William Dickinson was a British politician who sat in the House of Commons William Dickinson attended Westminster school for high school and then the University of Edinburgh. 
-The University of Edinburgh is a university located in the United Kingdom. 
-William Dickinson supported the Portland Whigs. 
-People who supported the Portland Whigs did not get a seat in the Parliament.
-</Premises>
-<Conclusion>
-William Dickinson went to schools located in the United Kingdom for both high school and university.
-</Conclusion>
-<PYTHON>
-from z3 import Solver, DeclareSort, Function, ForAll, Exists, Implies, And, Or, Not, BoolSort, Const
 
-# Declare sorts
-Person = DeclareSort("Person")  # People (William Dickinson)
-School = DeclareSort("School")  # Schools (Westminster, University of Edinburgh)
-PoliticalParty = DeclareSort("PoliticalParty")  # Political parties
-Institution = DeclareSort("Institution")  # Institutions (Parliament, House of Commons)
-Country = DeclareSort("Country")  # Countries (United Kingdom)
 
-# Define predicates
-Is_British = Function("Is_British", Person, BoolSort())  # British(x)
-Is_Politician = Function("Is_Politician", Person, BoolSort())  # Politician(x)
-Sat_In = Function("Sat_In", Person, Institution, BoolSort())  # SatIn(x, y)
-Attended = Function("Attended", Person, School, BoolSort())  # Attended(x, y)
-Is_HighSchool = Function("Is_HighSchool", School, BoolSort())  # Highschool(x)
-Is_University = Function("Is_University", School, BoolSort())  # University(x)
-Located_In = Function("Located_In", School, Country, BoolSort())  # LocatedIn(x, y)
-Supported = Function("Supported", Person, PoliticalParty, BoolSort())  # Supported(x, y)
 
-# Declare constants
-WilliamDickinson = Const("WilliamDickinson", Person)
-WestminsterSchool = Const("WestminsterSchool", School)
-UniversityOfEdinburgh = Const("UniversityOfEdinburgh", School)
-PortlandWhigs = Const("PortlandWhigs", PoliticalParty)
-HouseOfCommons = Const("HouseOfCommons", Institution)
-Parliament = Const("Parliament", Institution)
-UnitedKingdom = Const("UnitedKingdom", Country)
 
-# Declare variables
-x = Const("x", School)
-y = Const("y", School)
-p = Const("p", Person)
 
-# Define solver
-solver = Solver()
 
-# **Premises**
-solver.add(Is_British(WilliamDickinson))  # British(williamDickinson)
-solver.add(Is_Politician(WilliamDickinson))  # Politician(williamDickinson)
-solver.add(Sat_In(WilliamDickinson, HouseOfCommons))  # SatIn(williamDickinson, houseOfCommons)
-solver.add(Attended(WilliamDickinson, WestminsterSchool))  # Attended(williamDickinson, westminsterSchool)
-solver.add(Is_HighSchool(WestminsterSchool))  # Highschool(westminsterSchool)
-solver.add(Attended(WilliamDickinson, UniversityOfEdinburgh))  # Attended(williamDickinson, universityOfEdinburgh)
-solver.add(Is_University(UniversityOfEdinburgh))  # University(universityOfEdinburgh)
-solver.add(Located_In(UniversityOfEdinburgh, UnitedKingdom))  # LocatedIn(universityOfEdinburgh, unitedKingdom)
-solver.add(Supported(WilliamDickinson, PortlandWhigs))  # Supported(williamDickinson, portlandWhigs)
-solver.add(ForAll([p], Implies(Supported(p, PortlandWhigs), Not(Sat_In(p, Parliament)))))  # ∀x (Supported(x, portlandWhigs) → ¬SatIn(x, parliament))
 
-# **Conclusion to Check**
-conclusion = Exists([x, y], And(
-    Attended(WilliamDickinson, x), Is_HighSchool(x), Located_In(x, UnitedKingdom),
-    Attended(WilliamDickinson, y), Is_University(y), Located_In(y, UnitedKingdom)
-))  # ∃x ∃y (Attended(williamDickinson, x) ∧ Highschool(x) ∧ LocatedIn(x, unitedKingdom) ∧ Attended(williamDickinson, y) ∧ University(y) ∧ LocatedIn(y, unitedKingdom))
 
-# **Check validity**
-solver.push()
-solver.add(Not(conclusion))  # Negate the conclusion and check for contradiction
-result1 = solver.check()
-solver.pop()
 
-solver.push()
-solver.add(conclusion)
-result2 = solver.check()
-solver.pop()
 
-# **Corrected Decision Logic**
-from z3 import unsat, sat
 
-if result1 == unsat:
-    print("The conclusion is necessarily true: William Dickinson went to schools located in the United Kingdom for both high school and university. (True)")
-    result = 'True'
-elif result1 == sat and result2 == unsat:
-    print("The conclusion is necessarily false: William Dickinson did not go to schools located in the UK for both high school and university. (False)")
-    result = 'False'
-elif result1 == sat and result2 == sat:
-    print("The conclusion is uncertain: It depends on additional unstated assumptions. (Uncertain)")
-    result = 'Uncertain'
-else:
-    print("Unexpected result, possible logical error.")
-    result = 'Unknown'
-</PYTHON>
-</EXAMPLE 3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
