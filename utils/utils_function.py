@@ -615,7 +615,7 @@ def post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mo
         # the successful refine version if it succeeds, you can do so:
         final_rationale = rationale_response_sample_j.strip()
 
-
+        print(final_rationale)
 
         # # If all candidates fail to match the correct answer
         # if not found_correct:

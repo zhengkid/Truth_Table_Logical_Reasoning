@@ -6,4 +6,13 @@ The following is the problem you need to solve.
 <Conclusion>
 {Conclusions}
 </Conclusion>
-<PYTHON>
+<Question>
+Is the following statement true, false, or uncertain? {Conclusions}
+</Question>
+<Options>
+(A) True
+(B) False
+(C) Uncertain
+</Options>
+<Reasoning>
+

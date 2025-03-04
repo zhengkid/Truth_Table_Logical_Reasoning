@@ -35,6 +35,7 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
         batch_labels = batch_dataset['label']
         for premise, conclusion, label  in zip(batch_premises, batch_conclusions, batch_labels):
             prompt = rationale_prompt.format(Premises=premise, Conclusions=conclusion)
+
             if is_chat_model:
                 prompt = [{"role": "user","content": prompt}]
             batch_prompts.append(prompt)

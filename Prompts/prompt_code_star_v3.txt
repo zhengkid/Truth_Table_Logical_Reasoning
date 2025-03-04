@@ -252,7 +252,7 @@ if __name__ == '__main__':
     print("Conclusion: The theistic God is a sophist and a philosopher?", result)
 
 </PYTHON>
-Therefore, the answer is (B). 
+Therefore, the answer is (B).
 </Reasoning>
 <Answer>
 The final answer is (B).
@@ -374,7 +374,7 @@ if __name__ == '__main__':
     result = func()
     print("Conclusion: William Dickinson went to schools located in the UK for both high school and university?", result)
 </PYTHON>
-Therefore, the answer is (C). 
+Therefore, the answer is (C).
 </Reasoning>
 <Answer>
 The final answer is (C).
