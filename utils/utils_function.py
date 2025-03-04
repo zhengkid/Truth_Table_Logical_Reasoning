@@ -597,7 +597,7 @@ def post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mo
                 )
                 rationale_response_sample_j, refined_predict, refined_error_message = parse_answer(refined_code, mode)
                 predict_j = refined_predict
-
+                
                 if refined_predict == label:
                     correct += 1
                     found_correct = True
@@ -606,7 +606,8 @@ def post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mo
                     # Optionally add the newly refined attempt's error to the list
                     all_error_messages.append(refined_error_message)
                     all_error_programs.append(rationale_response_sample_j)
-
+                if refined_error_message is None:
+                    break
         # Choose which rationale to store in the final result.
         # If you want to store the last refined version when all attempts fail or
         # the successful refine version if it succeeds, you can do so:
@@ -686,7 +687,7 @@ def self_refine(
         "We have the following erroneous candidates for the same question.\n"
         "Each includes an error message and the code or reasoning that failed.\n\n"
         + "\n".join(combined_errors)
-        + "\nPlease provide a corrected or refined solution, free of these errors."
+        + "\nPlease provide a corrected or refined solution, free of these errors. You mush solve the errors by modifying the erroneeous codes."
         "\n\nIMPORTANT: Your answer must follow this exact format:\n"
         "<PYTHON>\n"
         "Your refined code.\n"
