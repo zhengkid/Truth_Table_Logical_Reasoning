@@ -302,6 +302,120 @@ def parse_answer(rationale_response, mode):
 #     return rationales, correct, total_num
 
 
+# def post_process_batch_data_generate_rationale(
+#     batch_prompts_only_example,
+#     batch_items,
+#     batch_responses,
+#     mode,
+#     total_num,
+#     correct,
+#     dataset_len,
+#     model,              
+#     max_tokens=2048,
+#     temperature=0.7,
+#     top_p=0.9,
+#     top_k=40,
+#     stop=None,
+#     is_chat_model=False
+# ):
+#     """
+#     For each sample, iterate over multiple candidate rationales. If any candidate
+#     predicts the label correctly, we record it. If all candidates are incorrect,
+#     we collect their error info and invoke self_refine for another attempt.
+
+#     :param batch_prompts_only_example: The prompts for each sample (list of strings).
+#     :param batch_items: The dataset items, each with a 'label' and other info.
+#     :param batch_responses: A list of lists of candidate responses.
+#     :param mode: A string indicating how parse_answer should interpret the data (if needed).
+#     :param total_num: A running count of how many samples we've processed so far.
+#     :param correct: A running count of how many samples we've correctly predicted so far.
+#     :param dataset_len: The total size of the dataset, for logging purposes.
+#     :param model: The model to be used for refinement within self_refine.
+#     :param max_tokens: Max tokens for refinement generation.
+#     :param temperature: Temperature for refinement generation.
+#     :param top_p: Top-p (nucleus) sampling parameter for refinement generation.
+#     :param top_k: Top-k sampling parameter for refinement generation.
+#     :param stop: Optional stop tokens for refinement generation.
+#     :param is_chat_model: Whether the model is a chat model.
+#     :return: (rationales, correct, total_num)
+#              rationales: A list of dictionaries containing the stored rationales.
+#              correct: Updated count of how many items were correctly predicted.
+#              total_num: Updated count of how many items were processed.
+#     """
+#     rationales = []
+
+#     for prompt_only_example, item, rationale_response in zip(batch_prompts_only_example, batch_items, batch_responses):
+#         label = item['label']
+#         found_correct = False
+
+#         # Collect all error messages and failed responses for potential refinement
+#         all_error_messages = []
+#         all_error_programs = []
+
+#         # Try each candidate response
+#         for j in range(len(rationale_response)):
+#             response_text = rationale_response[j]
+#             parsed_rationale, predict_j, error_message = parse_answer(response_text, mode)
+
+#             if predict_j == label:
+#                 found_correct = True
+#                 correct += 1
+#                 print(f"Generated rationale for data point {total_num + 1}/{dataset_len}")
+#                 print("correct_number:", correct)
+
+#                 # Store the successful rationale
+#                 rationales.append({
+#                     'prompt_id': str(total_num),
+#                     'prompt': prompt_only_example,
+#                     'messages': [
+#                         {"role": "user", "content": prompt_only_example},
+#                         {"role": "assistant", "content": parsed_rationale.strip()}
+#                     ],
+#                 })
+#                 break
+#             else:
+#                 # Store errors and incorrect candidates for potential refinement
+#                 all_error_messages.append(error_message)
+#                 all_error_programs.append(response_text)
+#                 print("Filter out the data point due to poor quality.")
+
+#         # If no candidate was correct, try self-refine
+#         if not found_correct:
+#             refined_code = self_refine(
+#                 error_messages=all_error_messages,
+#                 error_programs=all_error_programs,
+#                 model=model,
+#                 max_tokens=max_tokens,
+#                 temperature=temperature,
+#                 top_p=top_p,
+#                 top_k=top_k,
+#                 stop=stop,
+#                 is_chat_model=is_chat_model
+#             )
+
+#             # Parse the refined output
+#             refined_rationale, refined_predict, refined_error_message = parse_answer(refined_code, mode)
+#             if refined_predict == label:
+#                 correct += 1
+#                 print(f"Generated rationale for data point {total_num + 1}/{dataset_len} (via refine)")
+#                 print("correct_number:", correct)
+
+#                 # Store the refined rationale
+#                 rationales.append({
+#                     'prompt_id': str(total_num),
+#                     'prompt': prompt_only_example,
+#                     'messages': [
+#                         {"role": "user", "content": prompt_only_example},
+#                         {"role": "assistant", "content": refined_rationale.strip()}
+#                     ],
+#                 })
+#             else:
+#                 # If it is still incorrect, choose how to handle (e.g., additional refine or skip)
+#                 print("Refinement also failed. No rationale recorded for this data point.")
+
+#         total_num += 1
+#     return rationales, correct, total_num
+
 def post_process_batch_data_generate_rationale(
     batch_prompts_only_example,
     batch_items,
@@ -310,37 +424,19 @@ def post_process_batch_data_generate_rationale(
     total_num,
     correct,
     dataset_len,
-    model,              
+    model,
     max_tokens=2048,
     temperature=0.7,
     top_p=0.9,
     top_k=40,
     stop=None,
-    is_chat_model=False
+    is_chat_model=False,
+    max_refine=10,  # <-- New parameter for maximum refine attempts
 ):
     """
     For each sample, iterate over multiple candidate rationales. If any candidate
     predicts the label correctly, we record it. If all candidates are incorrect,
-    we collect their error info and invoke self_refine for another attempt.
-
-    :param batch_prompts_only_example: The prompts for each sample (list of strings).
-    :param batch_items: The dataset items, each with a 'label' and other info.
-    :param batch_responses: A list of lists of candidate responses.
-    :param mode: A string indicating how parse_answer should interpret the data (if needed).
-    :param total_num: A running count of how many samples we've processed so far.
-    :param correct: A running count of how many samples we've correctly predicted so far.
-    :param dataset_len: The total size of the dataset, for logging purposes.
-    :param model: The model to be used for refinement within self_refine.
-    :param max_tokens: Max tokens for refinement generation.
-    :param temperature: Temperature for refinement generation.
-    :param top_p: Top-p (nucleus) sampling parameter for refinement generation.
-    :param top_k: Top-k sampling parameter for refinement generation.
-    :param stop: Optional stop tokens for refinement generation.
-    :param is_chat_model: Whether the model is a chat model.
-    :return: (rationales, correct, total_num)
-             rationales: A list of dictionaries containing the stored rationales.
-             correct: Updated count of how many items were correctly predicted.
-             total_num: Updated count of how many items were processed.
+    we collect their error info and try self_refine multiple times.
     """
     rationales = []
 
@@ -352,7 +448,7 @@ def post_process_batch_data_generate_rationale(
         all_error_messages = []
         all_error_programs = []
 
-        # Try each candidate response
+        # 1) Try each candidate response
         for j in range(len(rationale_response)):
             response_text = rationale_response[j]
             parsed_rationale, predict_j, error_message = parse_answer(response_text, mode)
@@ -379,43 +475,57 @@ def post_process_batch_data_generate_rationale(
                 all_error_programs.append(response_text)
                 print("Filter out the data point due to poor quality.")
 
-        # If no candidate was correct, try self-refine
+        # 2) If no candidate was correct, try self-refine up to max_refine times
         if not found_correct:
-            refined_code = self_refine(
-                error_messages=all_error_messages,
-                error_programs=all_error_programs,
-                model=model,
-                max_tokens=max_tokens,
-                temperature=temperature,
-                top_p=top_p,
-                top_k=top_k,
-                stop=stop,
-                is_chat_model=is_chat_model
-            )
+            refined_rationale = None
+            refined_predict = None
+            refined_error_message = None
 
-            # Parse the refined output
-            refined_rationale, refined_predict, refined_error_message = parse_answer(refined_code, mode)
-            if refined_predict == label:
-                correct += 1
-                print(f"Generated rationale for data point {total_num + 1}/{dataset_len} (via refine)")
-                print("correct_number:", correct)
+            for refine_count in range(max_refine):
+                refined_code = self_refine(
+                    error_messages=all_error_messages,
+                    error_programs=all_error_programs,
+                    model=model,
+                    max_tokens=max_tokens,
+                    temperature=temperature,
+                    top_p=top_p,
+                    top_k=top_k,
+                    stop=stop,
+                    is_chat_model=is_chat_model
+                )
 
-                # Store the refined rationale
-                rationales.append({
-                    'prompt_id': str(total_num),
-                    'prompt': prompt_only_example,
-                    'messages': [
-                        {"role": "user", "content": prompt_only_example},
-                        {"role": "assistant", "content": refined_rationale.strip()}
-                    ],
-                })
-            else:
-                # If it is still incorrect, choose how to handle (e.g., additional refine or skip)
-                print("Refinement also failed. No rationale recorded for this data point.")
+                # Parse the refined output
+                refined_rationale, refined_predict, refined_error_message = parse_answer(refined_code, mode)
+
+                if refined_predict == label:
+                    correct += 1
+                    found_correct = True
+                    print(f"Generated rationale for data point {total_num + 1}/{dataset_len} (via refine attempt {refine_count+1})")
+                    print("correct_number:", correct)
+
+                    # Store the refined rationale
+                    rationales.append({
+                        'prompt_id': str(total_num),
+                        'prompt': prompt_only_example,
+                        'messages': [
+                            {"role": "user", "content": prompt_only_example},
+                            {"role": "assistant", "content": refined_rationale.strip()}
+                        ],
+                    })
+                    break
+                else:
+                    # If still incorrect, add errors and the new output to feed next iteration
+                    print("Refinement attempt failed. Trying further, if within limit.")
+                    all_error_messages.append(refined_error_message)
+                    all_error_programs.append(refined_rationale)
+
+            if not found_correct:
+                # If all refine attempts failed, you can decide how to handle
+                print("All refinements failed. No rationale recorded for this data point.")
 
         total_num += 1
-    return rationales, correct, total_num
 
+    return rationales, correct, total_num
 
 # def post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mode, total_num, correct):
 #     rationales = []
@@ -441,7 +551,7 @@ def post_process_batch_data_generate_rationale(
 #         accuracy = correct / total_num if total_num > 0 else 0.0
 #     return rationales, correct, total_num, accuracy
 
-def post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mode, total_num, correct, model, max_tokens=2048, temperature=0.7, top_p=0.9, top_k=40, stop=None, is_chat_model=False):
+def post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mode, total_num, correct, model, max_tokens=2048, temperature=0.7, top_p=0.9, top_k=40, stop=None, is_chat_model=False, max_refine=10, ):
     rationales = []
     for prompt, item, rationale_response in zip(batch_prompts, batch_items, batch_responses):
         label = item['label']
@@ -467,14 +577,51 @@ def post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mo
                 all_error_messages.append(error_message)
                 all_error_programs.append(rationale_response_sample_j)
 
-        # If all candidates fail to match the correct answer
+        # If all initial candidates fail, try refinement up to max_refine times
+        refined_code = None
+        refined_predict = None
+        refined_error_message = None
         if not found_correct:
-            # Call self_refine to generate a corrected version
-            refined_code = self_refine(all_error_messages, all_error_programs, model, max_tokens, temperature, top_p, top_k, stop, is_chat_model)
-            rationale_response_sample_j, refined_predict, refined_error_message = parse_answer(refined_code, mode)
-            predict_j = refined_predict
-            if refined_predict == label:
-                correct += 1
+            for refine_count in range(max_refine):
+                # Call self_refine to generate a corrected version
+                refined_code = self_refine(
+                    all_error_messages,
+                    all_error_programs,
+                    model,
+                    max_tokens,
+                    temperature,
+                    top_p,
+                    top_k,
+                    stop,
+                    is_chat_model
+                )
+                rationale_response_sample_j, refined_predict, refined_error_message = parse_answer(refined_code, mode)
+                predict_j = refined_predict
+
+                if refined_predict == label:
+                    correct += 1
+                    found_correct = True
+                    break
+                else:
+                    # Optionally add the newly refined attempt's error to the list
+                    all_error_messages.append(refined_error_message)
+                    all_error_programs.append(rationale_response_sample_j)
+
+        # Choose which rationale to store in the final result.
+        # If you want to store the last refined version when all attempts fail or
+        # the successful refine version if it succeeds, you can do so:
+        final_rationale = rationale_response_sample_j.strip()
+
+
+
+        # # If all candidates fail to match the correct answer
+        # if not found_correct:
+        #     # Call self_refine to generate a corrected version
+        #     refined_code = self_refine(all_error_messages, all_error_programs, model, max_tokens, temperature, top_p, top_k, stop, is_chat_model)
+        #     rationale_response_sample_j, refined_predict, refined_error_message = parse_answer(refined_code, mode)
+        #     predict_j = refined_predict
+        #     if refined_predict == label:
+        #         correct += 1
 
             # Optionally, you could check again if refine also failed, 
             # and decide whether to refine further or finalize an error.
@@ -484,7 +631,7 @@ def post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mo
         rationales.append({
             "premises": item['premises'],
             "conclusions": item['conclusion'],
-            "rationale": rationale_response_sample_j.strip(),
+            "rationale": final_rationale.strip(),
             "label": item['label'],
             "predict": predict_j,
             "user_prompt": prompt,
@@ -550,7 +697,6 @@ def self_refine(
     refine_prompt = [{"role": "user","content": refine_prompt}]
 
     # 3) Use generate_responses_batch to have your model produce a refined candidate
-    print(refine_prompt)
     refined_candidates = generate_responses_batch(
         model=model,
         user_prompts=[refine_prompt],  # only one prompt here
@@ -573,19 +719,4 @@ def self_refine(
      # refined_code = extract_solution_content(raw_refined_code)
     print(raw_refined_code)
     return raw_refined_code
-
-
-def extract_solution_content(model_output):
-    """
-    Example helper function to parse the text between <SOLUTION> and </SOLUTION> tags.
-    """
-    import re
-    pattern = r"<SOLUTION>(.*?)</SOLUTION>"
-    match = re.search(pattern, model_output, flags=re.DOTALL)
-    if match:
-        return match.group(1).strip()
-    else:
-        # If no match found, return the entire model output or handle error gracefully
-        return model_output.strip()
-
 
