@@ -57,7 +57,7 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
             print(f"Error generating responses for batch starting at index {batch_start}: {e}")
             tqdm.tqdm.update(1)
             continue 
-        batch_rationales, correct_num, total_num, accuracy = post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mode, total_num, correct_num)
+        batch_rationales, correct_num, total_num, accuracy = post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mode, total_num, correct_num, model, max_tokens, temperature, top_p, top_k, stop, is_chat_model)
         rationales.extend(batch_rationales)
 
     # for batch_start in tqdm.tqdm(range(0, len(dataset_list), batch_size)):
