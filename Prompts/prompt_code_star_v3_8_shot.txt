@@ -430,7 +430,7 @@ class Person:
 def apply_premises_conclusion(people) -> str:
     # Only consider one neighbor peter
     person = people.neighbors[0]
-    assert person.name == "Peter", f"Expected name 'Peter', but got {person.name}"
+    assert person.name == "Peter", f"Expected name 'Peter', but got " + person
 
     # apply Premise 5
     if person.touts_homegrown_food:
@@ -470,8 +470,6 @@ def func():
     for i, peter in enumerate(peter_cases, start=1):
         michael.add_neighbor(peter)
         peter.add_neighbor(michael)
-
-        print(f"\n### Testing Case {i} for Peter ###")
         result = check_conclusion(michael)
         results.append(result)
         michael.neighbors = []

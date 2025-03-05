@@ -7,7 +7,7 @@ attn_implementation: flash_attention_2
 
 # Data training arguments
 dataset_mixer:
-  TongZheng1999/Meta-Llama-3.1-8B-Instruct_code_rationale_1000_v2_10_3Rounds_round_2: 1.0
+  TongZheng1999/Meta-Llama-3.1-8B-Instruct_code_rationale_1000_v3_10_3Rounds_round_2: 1.0
 dataset_splits:
 - train
 auto_insert_empty_system_msg: false
@@ -24,7 +24,7 @@ gradient_accumulation_steps: 16
 gradient_checkpointing: true
 gradient_checkpointing_kwargs:
   use_reentrant: false
-hub_model_id: Meta-Llama-3.1-8B-Instruct-star-code-v2_10-3Rounds-iter-2
+hub_model_id: Meta-Llama-3.1-8B-Instruct-star-code-v3_10-3Rounds-iter-2
 hub_strategy: every_save
 learning_rate: 5.0e-06
 log_level: info
@@ -34,7 +34,7 @@ lr_scheduler_type: cosine
 max_seq_length: 4096
 max_steps: -1
 num_train_epochs: 5
-output_dir: /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/v2_10_3Rounds/ft_iter_2
+output_dir: /fs/cbcb-lab/heng/kz//Meta-Llama-3.1-8B-Instruct/code/v3_10_3Rounds/ft_iter_2
 overwrite_output_dir: true
 per_device_eval_batch_size: 4
 per_device_train_batch_size: 1
