@@ -242,7 +242,7 @@ def check_huggingface_repo_exists(huggingface_repo: str) -> bool:
 
 def parse_answer(rationale_response, mode, prompt_mode):
     predict = None
-    if mode != 'code' or (mode == 'code' and prompt_mode == 'v3'):
+    if mode != 'code' or (mode == 'code' and 'v3' in prompt_mode):
         rationale_response = rationale_response.split("<Reasoning>")[-1]
         rationale_response = rationale_response.split("</Answer>")[0] + "</Answer>"
         answer_response = rationale_response.split("<Answer>")[-1]
