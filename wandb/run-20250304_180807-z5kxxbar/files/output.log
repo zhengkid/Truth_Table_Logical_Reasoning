@@ -1,0 +1,44 @@
+100%|██████████| 30/30 [32:58<00:00, 62.48s/it][INFO|trainer.py:2657] 2025-03-04 18:41:07,478 >>
+{'loss': 0.9877, 'grad_norm': 14.22488792559536, 'learning_rate': 4.986304738420684e-06, 'epoch': 0.15}
+{'loss': 0.6045, 'grad_norm': 8.189254386738002, 'learning_rate': 4.665063509461098e-06, 'epoch': 0.73}
+{'loss': 0.3074, 'grad_norm': 0.9868328143888774, 'learning_rate': 3.7500000000000005e-06, 'epoch': 1.58}
+{'loss': 0.2462, 'grad_norm': 0.5189383536316302, 'learning_rate': 2.5e-06, 'epoch': 2.44}
+{'loss': 0.2263, 'grad_norm': 0.41048140527977833, 'learning_rate': 1.2500000000000007e-06, 'epoch': 3.29}
+{'loss': 0.2102, 'grad_norm': 0.38143428505396854, 'learning_rate': 3.3493649053890325e-07, 'epoch': 4.15}
+{'loss': 0.1693, 'grad_norm': 0.3768884303715209, 'learning_rate': 0.0, 'epoch': 4.87}
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+100%|██████████| 30/30 [32:58<00:00, 65.96s/it]
+{'train_runtime': 1980.6156, 'train_samples_per_second': 2.211, 'train_steps_per_second': 0.015, 'train_loss': 0.30676677227020266, 'epoch': 4.87}
+***** train metrics *****
+  epoch                    =      4.8727
+  total_flos               = 148199788GF
+  train_loss               =      0.3068
+  train_runtime            =  0:33:00.61
+  train_samples            =         876
+  train_samples_per_second =       2.211
+  train_steps_per_second   =       0.015
+2025-03-04 18:41:07 - INFO - __main__ - *** Save model ***
+[INFO|trainer.py:3942] 2025-03-04 18:41:18,754 >> Saving model checkpoint to /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_3Rounds/ft_iter_1
+[INFO|configuration_utils.py:423] 2025-03-04 18:41:18,767 >> Configuration saved in /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_3Rounds/ft_iter_1/config.json
+[INFO|configuration_utils.py:909] 2025-03-04 18:41:18,771 >> Configuration saved in /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_3Rounds/ft_iter_1/generation_config.json
+[INFO|modeling_utils.py:3048] 2025-03-04 18:43:16,508 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_3Rounds/ft_iter_1/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2500] 2025-03-04 18:43:16,514 >> tokenizer config file saved in /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_3Rounds/ft_iter_1/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2509] 2025-03-04 18:43:16,518 >> Special tokens file saved in /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_3Rounds/ft_iter_1/special_tokens_map.json
+[INFO|trainer.py:3942] 2025-03-04 18:43:21,374 >> Saving model checkpoint to /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_3Rounds/ft_iter_1
+[INFO|configuration_utils.py:423] 2025-03-04 18:43:21,384 >> Configuration saved in /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_3Rounds/ft_iter_1/config.json
+[INFO|configuration_utils.py:909] 2025-03-04 18:43:21,388 >> Configuration saved in /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_3Rounds/ft_iter_1/generation_config.json
+[INFO|modeling_utils.py:3048] 2025-03-04 18:45:07,348 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_3Rounds/ft_iter_1/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2500] 2025-03-04 18:45:07,353 >> tokenizer config file saved in /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_3Rounds/ft_iter_1/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2509] 2025-03-04 18:45:07,357 >> Special tokens file saved in /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_3Rounds/ft_iter_1/special_tokens_map.json
+events.out.tfevents.1741129686.cbcb27.umiacs.umd.edu.1503525.0: 100%|██████████| 7.60k/7.60k [00:00<00:00, 80.5kB/s]
+tokenizer.json: 100%|██████████| 11.4M/11.4M [00:00<00:00, 31.3MB/s]0<01:09, 71.1MB/s]
+training_args.bin: 100%|██████████| 7.16k/7.16k [00:00<00:00, 87.3kB/s]1:25, 57.5MB/s]
+model-00004-of-00004.safetensors: 100%|██████████| 1.09G/1.09G [00:19<00:00, 56.6MB/s]
+model-00002-of-00004.safetensors:  20%|██        | 992M/4.93G [00:18<01:29, 43.9MB/s] 
+model-00002-of-00004.safetensors:  53%|█████▎    | 2.59G/4.93G [01:08<05:26, 7.16MB/s]7.60k [00:00<?, ?B/s]
+model-00001-of-00004.safetensors:  48%|████▊     | 2.34G/4.87G [01:08<06:06, 6.93MB/s]
+model-00003-of-00004.safetensors:  25%|██▍       | 1.07G/4.33G [00:19<00:57, 56.9MB/s]
+model-00003-of-00004.safetensors:  60%|██████    | 2.61G/4.33G [01:08<04:02, 7.11MB/s]
