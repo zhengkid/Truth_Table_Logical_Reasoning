@@ -1,0 +1,16 @@
+{"time":"2025-03-06T01:20:21.161979703-05:00","level":"INFO","msg":"stream: starting","core version":"0.19.7","symlink path":"/nfshomes/tongzh24/new/Truth_Table_Logical_Reasoning/wandb/run-20250306_012021-4qudw4la/logs/debug-core.log"}
+{"time":"2025-03-06T01:20:21.282404876-05:00","level":"INFO","msg":"created new stream","id":"4qudw4la"}
+{"time":"2025-03-06T01:20:21.282486516-05:00","level":"INFO","msg":"stream: started","id":"4qudw4la"}
+{"time":"2025-03-06T01:20:21.282503326-05:00","level":"INFO","msg":"writer: Do: started","stream_id":"4qudw4la"}
+{"time":"2025-03-06T01:20:21.282535515-05:00","level":"INFO","msg":"sender: started","stream_id":"4qudw4la"}
+{"time":"2025-03-06T01:20:21.282565165-05:00","level":"INFO","msg":"handler: started","stream_id":"4qudw4la"}
+{"time":"2025-03-06T01:20:21.493038079-05:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-03-06T01:28:33.129421015-05:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/kidzheng/huggingface/4qudw4la/file_stream\": dial tcp 35.186.228.49:443: connect: connection timed out"}
+{"time":"2025-03-06T02:23:39.030168077-05:00","level":"INFO","msg":"stream: closing","id":"4qudw4la"}
+{"time":"2025-03-06T02:23:39.030250427-05:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-03-06T02:23:39.031145155-05:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-03-06T02:23:39.350348111-05:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-03-06T02:23:39.458177534-05:00","level":"INFO","msg":"handler: closed","stream_id":"4qudw4la"}
+{"time":"2025-03-06T02:23:39.458229874-05:00","level":"INFO","msg":"writer: Close: closed","stream_id":"4qudw4la"}
+{"time":"2025-03-06T02:23:39.458242584-05:00","level":"INFO","msg":"sender: closed","stream_id":"4qudw4la"}
+{"time":"2025-03-06T02:23:39.460929307-05:00","level":"INFO","msg":"stream: closed","id":"4qudw4la"}

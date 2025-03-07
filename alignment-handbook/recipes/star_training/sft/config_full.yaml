@@ -43,6 +43,8 @@ remove_unused_columns: true
 report_to:
 - tensorboard
 - wandb
-save_strategy: "no"
+save_strategy: "steps"
+save_steps: 10
+save_total_limit: 5
 seed: 42
 warmup_ratio: 0

@@ -1,0 +1,49 @@
+100%|██████████| 12/12 [12:40<00:00, 61.96s/it][INFO|trainer.py:2657] 2025-03-06 07:30:16,254 >>
+{'loss': 0.9866, 'grad_norm': 13.845684265264515, 'learning_rate': 4.914814565722671e-06, 'epoch': 0.15}
+{'loss': 0.6006, 'grad_norm': 8.215492107175857, 'learning_rate': 3.147047612756302e-06, 'epoch': 0.73}
+{'loss': 0.3388, 'grad_norm': 1.5634137557940744, 'learning_rate': 3.3493649053890325e-07, 'epoch': 1.58}
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+100%|██████████| 12/12 [12:41<00:00, 63.42s/it]
+{'train_runtime': 762.0411, 'train_samples_per_second': 2.294, 'train_steps_per_second': 0.016, 'train_loss': 0.4626212889949481, 'epoch': 1.87}
+***** train metrics *****
+  epoch                    =     1.8727
+  total_flos               = 57168487GF
+  train_loss               =     0.4626
+  train_runtime            = 0:12:42.04
+  train_samples            =        874
+  train_samples_per_second =      2.294
+  train_steps_per_second   =      0.016
+2025-03-06 07:30:16 - INFO - __main__ - *** Save model ***
+[INFO|trainer.py:3942] 2025-03-06 07:30:20,754 >> Saving model checkpoint to /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_2_3Rounds/ft_iter_1
+[INFO|configuration_utils.py:423] 2025-03-06 07:30:20,770 >> Configuration saved in /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_2_3Rounds/ft_iter_1/config.json
+[INFO|configuration_utils.py:909] 2025-03-06 07:30:20,778 >> Configuration saved in /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_2_3Rounds/ft_iter_1/generation_config.json
+[INFO|modeling_utils.py:3048] 2025-03-06 07:31:58,347 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_2_3Rounds/ft_iter_1/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2500] 2025-03-06 07:31:58,355 >> tokenizer config file saved in /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_2_3Rounds/ft_iter_1/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2509] 2025-03-06 07:31:58,359 >> Special tokens file saved in /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_2_3Rounds/ft_iter_1/special_tokens_map.json
+[INFO|trainer.py:3942] 2025-03-06 07:32:02,991 >> Saving model checkpoint to /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_2_3Rounds/ft_iter_1
+[INFO|configuration_utils.py:423] 2025-03-06 07:32:03,004 >> Configuration saved in /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_2_3Rounds/ft_iter_1/config.json
+[INFO|configuration_utils.py:909] 2025-03-06 07:32:03,008 >> Configuration saved in /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_2_3Rounds/ft_iter_1/generation_config.json
+[INFO|modeling_utils.py:3048] 2025-03-06 07:33:31,332 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_2_3Rounds/ft_iter_1/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2500] 2025-03-06 07:33:31,337 >> tokenizer config file saved in /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_2_3Rounds/ft_iter_1/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2509] 2025-03-06 07:33:31,340 >> Special tokens file saved in /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_2_3Rounds/ft_iter_1/special_tokens_map.json
+events.out.tfevents.1741263454.cbcb27.umiacs.umd.edu.49830.0: 100%|██████████| 6.78k/6.78k [00:00<00:00, 117kB/s]
+tokenizer.json: 100%|██████████| 11.4M/11.4M [00:00<00:00, 32.4MB/s]<?, ?B/s]
+training_args.bin: 100%|██████████| 7.16k/7.16k [00:00<00:00, 182kB/s]01:21, 59.6MB/s]
+model-00004-of-00004.safetensors: 100%|██████████| 1.09G/1.09G [00:20<00:00, 52.6MB/s]
+model-00003-of-00004.safetensors: 100%|██████████| 4.33G/4.33G [01:54<00:00, 37.9MB/s]
+model-00001-of-00004.safetensors: 100%|██████████| 4.87G/4.87G [02:03<00:00, 39.3MB/s]78k [00:00<?, ?B/s]
+model-00002-of-00004.safetensors: 100%|██████████| 4.93G/4.93G [02:16<00:00, 36.2MB/s]
+Upload 7 LFS files: 100%|██████████| 7/7 [02:16<00:00, 19.52s/it] :03<00:06, 56.2MB/s]
+[INFO|configuration_utils.py:423] 2025-03-06 07:36:18,435 >> Configuration saved in /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_2_3Rounds/ft_iter_1/config.json
+2025-03-06 07:36:18 - INFO - __main__ - Model saved to /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_2_3Rounds/ft_iter_1
+2025-03-06 07:36:18 - INFO - __main__ - Pushing to hub...
+[INFO|trainer.py:3942] 2025-03-06 07:36:22,737 >> Saving model checkpoint to /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_2_3Rounds/ft_iter_1
+[INFO|configuration_utils.py:423] 2025-03-06 07:36:22,753 >> Configuration saved in /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_2_3Rounds/ft_iter_1/config.json
+[INFO|configuration_utils.py:909] 2025-03-06 07:36:22,764 >> Configuration saved in /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_2_3Rounds/ft_iter_1/generation_config.json
+[INFO|modeling_utils.py:3048] 2025-03-06 07:37:52,727 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_2_3Rounds/ft_iter_1/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2500] 2025-03-06 07:37:52,733 >> tokenizer config file saved in /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_2_3Rounds/ft_iter_1/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2509] 2025-03-06 07:37:52,736 >> Special tokens file saved in /fs/cbcb-lab/heng/kz//Qwen2.5-7B-Instruct/code/v3_10_2_3Rounds/ft_iter_1/special_tokens_map.json
+2025-03-06 07:38:31 - INFO - __main__ - *** Training complete ***

@@ -1,0 +1,62 @@
+  0%|          | 0/35 [00:00<?, ?it/s][WARNING|logging.py:329] 2025-03-06 04:19:47,774 >> It is strongly recommended to train Gemma2 models with the `eager` attention implementation instead of `flash_attention_2`. Use `eager` with `AutoModelForCausalLM.from_pretrained('<path-to-checkpoint>', attn_implementation='eager')`.
+[2025-03-06 04:21:24,121] [WARNING] [stage3.py:2139:step] 1 pytorch allocator cache flushes since last step. this happens when there is high memory pressure and is detrimental to performance. if this is happening frequently consider adjusting settings to reduce memory consumption. If you are unable to make the cache flushes go away consider adding get_accelerator().empty_cache() calls in your training loop to ensure that all ranks flush their caches at the same time
+100%|██████████| 35/35 [49:31<00:00, 85.47s/it][INFO|trainer.py:2657] 2025-03-06 05:09:19,224 >>
+{'loss': 0.9931, 'grad_norm': 24.470975522359446, 'learning_rate': 4.989935734988098e-06, 'epoch': 0.14}
+[2025-03-06 04:22:57,556] [WARNING] [stage3.py:2139:step] 4 pytorch allocator cache flushes since last step. this happens when there is high memory pressure and is detrimental to performance. if this is happening frequently consider adjusting settings to reduce memory consumption. If you are unable to make the cache flushes go away consider adding get_accelerator().empty_cache() calls in your training loop to ensure that all ranks flush their caches at the same time
+{'loss': 0.4145, 'grad_norm': 3.847836197185543, 'learning_rate': 4.752422169756048e-06, 'epoch': 0.71}
+[2025-03-06 04:30:53,225] [WARNING] [stage3.py:2139:step] 4 pytorch allocator cache flushes since last step. this happens when there is high memory pressure and is detrimental to performance. if this is happening frequently consider adjusting settings to reduce memory consumption. If you are unable to make the cache flushes go away consider adding get_accelerator().empty_cache() calls in your training loop to ensure that all ranks flush their caches at the same time
+{'loss': 0.2296, 'grad_norm': 1.207884724512833, 'learning_rate': 4.058724504646834e-06, 'epoch': 1.28}
+[2025-03-06 04:38:49,037] [WARNING] [stage3.py:2139:step] 3 pytorch allocator cache flushes since last step. this happens when there is high memory pressure and is detrimental to performance. if this is happening frequently consider adjusting settings to reduce memory consumption. If you are unable to make the cache flushes go away consider adding get_accelerator().empty_cache() calls in your training loop to ensure that all ranks flush their caches at the same time
+{'loss': 0.186, 'grad_norm': 1.0758073140672315, 'learning_rate': 3.056302334890786e-06, 'epoch': 1.99}
+{'loss': 0.1425, 'grad_norm': 0.8999666026080211, 'learning_rate': 1.9436976651092143e-06, 'epoch': 2.57}
+[2025-03-06 04:53:03,652] [WARNING] [stage3.py:2139:step] 3 pytorch allocator cache flushes since last step. this happens when there is high memory pressure and is detrimental to performance. if this is happening frequently consider adjusting settings to reduce memory consumption. If you are unable to make the cache flushes go away consider adding get_accelerator().empty_cache() calls in your training loop to ensure that all ranks flush their caches at the same time
+{'loss': 0.122, 'grad_norm': 2.8544359868742033, 'learning_rate': 9.412754953531664e-07, 'epoch': 3.14}
+{'loss': 0.1027, 'grad_norm': 0.7058083901125113, 'learning_rate': 2.4757783024395244e-07, 'epoch': 3.85}
+[2025-03-06 05:05:44,262] [WARNING] [stage3.py:2139:step] 4 pytorch allocator cache flushes since last step. this happens when there is high memory pressure and is detrimental to performance. if this is happening frequently consider adjusting settings to reduce memory consumption. If you are unable to make the cache flushes go away consider adding get_accelerator().empty_cache() calls in your training loop to ensure that all ranks flush their caches at the same time
+{'loss': 0.0949, 'grad_norm': 0.6362906534577231, 'learning_rate': 0.0, 'epoch': 4.42}
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+100%|██████████| 35/35 [49:31<00:00, 84.90s/it]
+{'train_runtime': 2982.668, 'train_samples_per_second': 1.505, 'train_steps_per_second': 0.012, 'train_loss': 0.20112226009368897, 'epoch': 4.42}
+***** train metrics *****
+  epoch                    =      4.4248
+  total_flos               = 222623197GF
+  train_loss               =      0.2011
+  train_runtime            =  0:49:42.66
+  train_samples            =         898
+  train_samples_per_second =       1.505
+  train_steps_per_second   =       0.012
+2025-03-06 05:09:19 - INFO - __main__ - *** Save model ***
+[INFO|trainer.py:3942] 2025-03-06 05:09:24,963 >> Saving model checkpoint to /fs/cbcb-lab/heng/kz//gemma-2-9b-it/code/v3_reasoning_10_3Rounds/ft_iter_3
+[INFO|configuration_utils.py:423] 2025-03-06 05:09:24,976 >> Configuration saved in /fs/cbcb-lab/heng/kz//gemma-2-9b-it/code/v3_reasoning_10_3Rounds/ft_iter_3/config.json
+[INFO|configuration_utils.py:909] 2025-03-06 05:09:24,981 >> Configuration saved in /fs/cbcb-lab/heng/kz//gemma-2-9b-it/code/v3_reasoning_10_3Rounds/ft_iter_3/generation_config.json
+[INFO|modeling_utils.py:3048] 2025-03-06 05:12:12,535 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /fs/cbcb-lab/heng/kz//gemma-2-9b-it/code/v3_reasoning_10_3Rounds/ft_iter_3/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2500] 2025-03-06 05:12:12,553 >> tokenizer config file saved in /fs/cbcb-lab/heng/kz//gemma-2-9b-it/code/v3_reasoning_10_3Rounds/ft_iter_3/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2509] 2025-03-06 05:12:12,560 >> Special tokens file saved in /fs/cbcb-lab/heng/kz//gemma-2-9b-it/code/v3_reasoning_10_3Rounds/ft_iter_3/special_tokens_map.json
+[INFO|trainer.py:3942] 2025-03-06 05:12:18,835 >> Saving model checkpoint to /fs/cbcb-lab/heng/kz//gemma-2-9b-it/code/v3_reasoning_10_3Rounds/ft_iter_3
+[INFO|configuration_utils.py:423] 2025-03-06 05:12:18,846 >> Configuration saved in /fs/cbcb-lab/heng/kz//gemma-2-9b-it/code/v3_reasoning_10_3Rounds/ft_iter_3/config.json
+[INFO|configuration_utils.py:909] 2025-03-06 05:12:18,851 >> Configuration saved in /fs/cbcb-lab/heng/kz//gemma-2-9b-it/code/v3_reasoning_10_3Rounds/ft_iter_3/generation_config.json
+[INFO|modeling_utils.py:3048] 2025-03-06 05:14:40,048 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /fs/cbcb-lab/heng/kz//gemma-2-9b-it/code/v3_reasoning_10_3Rounds/ft_iter_3/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2500] 2025-03-06 05:14:40,058 >> tokenizer config file saved in /fs/cbcb-lab/heng/kz//gemma-2-9b-it/code/v3_reasoning_10_3Rounds/ft_iter_3/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2509] 2025-03-06 05:14:40,062 >> Special tokens file saved in /fs/cbcb-lab/heng/kz//gemma-2-9b-it/code/v3_reasoning_10_3Rounds/ft_iter_3/special_tokens_map.json
+events.out.tfevents.1741252776.cbcb27.umiacs.umd.edu.33976.0: 100%|██████████| 8.18k/8.18k [00:00<00:00, 86.3kB/s]
+tokenizer.json: 100%|██████████| 34.4M/34.4M [00:00<00:00, 47.6MB/s]<?, ?B/s]
+tokenizer.model: 100%|██████████| 4.24M/4.24M [00:00<00:00, 25.0MB/s]<04:15, 19.2MB/s]
+training_args.bin: 100%|██████████| 7.42k/7.42k [00:00<00:00, 192kB/s]02:28, 32.7MB/s]
+model-00004-of-00004.safetensors: 100%|██████████| 3.67G/3.67G [01:37<00:00, 37.6MB/s]
+model-00002-of-00004.safetensors: 100%|██████████| 4.95G/4.95G [02:36<00:00, 31.5MB/s]18k [00:00<?, ?B/s]
+model-00001-of-00004.safetensors: 100%|██████████| 4.90G/4.90G [02:56<00:00, 27.8MB/s]
+model-00003-of-00004.safetensors: 100%|██████████| 4.96G/4.96G [03:05<00:00, 26.7MB/s]
+Upload 8 LFS files: 100%|██████████| 8/8 [03:12<00:00, 24.08s/it] :36<00:05, 43.1MB/s]
+[INFO|configuration_utils.py:423] 2025-03-06 05:18:56,453 >> Configuration saved in /fs/cbcb-lab/heng/kz//gemma-2-9b-it/code/v3_reasoning_10_3Rounds/ft_iter_3/config.json
+[INFO|trainer.py:3942] 2025-03-06 05:19:01,661 >> Saving model checkpoint to /fs/cbcb-lab/heng/kz//gemma-2-9b-it/code/v3_reasoning_10_3Rounds/ft_iter_3
+2025-03-06 05:18:56 - INFO - __main__ - Model saved to /fs/cbcb-lab/heng/kz//gemma-2-9b-it/code/v3_reasoning_10_3Rounds/ft_iter_3
+2025-03-06 05:18:56 - INFO - __main__ - Pushing to hub...
+[INFO|configuration_utils.py:423] 2025-03-06 05:19:04,667 >> Configuration saved in /fs/cbcb-lab/heng/kz//gemma-2-9b-it/code/v3_reasoning_10_3Rounds/ft_iter_3/config.json
+[INFO|configuration_utils.py:909] 2025-03-06 05:19:04,671 >> Configuration saved in /fs/cbcb-lab/heng/kz//gemma-2-9b-it/code/v3_reasoning_10_3Rounds/ft_iter_3/generation_config.json
+[INFO|modeling_utils.py:3048] 2025-03-06 05:21:32,728 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /fs/cbcb-lab/heng/kz//gemma-2-9b-it/code/v3_reasoning_10_3Rounds/ft_iter_3/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2500] 2025-03-06 05:21:32,739 >> tokenizer config file saved in /fs/cbcb-lab/heng/kz//gemma-2-9b-it/code/v3_reasoning_10_3Rounds/ft_iter_3/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2509] 2025-03-06 05:21:32,744 >> Special tokens file saved in /fs/cbcb-lab/heng/kz//gemma-2-9b-it/code/v3_reasoning_10_3Rounds/ft_iter_3/special_tokens_map.json
+2025-03-06 05:22:11 - INFO - __main__ - *** Training complete ***

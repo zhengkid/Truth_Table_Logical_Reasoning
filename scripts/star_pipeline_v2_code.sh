@@ -3,26 +3,27 @@
 # General parameters
 N_SAMPLES=1000
 N_ROUNDS=3
-INFERENCE_BATCH_SIZE=32
+INFERENCE_BATCH_SIZE=16
 SEED=42
-GPU_COUNR=8
+GPU_COUNR=4
 MAX_TOKENS=2048
 NUM_CANDIDATES_EVAL=1
 NUM_CANDIDATES_GENERATE=10
+EPOCHS=5
 TEMP=1.0
-PROMPT_MODE='v3'
+PROMPT_MODE='v1'
 TEST_TEMP=0.7
 TOP_P=0.9
 TOP_K=50
 MODE="code"     # Options: truth_table, code, nl
-BASE_MODEL="NousResearch/Meta-Llama-3.1-8B-Instruct"
+BASE_MODEL="google/gemma-2-9b-it"
 MODEL_NAME=${BASE_MODEL##*/}
 DATASET="yale-nlp/FOLIO"
-OUTPUT_DIR="star_pipeline_outputs/${MODEL_NAME}/${MODE}/${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}_${N_ROUNDS}Rounds"
+OUTPUT_DIR="star_pipeline_outputs/${MODEL_NAME}/${MODE}/${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}_${EPOCHS}_${N_ROUNDS}Rounds"
 MODEL_OUTPUT_DIR="/fs/cbcb-lab/heng/kz/"
 SRC_YAML="alignment-handbook/recipes/star_training/sft/config_full.yaml"
 HF_USER="TongZheng1999"
-HF_DATA_ID="${MODEL_NAME}_${MODE}_rationale_${N_SAMPLES}_${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}_${N_ROUNDS}Rounds_round_"
+HF_DATA_ID="${MODEL_NAME}_${MODE}_rationale_${N_SAMPLES}_${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}_${EPOCHS}_${N_ROUNDS}Rounds_round_"
 SAVE_RAW_DATA_PATH='Eval_Rationale_Raw_Data_round_'
 SAVE_RESULT_PATH='Result_round_'
 RECIPE_DIR='alignment-handbook/recipes/'
@@ -106,7 +107,7 @@ do
 
   cp "$SRC_YAML" "$ITER_YAML"
    
-  python utils/utils.py $ITER_YAML ${MODEL_OUTPUT_DIR}/${MODEL_NAME}/${MODE}/${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}_${N_ROUNDS}Rounds/ft_iter_${round} ${MODEL_NAME}-star-${MODE}-${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}-${N_ROUNDS}Rounds-iter-${round} $BASE_MODEL $BASE_MODEL $PATTERN $HF_USER/${HF_DATA_ID}${round}
+  python utils/utils.py $ITER_YAML ${MODEL_OUTPUT_DIR}/${MODEL_NAME}/${MODE}/${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}_${EPOCHS}_${N_ROUNDS}Rounds/ft_iter_${round} ${MODEL_NAME}-star-${MODE}-${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}-${EPOCHS}-${N_ROUNDS}Rounds-iter-${round} $BASE_MODEL $BASE_MODEL $PATTERN $HF_USER/${HF_DATA_ID}${round}
   
   echo "Updated: $ITER_YAML"
 

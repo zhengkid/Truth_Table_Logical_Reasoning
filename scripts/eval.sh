@@ -3,17 +3,17 @@
 
 
 
-MODEL_NAME_AND_PATH="google/gemma-2-9b-it"
+MODEL_NAME_AND_PATH="TongZheng1999/Qwen2.5-7B-Instruct-star-code-v3_10-2-3Rounds-iter-3"
 MODE="code"
 DATASET_NAME='yale-nlp/FOLIO'
-OUTPUT_DIR="./outputs7/prompt/google/Meta-Llama-3.1-8B-Instruct-star-1/2048/few-shot"
+OUTPUT_DIR="./outputs8/prompt/google/Meta-Llama-3.1-8B-Instruct-star-1/2048/few-shot"
 SAVE_RAW_DATA_PATH="raw_data.json"
 SAVE_RESULT_PATH="result.txt"
 PROMPT_MODE='v3'
 NUM_CANDIDATES=1
 BATCH_SIZE=16
 MAX_TOKENS=2048
-GPU_COUNR=8
+GPU_COUNR=4
 TEMPERATURE=0.7
 TOP_P=0.9
 TOP_K=50
@@ -35,5 +35,4 @@ python ./eval/eval.py \
   --top_p ${TOP_P} \
   --top_k ${TOP_K} \
   --seed ${SEED} \
-  --number_candidates ${NUM_CANDIDATES} \
-  --use_fewshot
+  --number_candidates ${NUM_CANDIDATES} 
