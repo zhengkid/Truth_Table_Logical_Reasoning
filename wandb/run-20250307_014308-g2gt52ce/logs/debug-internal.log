@@ -1,0 +1,16 @@
+{"time":"2025-03-07T01:43:08.376428627-05:00","level":"INFO","msg":"stream: starting","core version":"0.19.7","symlink path":"/ihchomes/tongzh24/logical_reasoning/Truth_Table_Logical_Reasoning/wandb/run-20250307_014308-g2gt52ce/logs/debug-core.log"}
+{"time":"2025-03-07T01:43:08.586547323-05:00","level":"INFO","msg":"created new stream","id":"g2gt52ce"}
+{"time":"2025-03-07T01:43:08.586566844-05:00","level":"INFO","msg":"stream: started","id":"g2gt52ce"}
+{"time":"2025-03-07T01:43:08.586583543-05:00","level":"INFO","msg":"writer: Do: started","stream_id":"g2gt52ce"}
+{"time":"2025-03-07T01:43:08.586594611-05:00","level":"INFO","msg":"handler: started","stream_id":"g2gt52ce"}
+{"time":"2025-03-07T01:43:08.586607534-05:00","level":"INFO","msg":"sender: started","stream_id":"g2gt52ce"}
+{"time":"2025-03-07T01:43:08.766224858-05:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-03-07T02:01:31.055205765-05:00","level":"INFO","msg":"stream: closing","id":"g2gt52ce"}
+{"time":"2025-03-07T02:01:31.055247878-05:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-03-07T02:01:31.055709225-05:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-03-07T02:01:31.346060634-05:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-03-07T02:01:31.434918123-05:00","level":"INFO","msg":"handler: closed","stream_id":"g2gt52ce"}
+{"time":"2025-03-07T02:01:31.434930846-05:00","level":"INFO","msg":"sender: closed","stream_id":"g2gt52ce"}
+{"time":"2025-03-07T02:01:31.434928374-05:00","level":"INFO","msg":"writer: Close: closed","stream_id":"g2gt52ce"}
+{"time":"2025-03-07T02:01:31.436649381-05:00","level":"INFO","msg":"stream: closed","id":"g2gt52ce"}
+{"time":"2025-03-07T02:01:31.43669558-05:00","level":"WARN","msg":"runwork: ignoring record after close","work":{"Record":{"RecordType":{"Request":{"RequestType":{"StopStatus":{}}}},"control":{"local":true,"mailbox_slot":"elndctq78zxn","connection_id":"127.0.0.1:54438"},"_info":{"stream_id":"g2gt52ce"}}}}

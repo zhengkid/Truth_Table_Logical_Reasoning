@@ -1,0 +1,33 @@
+  0%|          | 0/30 [00:00<?, ?it/s][WARNING|logging.py:328] 2025-03-11 11:57:20,249 >> It is strongly recommended to train Gemma2 models with the `eager` attention implementation instead of `flash_attention_2`. Use `eager` with `AutoModelForCausalLM.from_pretrained('<path-to-checkpoint>', attn_implementation='eager')`.
+100%|██████████| 30/30 [26:19<00:00, 52.71s/it][INFO|trainer.py:2584] 2025-03-11 12:23:39,671 >>
+{'loss': 1.2685, 'grad_norm': 26.691605794098752, 'learning_rate': 4.986304738420684e-06, 'epoch': 0.15}
+{'loss': 0.5263, 'grad_norm': 3.224150626103914, 'learning_rate': 4.665063509461098e-06, 'epoch': 0.77}
+{'loss': 0.2794, 'grad_norm': 0.8824840545885904, 'learning_rate': 3.7500000000000005e-06, 'epoch': 1.55}
+{'loss': 0.2051, 'grad_norm': 0.8380182275064003, 'learning_rate': 2.5e-06, 'epoch': 2.32}
+{'loss': 0.1369, 'grad_norm': 1.2954642638505227, 'learning_rate': 1.2500000000000007e-06, 'epoch': 3.09}
+{'loss': 0.0926, 'grad_norm': 0.715196167963334, 'learning_rate': 3.3493649053890325e-07, 'epoch': 3.86}
+{'loss': 0.091, 'grad_norm': 0.6127756183355629, 'learning_rate': 0.0, 'epoch': 4.64}
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+100%|██████████| 30/30 [26:19<00:00, 52.65s/it]
+{'train_runtime': 1580.9572, 'train_samples_per_second': 2.612, 'train_steps_per_second': 0.019, 'train_loss': 0.2466258188088735, 'epoch': 4.64}
+***** train metrics *****
+  epoch                    =     4.6377
+  total_flos               =    11558GF
+  train_loss               =     0.2466
+  train_runtime            = 0:26:20.95
+  train_samples            =        826
+  train_samples_per_second =      2.612
+  train_steps_per_second   =      0.019
+2025-03-11 12:23:39 - INFO - __main__ - *** Save model ***
+[INFO|trainer.py:3801] 2025-03-11 12:23:45,005 >> Saving model checkpoint to /beacon-scratch/tongzh24/gemma-2-9b-it/mix
+[INFO|configuration_utils.py:414] 2025-03-11 12:23:45,014 >> Configuration saved in /beacon-scratch/tongzh24/gemma-2-9b-it/mix/config.json
+[INFO|configuration_utils.py:865] 2025-03-11 12:23:45,017 >> Configuration saved in /beacon-scratch/tongzh24/gemma-2-9b-it/mix/generation_config.json
+[INFO|modeling_utils.py:3042] 2025-03-11 12:25:13,868 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /beacon-scratch/tongzh24/gemma-2-9b-it/mix/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2646] 2025-03-11 12:25:13,874 >> tokenizer config file saved in /beacon-scratch/tongzh24/gemma-2-9b-it/mix/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2025-03-11 12:25:13,876 >> Special tokens file saved in /beacon-scratch/tongzh24/gemma-2-9b-it/mix/special_tokens_map.json
+2025-03-11 12:25:14 - INFO - __main__ - Model saved to /beacon-scratch/tongzh24/gemma-2-9b-it/mix
+[INFO|configuration_utils.py:414] 2025-03-11 12:25:14,432 >> Configuration saved in /beacon-scratch/tongzh24/gemma-2-9b-it/mix/config.json
+2025-03-11 12:25:14 - INFO - __main__ - *** Training complete ***

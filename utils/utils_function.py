@@ -241,19 +241,32 @@ def check_huggingface_repo_exists(huggingface_repo: str) -> bool:
     
 
 def parse_answer(rationale_response, mode, prompt_mode):
-    predict = None
+    predict = 'Unknown'
     if mode != 'code' or (mode == 'code' and 'v3' in prompt_mode):
         rationale_response = rationale_response.split("<Reasoning>")[-1]
         rationale_response = rationale_response.split("</Answer>")[0] + "</Answer>"
-        answer_response = rationale_response.split("<Answer>")[-1]
-        if "(A)" in answer_response:
-            predict = "True"
-        elif "(B)" in answer_response:
-            predict = "False"
-        elif "(C)" in answer_response:
-            predict = "Uncertain"
-        else:
-            predict = "Unknown"
+        answer_match = re.search(r'<Answer>(.*?)</Answer>', rationale_response, re.DOTALL)
+        answer_response = answer_match.group(1).strip() if answer_match else ""
+        
+        match = re.search(r'\(?([A-D])\)?', answer_response)
+        if match:
+            extracted_answer = match.group(1)
+            predict_mapping = {
+                "A": "True",
+                "B": "False",
+                "C": "Uncertain",
+            }
+            predict = predict_mapping.get(extracted_answer, "Unknown")
+
+        #answer_response = rationale_response.split("<Answer>")[-1]
+        #if "(A)" in answer_response:
+        #    predict = "True"
+        #elif "(B)" in answer_response:
+        #    predict = "False"
+        #elif "(C)" in answer_response:
+        #    predict = "Uncertain"
+        #else:
+        #    predict = "Unknown"
         return rationale_response, predict, None
     else:
         error_message = None

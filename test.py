@@ -1,48 +1,37 @@
-from z3 import Solver, Bool, And, Not, Implies
+import re
 
-# Define propositional variables
-Attended_Westminster = Bool("Attended_Westminster")
-Attended_Edinburgh = Bool("Attended_Edinburgh")
-Westminster_UK = Bool("Westminster_UK")
-Edinburgh_UK = Bool("Edinburgh_UK")
-Supported_Portland_Whigs = Bool("Supported_Portland_Whigs")
-Not_Sat_In_Parliament = Bool("Not_Sat_In_Parliament")
+def parse_answer(rationale_response, mode, prompt_mode):
+    predict = "Unknown"  # 默认值
 
-# Initialize solver
-solver = Solver()
+    if mode != 'code' or (mode == 'code' and 'v3' in prompt_mode):
+        # 1. 截取 <Reasoning> 之后的内容
+        rationale_response = rationale_response.split("<Reasoning>")[-1]
+        rationale_response = rationale_response.split("</Answer>")[0] + "</Answer>"
+        
+        # 2. 提取 <Answer> 标签内容
+        answer_match = re.search(r'<Answer>(.*?)</Answer>', rationale_response, re.DOTALL)
+        answer_response = answer_match.group(1).strip() if answer_match else ""
 
-# Add premises
-solver.add(Attended_Westminster)  # William attended Westminster
-solver.add(Attended_Edinburgh)  # William attended Edinburgh
-solver.add(Edinburgh_UK)  # Edinburgh is in the UK
-solver.add(Supported_Portland_Whigs)  # William supported Portland Whigs
-solver.add(Implies(Supported_Portland_Whigs, Not_Sat_In_Parliament))  # Supporters of Portland Whigs did not sit in Parliament
+        # 3. 解析答案，支持不同格式
+        match = re.search(r'\(?([A-D])\)?', answer_response)
+        if match:
+            extracted_answer = match.group(1)
+            predict_mapping = {
+                "A": "True",
+                "B": "False",
+                "C": "Uncertain",
+                "D": "Unknown"
+            }
+            predict = predict_mapping.get(extracted_answer, "Unknown")
 
-# Define the conclusion
-conclusion = And(Attended_Westminster, Attended_Edinburgh, Westminster_UK, Edinburgh_UK)
+        return rationale_response, predict, None
 
-# Check if the conclusion is necessarily true
-solver.push()
-solver.add(Not(conclusion))
-result1 = str(solver.check())
-solver.pop()
 
-solver.push()
-solver.add(conclusion)
-result2 = str(solver.check())
-solver.pop()
+rationale_response_1 = "<Answer>A</Answer>"
+rationale_response_2 = "<Answer>(A) True</Answer>"
+rationale_response_3 = "<Answer>The answer is (F)</Answer>"
 
-# Interpret results
-if result1 == "unsat":
-    print("The conclusion is necessarily true.")
-    result = "True"
-elif result1 == "sat" and result2 == "unsat":
-    print("The conclusion is necessarily false.")
-    result = "False"
-elif result1 == "sat" and result2 == "sat":
-    print("The conclusion is uncertain.")
-    result = "Uncertain"
-else:
-    print("Unexpected result, possible logical error.")
-    result = "Error"
+print(parse_answer(rationale_response_1, 'text', 'v3'))  # ('<Answer>A</Answer>', 'True', None)
+print(parse_answer(rationale_response_2, 'text', 'v3'))  # ('<Answer>(A) True</Answer>', 'True', None)
+print(parse_answer(rationale_response_3, 'text', 'v3'))  # ('<Answer>The final answer is (A)</Answer>', 'True', None)
 

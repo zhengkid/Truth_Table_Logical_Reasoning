@@ -1,0 +1,16 @@
+{"time":"2025-03-11T04:55:52.248740674-04:00","level":"INFO","msg":"stream: starting","core version":"0.19.7","symlink path":"/ihchomes/tongzh24/logical_reasoning/Truth_Table_Logical_Reasoning/wandb/run-20250311_045552-chbpgc99/logs/debug-core.log"}
+{"time":"2025-03-11T04:55:52.458468119-04:00","level":"INFO","msg":"created new stream","id":"chbpgc99"}
+{"time":"2025-03-11T04:55:52.458493073-04:00","level":"INFO","msg":"stream: started","id":"chbpgc99"}
+{"time":"2025-03-11T04:55:52.45850303-04:00","level":"INFO","msg":"writer: Do: started","stream_id":"chbpgc99"}
+{"time":"2025-03-11T04:55:52.458516629-04:00","level":"INFO","msg":"handler: started","stream_id":"chbpgc99"}
+{"time":"2025-03-11T04:55:52.458523841-04:00","level":"INFO","msg":"sender: started","stream_id":"chbpgc99"}
+{"time":"2025-03-11T04:55:52.57999311-04:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-03-11T05:16:34.567270768-04:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/kidzheng/huggingface/chbpgc99/file_stream\": dial tcp 35.186.228.49:443: connect: connection timed out"}
+{"time":"2025-03-11T06:20:59.997274729-04:00","level":"INFO","msg":"stream: closing","id":"chbpgc99"}
+{"time":"2025-03-11T06:20:59.9973095-04:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-03-11T06:20:59.998192206-04:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-03-11T06:21:00.376208732-04:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-03-11T06:21:00.480774475-04:00","level":"INFO","msg":"handler: closed","stream_id":"chbpgc99"}
+{"time":"2025-03-11T06:21:00.48079977-04:00","level":"INFO","msg":"writer: Close: closed","stream_id":"chbpgc99"}
+{"time":"2025-03-11T06:21:00.480840694-04:00","level":"INFO","msg":"sender: closed","stream_id":"chbpgc99"}
+{"time":"2025-03-11T06:21:00.482462501-04:00","level":"INFO","msg":"stream: closed","id":"chbpgc99"}

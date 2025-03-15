@@ -38,6 +38,7 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
 
             if is_chat_model:
                 prompt = [{"role": "user","content": prompt}]
+
             batch_prompts.append(prompt)
             batch_items.append({'premises':premise, 'conclusion': conclusion, 'label': label})
         # Process batch data via LLM
@@ -156,7 +157,7 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
     print(f"Correct predictions: {correct_num}")
     print(f"Accuracy report saved to {accuracy_path}")
 
-def eval_performance(model_name_and_path, dataset_name, output_dir, save_raw_data_path, save_result_path, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False, batch_size=16, use_fewshot=False, gpu_count=4, prompt_mode="v1", number_candidates=10):
+def eval_performance(model_name_and_path, dataset_name, output_dir, save_raw_data_path, save_result_path, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False, batch_size=16, use_fewshot=False, gpu_count=4, prompt_mode="v1", number_candidates=10, split='validation'):
     """
     Implements the STaR pipeline where each fine-tuning starts from the initial base model.
 
@@ -180,7 +181,7 @@ def eval_performance(model_name_and_path, dataset_name, output_dir, save_raw_dat
     # Load test set
     print(f"Loading dataset '{dataset_name}'...")
     dataset = load_dataset(dataset_name)
-    test_dataset = dataset['validation'] 
+    test_dataset = dataset[split] 
 
     # Load Model  
     base_model = load_model_inference(model_name_or_path=model_name_and_path, gpu_count=gpu_count)
@@ -252,7 +253,8 @@ def main():
                         help="the number of gpus for inference.")
     parser.add_argument("--number_candidates", type=int, default=10, 
                         help="the number of candidates.")
-
+    parser.add_argument("--split", type=str, default="validation",
+                        help="split: validation or train.")
     # Parse arguments
     args = parser.parse_args()
     print("Running with the following arguments:")
@@ -306,6 +308,7 @@ def main():
         gpu_count=args.gpu_count,
         prompt_mode=args.prompt_mode,
         number_candidates=args.number_candidates,
+        split=args.split,
     )
 
 if __name__ == "__main__":
