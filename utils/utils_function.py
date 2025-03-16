@@ -72,6 +72,13 @@ class TimeoutException(Exception):
 
 #    return return_dict.get("result", "Unknown") 
 
+import re
+
+def clean_markdown_code(response: str) -> str:
+    response = re.sub(r"```python\s*", "", response)
+    response = re.sub(r"```", "\n</code>", response)
+
+    return response
 
 def run_code(code_str, return_dict):
     """
@@ -181,8 +188,8 @@ def get_prompt(mode, prompt_mode, use_fewshot=False):
     """
     Load system prompt and few-shot examples according to modes (truth_table, code, nl).
     """
-    sys_prompt_path = os.path.join('./Prompts', f'sys_prompt_{mode}_star_{prompt_mode}.txt') 
-    example_path = os.path.join('./Prompts', f'example_{mode}_star.txt')
+    sys_prompt_path = os.path.join('./Prompts', f'sys_prompt_star_{prompt_mode}.txt') 
+    example_path = os.path.join('./Prompts', f'example_{mode}_star_{prompt_mode}.txt')
 
     with open(sys_prompt_path, encoding="utf-8") as f:
         sys_prompt = f.read()
@@ -242,10 +249,12 @@ def check_huggingface_repo_exists(huggingface_repo: str) -> bool:
 
 def parse_answer(rationale_response, mode, prompt_mode):
     predict = 'Unknown'
-    if mode != 'code' or (mode == 'code' and 'v3' in prompt_mode):
-        rationale_response = rationale_response.split("<Reasoning>")[-1]
-        rationale_response = rationale_response.split("</Answer>")[0] + "</Answer>"
-        answer_match = re.search(r'<Answer>(.*?)</Answer>', rationale_response, re.DOTALL)
+    if mode != 'code' or (mode == 'code' and 'v1' not in prompt_mode):
+        tag = mode if mode!='nl' else "nl_cot"
+        rationale_response = clean_markdown_code(rationale_response)
+        rationale_response = rationale_response.split(f"<{tag}>")[-1]
+        rationale_response = rationale_response.split("</answer>")[0] + "</answer>"
+        answer_match = re.search(r'<answer>(.*?)</answer>', rationale_response, re.DOTALL)
         answer_response = answer_match.group(1).strip() if answer_match else ""
         
         match = re.search(r'\(?([A-D])\)?', answer_response)
@@ -628,8 +637,8 @@ def post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mo
         # the successful refine version if it succeeds, you can do so:
         final_rationale = rationale_response_sample_j.strip()
 
-        print(final_rationale)
 
+        print(final_rationale)
         # # If all candidates fail to match the correct answer
         # if not found_correct:
         #     # Call self_refine to generate a corrected version

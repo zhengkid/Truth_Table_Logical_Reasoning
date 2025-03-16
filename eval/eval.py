@@ -41,6 +41,7 @@ def evaluation_batch(model, dataset, output_dir, raw_data_path, accuracy_path,
 
             batch_prompts.append(prompt)
             batch_items.append({'premises':premise, 'conclusion': conclusion, 'label': label})
+        print(batch_prompts[0])
         # Process batch data via LLM
         try:
             with torch.no_grad():

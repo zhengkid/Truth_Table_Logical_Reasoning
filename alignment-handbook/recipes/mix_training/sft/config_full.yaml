@@ -7,9 +7,9 @@ attn_implementation: flash_attention_2
 
 # Data training arguments
 dataset_mixer:
-  TongZheng1999/gemma-2-9b-it_truth_table_rationale_1000_v1_10_2_3Rounds_round_3: 1.0
-  TongZheng1999/gemma-2-9b-it_nl_rationale_1000_3Rounds_round_3: 1.0
-  TongZheng1999/gemma-2-9b-it_code_rationale_1000_v3_10_3Rounds_round_3: 1.0
+  TongZheng1999/gemma-2-9b-it_truth_table_OP_rationale_1000_final_10_2_3Rounds_round_1: 1.0
+  TongZheng1999/gemma-2-9b-it_nl_OP_rationale_1000_final_1_2_3Rounds_round_1: 1.0
+  TongZheng1999/gemma-2-9b-it_code_OP_rationale_1000_final_10_2_3Rounds_round_1: 1.0
 dataset_splits:
 - train
 auto_insert_empty_system_msg: false
@@ -22,11 +22,11 @@ dataset_kwargs:
   append_concat_token: false # No need to add <eos> across samples
 do_eval: false
 eval_strategy: "no"
-gradient_accumulation_steps: 4
+gradient_accumulation_steps: 16
 gradient_checkpointing: true
 gradient_checkpointing_kwargs:
   use_reentrant: false
-hub_model_id: TongZheng1999/gemma-2-9b-it-mix-v2-111
+hub_model_id: TongZheng1999/gemma-2-9b-iter1-mix-new-5-epoch
 hub_strategy: every_save
 learning_rate: 5.0e-06
 log_level: info
@@ -35,12 +35,12 @@ logging_strategy: steps
 lr_scheduler_type: cosine
 max_seq_length: 4096
 max_steps: -1
-num_train_epochs: 1
-output_dir: /beacon-scratch/tongzh24/gemma-2-9b-it/mix-111
+num_train_epochs: 5
+output_dir: /beacon-scratch/tongzh24/gemma-2-9b-it/mix-iter1-new-5-epoch
 overwrite_output_dir: true
 per_device_eval_batch_size: 4
 per_device_train_batch_size: 2
-push_to_hub: true
+push_to_hub: false
 remove_unused_columns: true
 report_to:
 - tensorboard
