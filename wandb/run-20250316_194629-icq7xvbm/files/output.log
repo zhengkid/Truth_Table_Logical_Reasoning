@@ -1,0 +1,81 @@
+  0%|                                                                                                                                                                   | 0/34 [00:00<?, ?it/s][WARNING|logging.py:328] 2025-03-16 19:46:29,790 >> It is strongly recommended to train Gemma2 models with the `eager` attention implementation instead of `flash_attention_2`. Use `eager` with `AutoModelForCausalLM.from_pretrained('<path-to-checkpoint>', attn_implementation='eager')`.
+ 56%|██████████████████████████████████████████████████████████████████████████████████████                                                                    | 19/34 [08:29<06:41, 26.74s/it]Traceback (most recent call last):
+{'loss': 1.4472, 'grad_norm': 28.010741593611115, 'learning_rate': 4.989335440737587e-06, 'epoch': 0.06}
+{'loss': 0.6083, 'grad_norm': 3.648881794105701, 'learning_rate': 4.737908228387656e-06, 'epoch': 0.28}
+{'loss': 0.3659, 'grad_norm': 1.0927101642568722, 'learning_rate': 4.006586590948141e-06, 'epoch': 0.56}
+{'loss': 0.3134, 'grad_norm': 1.1642719983506589, 'learning_rate': 2.9593737945414264e-06, 'epoch': 0.84}
+  File "/ihchomes/tongzh24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 225, in <module>
+    main()
+  File "/ihchomes/tongzh24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 180, in main
+    train_result = trainer.train(resume_from_checkpoint=checkpoint)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 2113, in train
+    return inner_training_loop(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 2474, in _inner_training_loop
+    tr_loss_step = self.training_step(model, inputs, num_items_in_batch)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 3606, in training_step
+    self.accelerator.backward(loss, **kwargs)
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/accelerate/accelerator.py", line 2238, in backward
+    self.deepspeed_engine_wrapped.backward(loss, **kwargs)
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/accelerate/utils/deepspeed.py", line 261, in backward
+    self.engine.backward(loss, **kwargs)
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/deepspeed/utils/nvtx.py", line 18, in wrapped_fn
+    ret_val = func(*args, **kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/deepspeed/runtime/engine.py", line 2020, in backward
+    self.optimizer.backward(loss, retain_graph=retain_graph)
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/deepspeed/utils/nvtx.py", line 18, in wrapped_fn
+    ret_val = func(*args, **kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/deepspeed/runtime/zero/stage3.py", line 2259, in backward
+    self.loss_scaler.backward(loss.float(), retain_graph=retain_graph)
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/deepspeed/runtime/fp16/loss_scaler.py", line 63, in backward
+    scaled_loss.backward(retain_graph=retain_graph)
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/torch/_tensor.py", line 626, in backward
+    torch.autograd.backward(
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/torch/autograd/__init__.py", line 347, in backward
+    _engine_run_backward(
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/torch/autograd/graph.py", line 823, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/ihchomes/tongzh24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 225, in <module>
+[rank0]:     main()
+[rank0]:   File "/ihchomes/tongzh24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 180, in main
+[rank0]:     train_result = trainer.train(resume_from_checkpoint=checkpoint)
+[rank0]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 2113, in train
+[rank0]:     return inner_training_loop(
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 2474, in _inner_training_loop
+[rank0]:     tr_loss_step = self.training_step(model, inputs, num_items_in_batch)
+[rank0]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 3606, in training_step
+[rank0]:     self.accelerator.backward(loss, **kwargs)
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/accelerate/accelerator.py", line 2238, in backward
+[rank0]:     self.deepspeed_engine_wrapped.backward(loss, **kwargs)
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/accelerate/utils/deepspeed.py", line 261, in backward
+[rank0]:     self.engine.backward(loss, **kwargs)
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/deepspeed/utils/nvtx.py", line 18, in wrapped_fn
+[rank0]:     ret_val = func(*args, **kwargs)
+[rank0]:               ^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/deepspeed/runtime/engine.py", line 2020, in backward
+[rank0]:     self.optimizer.backward(loss, retain_graph=retain_graph)
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/deepspeed/utils/nvtx.py", line 18, in wrapped_fn
+[rank0]:     ret_val = func(*args, **kwargs)
+[rank0]:               ^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/deepspeed/runtime/zero/stage3.py", line 2259, in backward
+[rank0]:     self.loss_scaler.backward(loss.float(), retain_graph=retain_graph)
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/deepspeed/runtime/fp16/loss_scaler.py", line 63, in backward
+[rank0]:     scaled_loss.backward(retain_graph=retain_graph)
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/torch/_tensor.py", line 626, in backward
+[rank0]:     torch.autograd.backward(
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/torch/autograd/__init__.py", line 347, in backward
+[rank0]:     _engine_run_backward(
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/torch/autograd/graph.py", line 823, in _engine_run_backward
+[rank0]:     return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]: KeyboardInterrupt
