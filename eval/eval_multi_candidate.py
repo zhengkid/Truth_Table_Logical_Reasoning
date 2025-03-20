@@ -16,15 +16,27 @@ from utils.utils_function import (
     is_executable,
     remove_incorrect_code_symbols,
     post_process_batch_data_eval,
+    post_process_batch_data_eval_multi_candidate,
 )
 
 def evaluation_batch(model_path, model, dataset, output_dir, raw_data_path, accuracy_path,
                max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None,
-               mode='truth_table', is_chat_model=False, batch_size=16, use_fewshot=True,prompt_mode='v1', number_candidates=10):
+               mode='truth_table', is_chat_model=False, batch_size=16, use_fewshot=True,prompt_mode='v1', number_candidates=10, mixture_mode='multi_candidate', colab_modes=""):
     rationales = []
     correct_num = 0
-    total_num = 0   
-    rationale_prompt, _ = get_prompt(model=model_path, mode=mode, prompt_mode=prompt_mode, use_fewshot=use_fewshot)
+    total_num = 0
+    if mixture_mode == "multi_candidate":
+        rationale_prompt, _ = get_prompt(model=model_path, mode=mode, prompt_mode=prompt_mode, use_fewshot=use_fewshot)
+        mode_indicater = [mode]
+        rationale_prompt_list = [rationale_prompt]
+    else:
+        mode_list = colab_modes.split("/")
+        mode_indicater = [mode for mode in mode_list]
+        
+
+        rationale_prompt_list = [get_prompt(model=model_path, mode=mode, prompt_mode=prompt_mode, use_fewshot=use_fewshot) for mode in mode_list]
+    candidate_for_each_mode = int(number_candidates / len(rationale_prompt_list))
+    
     for batch_start in tqdm.tqdm(range(0, len(dataset), batch_size)):
         batch_dataset = dataset[batch_start: batch_start + batch_size]
         batch_prompts = []
@@ -35,15 +47,17 @@ def evaluation_batch(model_path, model, dataset, output_dir, raw_data_path, accu
         batch_labels = batch_dataset['label']
         for premise, conclusion, label  in zip(batch_premises, batch_conclusions, batch_labels):
             if True: #"gemma" in model_path:
-                prompt = rationale_prompt.format(Premises=premise, Conclusions=conclusion)
-                if is_chat_model:
-                    prompt = [{"role": "user","content": prompt}]
+                for rationale_prompt in rationale_prompt_list:
+                    prompt = rationale_prompt.format(Premises=premise, Conclusions=conclusion)
+                    if is_chat_model:
+                        prompt = [{"role": "user","content": prompt}]
+                    batch_prompts.append(prompt)
             else:
                 sys_prompt, user_prompt = rationale_prompt
                 user_prompt = user_prompt.format(Premises=premise, Conclusions=conclusion)
                 if is_chat_model:
                     prompt = [{"role": "system", "content": sys_prompt},{"role": "user","content": user_prompt}]
-            batch_prompts.append(prompt)
+                batch_prompts.append(prompt)
             batch_items.append({'premises':premise, 'conclusion': conclusion, 'label': label})
         print(batch_prompts[0])
         # Process batch data via LLM
@@ -58,94 +72,17 @@ def evaluation_batch(model_path, model, dataset, output_dir, raw_data_path, accu
                     top_k=top_k,
                     stop=stop,
                     is_chat_model=is_chat_model,
-                    number_candidates=number_candidates,
+                    number_candidates=candidate_for_each_mode,
                 )
         except Exception as e:
             print(f"Error generating responses for batch starting at index {batch_start}: {e}")
             tqdm.tqdm.update(1)
             continue 
-        batch_rationales, correct_num, total_num, accuracy = post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mode, total_num, correct_num, model, max_tokens, temperature, top_p, top_k, stop, is_chat_model, prompt_mode=prompt_mode)
+        batch_prompts_reshape = [batch_prompts[i: i+len(rationale_prompt_list)] for i in range(0, len(batch_prompts), len(len(rationale_prompt_list)))]
+        batch_responses_reshape = [batch_responses[i: i+len(rationale_prompt_list)] for i in range(0, len(batch_responses), len(len(rationale_prompt_list)))]
+
+        batch_rationales, correct_num, total_num, accuracy = post_process_batch_data_eval(batch_prompts_reshape, batch_items, batch_responses_reshape, mode, total_num, correct_num, model, max_tokens, temperature, top_p, top_k, stop, is_chat_model, prompt_mode=prompt_mode, mode_indicaters=mode_indicater)
         rationales.extend(batch_rationales)
-
-    # for batch_start in tqdm.tqdm(range(0, len(dataset_list), batch_size)):
-    #     batch_prompts = prompts[batch_start: batch_start + batch_size]
-    #     batch_items = dataset_list[batch_start: batch_start + batch_size]
-    #     print(batch_start, len(batch_items))
-
-
-    #     if mode != 'code':
-    #         for prompt, item, rationale_response in zip(batch_prompts, batch_items, batch_responses):
-    #             label = item['label']
-    #             for j in range(len(rationale_response)):
-    #                 rationale_response_sample_j = rationale_response[j]
-    #                 rationale_response_sample_j = rationale_response_sample_j.split("<Reasoning>")[-1]
-    #                 rationale_response_sample_j = rationale_response_sample_j.split("</Answer>")[0] + "</Answer>"
-    #                 answer_response_sample_j = rationale_response_sample_j.split("<Answer>")[-1]
-    #                 if "(A)" in answer_response_sample_j:
-    #                     predict = "True"
-    #                 elif "(B)" in answer_response_sample_j:
-    #                     predict = "False"
-    #                 elif "(C)" in answer_response_sample_j:
-    #                     predict = "Uncertain"
-    #                 else:
-    #                     predict = "Unknown"
-                    
-    #                 if predict == label:
-    #                     correct_num += 1
-    #                     break
-    #             rationales.append({
-    #                     "premises": item['premises'],
-    #                     "conclusions": item['conclusion'],
-    #                     "rationale": rationale_response.strip(),
-    #                     "label": item['label'],
-    #                     "predict": predict,
-    #                     "user_prompt": prompt
-    #                 })
-    #             total_num += 1
-    #             print(f"{correct_num} out of {total_num} is correct!")
-    #             accuracy = correct_num / total_num if total_num > 0 else 0.0
-    #     else:
-    #         for prompt, item, code_response in zip(batch_prompts, batch_items, batch_responses):            
-    #             try:
-    #                 label = item['label']
-    #                 if code_response:
-    #                     total_num += 1
-    #                 for j in range(len(code_response)):
-    #                     code_response_sample_j = code_response[j]
-    #                     code_response_sample_j = code_response_sample_j.split("<PYTHON>")[-1]
-    #                     code_response_sample_j = code_response_sample_j.split("</PYTHON>")[0]
-    #                     code_response_sample_j = remove_incorrect_code_symbols(code_response_sample_j)
-    #                     code_response_sample_j = code_response_sample_j.split("result = 'Unknown'")[0] + "result = 'Unknown'"
-    #                     if not code_response_sample_j:
-    #                         print("Warning: Empty code response! Counting as incorrect.")
-    #                         predict = "Unknown"
-    #                     else:
-    #                         if is_executable(code_response_sample_j):
-    #                             print("Executing code!")
-    #                             predict = execute_with_timeout(code_response_sample_j, timeout_seconds=3)
-    #                             num_exec += 1
-    #                         else:
-    #                             print("Warning: the code is not executable")
-    #                             predict = "Unexecutable"
-    #                     print(predict)
-    #                     if str(predict) == str(label):
-    #                         correct_num += 1
-    #                         break
-    #                 rationales.append({
-    #                     "premises": item['premises'],
-    #                     "conclusions": item['conclusion'],
-    #                     "rationale": code_response_sample_j.strip(),
-    #                     "label": label,
-    #                     "predict": predict,
-    #                     "user_prompt": prompt,
-    #                 })
-
-    #             except Exception as e:
-    #                 print(f"Unexpected error in processing item: {e}")
-    #                 predict = "Unknown"
-    #             finally:
-    #                 accuracy = correct_num / total_num if total_num > 0 else 0.0
-    #                 print(f"{correct_num} out of {total_num} is correct! Accuracy: {accuracy:.2%}")
 
     with open(os.path.join(output_dir, raw_data_path), 'w') as f:
         json.dump(rationales, f, indent=4)
@@ -162,7 +99,7 @@ def evaluation_batch(model_path, model, dataset, output_dir, raw_data_path, accu
     print(f"Correct predictions: {correct_num}")
     print(f"Accuracy report saved to {accuracy_path}")
 
-def eval_performance(model_name_and_path, dataset_name, output_dir, save_raw_data_path, save_result_path, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False, batch_size=16, use_fewshot=False, gpu_count=4, prompt_mode="v1", number_candidates=10, split='validation'):
+def eval_performance(model_name_and_path, dataset_name, output_dir, save_raw_data_path, save_result_path, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False, batch_size=16, use_fewshot=False, gpu_count=4, prompt_mode="v1", number_candidates=10, split='validation',mixture_mode='multi_candidate',colab_modes=""):
     """
     Implements the STaR pipeline where each fine-tuning starts from the initial base model.
 
@@ -212,6 +149,8 @@ def eval_performance(model_name_and_path, dataset_name, output_dir, save_raw_dat
                 use_fewshot=use_fewshot,
                 prompt_mode=prompt_mode,
                 number_candidates=number_candidates,
+                mixture_mode=mixture_mode,
+                colab_modes=colab_modes,
         )
 def set_seed(seed):
     random.seed(seed)
@@ -259,7 +198,11 @@ def main():
                         help="the number of gpus for inference.")
     parser.add_argument("--number_candidates", type=int, default=10, 
                         help="the number of candidates.")
+    parser.add_argument("--mixture_mode", type=str, default="multi_candidate", 
+                        help="the mode for mixture")
     parser.add_argument("--split", type=str, default="validation",
+                        help="split: validation or train.")
+    parser.add_argument("--colab_modes", type=str, default="nl/code/truth_table",
                         help="split: validation or train.")
     # Parse arguments
     args = parser.parse_args()
@@ -315,6 +258,8 @@ def main():
         prompt_mode=args.prompt_mode,
         number_candidates=args.number_candidates,
         split=args.split,
+        mixture_mode=args.mixture_mode,
+        colab_modes=args.colab_modes,
     )
 
 if __name__ == "__main__":

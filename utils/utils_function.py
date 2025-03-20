@@ -6,6 +6,8 @@ from huggingface_hub import HfApi
 from datasets import load_dataset
 import traceback
 import re
+import random
+from collections import Counter
 
 def remove_incorrect_code_symbols(text):
     """
@@ -671,6 +673,61 @@ def post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mo
 
     return rationales, correct, total_num, accuracy
 
+
+def post_process_batch_data_eval_multi_candidate(batch_prompts, batch_items, batch_responses, mode, total_num, correct, model, max_tokens=2048, temperature=0.7, top_p=0.9, top_k=40, stop=None, is_chat_model=False, max_refine=0, prompt_mode='v1', mode_indicaters=[]):
+    rationales = []
+    for prompt, item, rationale_response in zip(batch_prompts, batch_items, batch_responses):
+        label = item['label']
+        predictions = []
+        all_rationales = []
+
+        num_modes = len(rationale_response)
+        for i in range(num_modes):
+            for j in range(len(rationale_response[i])):
+                rationale_response_mode_i_sample_j = rationale_response[i][j]
+                rationale_response_sample_ij, predict_ij, error_message = parse_answer(rationale_response_mode_i_sample_j, mode_indicaters[i], prompt_mode=prompt_mode)
+                predictions.append(predict_ij)
+                all_rationales.append(rationale_response_sample_ij.strip())
+        
+        # vote for correctness
+        final_predict = majority_vote(predictions)
+
+        if final_predict == label:
+            correct += 1
+        
+        rationales.append({
+            "premises": item['premises'],
+            "conclusions": item['conclusion'],
+            "rationales": all_rationales,
+            "label": item['label'],
+            "final_predict": final_predict,
+            "predictions": predictions,
+            "user_prompt": prompt,
+        })
+
+        total_num += 1
+        print(f"{correct} out of {total_num} is correct!")
+        accuracy = correct / total_num if total_num > 0 else 0.0
+
+    return rationales, correct, total_num, accuracy
+
+
+def majority_vote(predictions):
+    """
+    Selects the most common prediction from the list.
+    If there is a tie, randomly selects one among the tied values.
+    """
+    if not predictions:
+        return None  # Return None if the list is empty
+
+    counter = Counter(predictions)
+    max_count = max(counter.values())
+
+    # Get all predictions that have the maximum count
+    candidates = [key for key, count in counter.items() if count == max_count]
+    print(candidates)
+    # Randomly select one if there is a tie
+    return random.choice(candidates)
 
 
 def self_refine(
