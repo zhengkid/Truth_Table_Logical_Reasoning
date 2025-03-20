@@ -184,7 +184,7 @@ def generate_responses_batch(model, user_prompts, max_tokens, temperature, top_p
     responses = [[candidate.text for candidate in output.outputs] for output in outputs]
     return responses
 
-def get_prompt(mode, prompt_mode, use_fewshot=False):
+def get_prompt(model, mode, prompt_mode, use_fewshot=False):
     """
     Load system prompt and few-shot examples according to modes (truth_table, code, nl).
     """
@@ -205,7 +205,10 @@ def get_prompt(mode, prompt_mode, use_fewshot=False):
     else:
         full_prompt = sys_prompt + '\n\n' + example
     full_prompt_without_few_shot = sys_prompt + '\n\n' + example
-    return full_prompt, full_prompt_without_few_shot
+    if False: # "gemma" not in model:
+        return (sys_prompt, fewshot_example + "\n\n" + example), (sys_prompt, example)
+    else:
+        return full_prompt, full_prompt_without_few_shot
 
 def obtain_seed_dataset(dataset_name, num_samples, seed=42):
     """
@@ -249,12 +252,12 @@ def check_huggingface_repo_exists(huggingface_repo: str) -> bool:
 
 def parse_answer(rationale_response, mode, prompt_mode):
     predict = 'Unknown'
-    if mode != 'code' or (mode == 'code' and 'v1' not in prompt_mode):
+    if mode != 'code' or (mode == 'code' and 'final' in prompt_mode):
         tag = mode if mode!='nl' else "nl_cot"
         rationale_response = clean_markdown_code(rationale_response)
         rationale_response = rationale_response.split(f"<{tag}>")[-1]
-        rationale_response = rationale_response.split("</answer>")[0] + "</answer>"
-        answer_match = re.search(r'<answer>(.*?)</answer>', rationale_response, re.DOTALL)
+        rationale_response = rationale_response.split("<end_of_answer>")[0] + "<end_of_answer>"
+        answer_match = re.search(r'<answer>(.*?)<end_of_answer>', rationale_response, re.DOTALL)
         answer_response = answer_match.group(1).strip() if answer_match else ""
         
         match = re.search(r'\(?([A-D])\)?', answer_response)

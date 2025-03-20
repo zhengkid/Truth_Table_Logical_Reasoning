@@ -2,7 +2,7 @@
 # star_pipeline_all_flags.sh
 # General parameters
 # Model and Datasets
-BASE_MODEL="google/gemma-2-9b-it"
+BASE_MODEL="google/gemma-2-9b-it" #"Qwen/Qwen2.5-7B-Instruct" #"TongZheng1999/gemma-2-9b-it-star-mixed_direct-OP-final_v1_10-2-3Rounds-iter-3" #"google/gemma-2-9b-it"
 DATASET="yale-nlp/FOLIO"
 MODEL_NAME=${BASE_MODEL##*/}
 
@@ -23,8 +23,8 @@ TOP_K=50
 
 
 MODES=("nl" "code" "truth_table") 
-PROMPT_MODE='final'
-MIXTURE_MODE='unique_conclusion'  # direct or other
+PROMPT_MODE='final_v2'
+MIXTURE_MODE='direct'  # direct or other
 STRAREGY="OP"
 
 
@@ -96,7 +96,7 @@ do
   INPUT_DATASETS=()
   for MODE in "${MODES[@]}"; do
     echo "Stage 1: Generating rationales for round $round using model: $CURRENT_MODEL in mode: $MODE"
-    HF_DATA_ID="${MODEL_NAME}_mixed_${MIXTURE_MODE}_${MODE}_${STRAREGY}_rationale_${N_SAMPLES}_${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}_${EPOCHS}_${N_ROUNDS}Rounds_round_${round}"
+    HF_DATA_ID="${MODEL_NAME}_mixed_${MIXTURE_MODE}_${MODE}_${STRAREGY}_r_${N_SAMPLES}_${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}_${EPOCHS}_${N_ROUNDS}R_round_${round}"
     python generate_rationale.py \
         --model_name_and_path "$CURRENT_MODEL" \
         --dataset_name "$DATASET" \

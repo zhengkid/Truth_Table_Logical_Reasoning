@@ -1,0 +1,48 @@
+# Model arguments
+model_name_or_path: /beacon-scratch/tongzh24//gemma-2-9b-it/nl/OP_final_v1_1_2_3Rounds/ft_iter_2
+model_revision: main
+tokenizer_name_or_path: /beacon-scratch/tongzh24//gemma-2-9b-it/nl/OP_final_v1_1_2_3Rounds/ft_iter_2
+torch_dtype: bfloat16
+attn_implementation: flash_attention_2
+
+# Data training arguments
+dataset_mixer:
+  TongZheng1999/gemma-2-9b-it_nl_OP_rationale_1000_final_v1_1_2_3Rounds_round_3: 1.0
+dataset_splits:
+- train
+auto_insert_empty_system_msg: false
+preprocessing_num_workers: 12
+
+# SFT trainer config
+bf16: true
+dataset_kwargs:
+  add_special_tokens: false  # We already wrap <bos> and <eos> in the chat template
+  append_concat_token: false # No need to add <eos> across samples
+do_eval: false
+eval_strategy: "no"
+gradient_accumulation_steps: 16
+gradient_checkpointing: true
+gradient_checkpointing_kwargs:
+  use_reentrant: false
+hub_model_id: gemma-2-9b-it-star-nl-OP-final_v1_1-2-3Rounds-iter-3
+hub_strategy: every_save
+learning_rate: 5.0e-06
+log_level: info
+logging_steps: 5
+logging_strategy: steps
+lr_scheduler_type: cosine
+max_seq_length: 4096
+max_steps: -1
+num_train_epochs: 2
+output_dir: /beacon-scratch/tongzh24//gemma-2-9b-it/nl/OP_final_v1_1_2_3Rounds/ft_iter_3
+overwrite_output_dir: true
+per_device_eval_batch_size: 4
+per_device_train_batch_size: 2
+push_to_hub: true
+remove_unused_columns: true
+report_to:
+- tensorboard
+- wandb
+save_strategy: "no"
+seed: 42
+warmup_ratio: 0

@@ -13,14 +13,14 @@ from utils.utils_function import (
     obtain_seed_dataset,
 )
 
-def generate_rationales(model, dataset, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False, batch_size=16,use_fewshot=True, huggingface_repo="", prompt_mode='v1', number_candidates=10):
+def generate_rationales(model_path, model, dataset, max_tokens=512, temperature=0.7, top_p=0.9, top_k=50, stop=None, mode='truth_table', is_chat_model=False, batch_size=16,use_fewshot=True, huggingface_repo="", prompt_mode='v1', number_candidates=10):
     """
     Generate rationales for each data point in the dataset.
     """
     rationales = []
     total_num, correct, dataset_len = 0, 0, len(dataset)
     # load prompts 0: full prompt with few shot 1: prompt without few shot
-    full_prompt, full_prompt_only_example = get_prompt(mode=mode, prompt_mode=prompt_mode, use_fewshot=use_fewshot)
+    full_prompt, full_prompt_only_example = get_prompt(model=model_path, mode=mode, prompt_mode=prompt_mode, use_fewshot=use_fewshot)
     # Prepare prompts for datasets
     for batch_start in tqdm.tqdm(range(0, len(dataset), batch_size)):
         batch_dataset = dataset[batch_start: batch_start + batch_size]
@@ -32,10 +32,19 @@ def generate_rationales(model, dataset, max_tokens=512, temperature=0.7, top_p=0
         batch_labels = batch_dataset['label']
         # Accumulate batch data 
         for premise, conclusion, label  in zip(batch_premises, batch_conclusions, batch_labels):
-            prompt = full_prompt.format(Premises=premise, Conclusions=conclusion)
-            prompt_only_example = full_prompt_only_example.format(Premises=premise, Conclusions=conclusion)
-            if is_chat_model:
-                prompt = [{"role": "user","content": prompt}]
+            if True:#"gemma" in model_path:
+                prompt = full_prompt.format(Premises=premise, Conclusions=conclusion)
+                prompt_only_example = full_prompt_only_example.format(Premises=premise, Conclusions=conclusion)
+                if is_chat_model:
+                    prompt = [{"role": "user","content": prompt}]
+            else:
+                sys_prompt, user_prompt = full_prompt
+                user_prompt_only_example = full_prompt_only_example[1]
+                user_prompt = user_prompt.format(Premises=premise, Conclusions=conclusion)
+                user_prompt_only_example = user_prompt_only_example.format(Premises=premise, Conclusions=conclusion)
+                prompt_only_example = sys_prompt + "\n\n" + user_prompt_only_example
+                if is_chat_model:
+                    prompt = [{"role": "system", "content": sys_prompt},{"role": "user","content": user_prompt}]
             batch_prompts.append(prompt)
             batch_prompts_only_example.append(prompt_only_example)
             batch_items.append({'premises':premise, 'conclusion': conclusion, 'label': label})
@@ -174,6 +183,7 @@ def generate_rationale_data(model_name_and_path, dataset_name, n_samples=200, ba
     model = load_model_inference(model_name_or_path=model_name_and_path,  gpu_count=gpu_count)
 
     generate_rationales(
+        model_path=model_name_and_path,
         model=model,
         dataset=dataset,
         max_tokens=max_tokens,

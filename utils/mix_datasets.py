@@ -10,7 +10,7 @@ def parse_args():
                         help="List of Hugging Face datasets to mix (e.g., hf_user/dataset_nl_cot hf_user/dataset_code hf_user/dataset_answer)")
     parser.add_argument("--output_dataset", type=str, required=True,
                         help="Output Hugging Face dataset ID (e.g., hf_user/mixed_dataset)")
-    parser.add_argument("--mix_mode", type=str, choices=["direct", "unique_conclusion"], default="unique_conclusion",
+    parser.add_argument("--mix_mode", type=str, choices=["direct", "uniq"], default="uniq",
                         help="Mixing mode: 'direct' (add all data) or 'unique_conclusion' (filter by unique conclusions)")
     parser.add_argument("--seed", type=int, default=42,
                         help="Random seed for reproducibility")
@@ -22,14 +22,14 @@ def check_validity(sample, mode):
             content = message["content"]
 
             if mode == "nl":
-                return "</nl_cot>" in content 
+                return "<end_of_nl_cot>" in content 
 
             elif mode == "code":
-                return ("</code>" in content and
+                return ("<end_of_code>" in content and
                         ("def " in content or "class " in content or "import " in content))
 
             elif mode == "truth_table":
-                return "</truth_table>" in content
+                return "<end_of_truth_table>" in content
 
     return False
 
