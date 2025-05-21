@@ -1,0 +1,55 @@
+  0%|          | 0/26 [00:00<?, ?it/s][WARNING|logging.py:328] 2025-04-12 14:25:48,790 >> It is strongly recommended to train Gemma2 models with the `eager` attention implementation instead of `flash_attention_2`. Use `eager` with `AutoModelForCausalLM.from_pretrained('<path-to-checkpoint>', attn_implementation='eager')`.
+[2025-04-12 14:26:18,832] [WARNING] [stage3.py:2114:step] 1 pytorch allocator cache flushes since last step. this happens when there is high memory pressure and is detrimental to performance. if this is happening frequently consider adjusting settings to reduce memory consumption. If you are unable to make the cache flushes go away consider adding get_accelerator().empty_cache() calls in your training loop to ensure that all ranks flush their caches at the same time
+100%|██████████| 26/26 [11:50<00:00, 27.28s/it][INFO|trainer.py:2584] 2025-04-12 14:37:39,105 >>
+{'loss': 0.1901, 'grad_norm': 0.7398437847192515, 'learning_rate': 4.981772185245135e-06, 'epoch': 0.07}
+{'loss': 0.1976, 'grad_norm': 1.5036929607742318, 'learning_rate': 4.5574596647341414e-06, 'epoch': 0.36}
+{'loss': 0.1522, 'grad_norm': 0.8477786614041225, 'learning_rate': 3.386512217606339e-06, 'epoch': 0.72}
+{'loss': 0.141, 'grad_norm': 0.7128624580449572, 'learning_rate': 1.9017108392811065e-06, 'epoch': 1.14}
+{'loss': 0.0906, 'grad_norm': 0.5920966642858589, 'learning_rate': 6.28723129572247e-07, 'epoch': 1.5}
+{'loss': 0.0853, 'grad_norm': 0.5709395493241601, 'learning_rate': 1.822781475486507e-08, 'epoch': 1.86}
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+100%|██████████| 26/26 [11:50<00:00, 27.32s/it]
+{'train_runtime': 715.9827, 'train_samples_per_second': 4.964, 'train_steps_per_second': 0.036, 'train_loss': 0.13078677654266357, 'epoch': 1.93}
+***** train metrics *****
+  epoch                    =     1.9283
+  total_flos               =    13372GF
+  train_loss               =     0.1308
+  train_runtime            = 0:11:55.98
+  train_samples            =       1777
+  train_samples_per_second =      4.964
+  train_steps_per_second   =      0.036
+2025-04-12 14:37:39 - INFO - __main__ - *** Save model ***
+[INFO|trainer.py:3801] 2025-04-12 14:37:44,513 >> Saving model checkpoint to /beacon-scratch/tzheng24//gemma-2-9b-it/FL_1000_TT_Code_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_2
+[INFO|configuration_utils.py:414] 2025-04-12 14:37:44,521 >> Configuration saved in /beacon-scratch/tzheng24//gemma-2-9b-it/FL_1000_TT_Code_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_2/config.json
+[INFO|configuration_utils.py:865] 2025-04-12 14:37:44,524 >> Configuration saved in /beacon-scratch/tzheng24//gemma-2-9b-it/FL_1000_TT_Code_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_2/generation_config.json
+Traceback (most recent call last):
+  File "/ihchomes/tzheng24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 225, in <module>
+    main()
+  File "/ihchomes/tzheng24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 191, in main
+    trainer.save_model(training_args.output_dir)
+  File "/beacon-scratch/tzheng24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 3706, in save_model
+    self._save(output_dir, state_dict=state_dict)
+  File "/beacon-scratch/tzheng24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 3823, in _save
+    self.model.save_pretrained(
+  File "/beacon-scratch/tzheng24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/modeling_utils.py", line 3028, in save_pretrained
+    safe_save_file(shard, os.path.join(save_directory, shard_file), metadata={"format": "pt"})
+  File "/beacon-scratch/tzheng24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/safetensors/torch.py", line 286, in save_file
+    serialize_file(_flatten(tensors), filename, metadata=metadata)
+safetensors_rust.SafetensorError: Error while serializing: IoError(Os { code: 28, kind: StorageFull, message: "No space left on device" })
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/ihchomes/tzheng24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 225, in <module>
+[rank0]:     main()
+[rank0]:   File "/ihchomes/tzheng24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 191, in main
+[rank0]:     trainer.save_model(training_args.output_dir)
+[rank0]:   File "/beacon-scratch/tzheng24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 3706, in save_model
+[rank0]:     self._save(output_dir, state_dict=state_dict)
+[rank0]:   File "/beacon-scratch/tzheng24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 3823, in _save
+[rank0]:     self.model.save_pretrained(
+[rank0]:   File "/beacon-scratch/tzheng24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/modeling_utils.py", line 3028, in save_pretrained
+[rank0]:     safe_save_file(shard, os.path.join(save_directory, shard_file), metadata={"format": "pt"})
+[rank0]:   File "/beacon-scratch/tzheng24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/safetensors/torch.py", line 286, in save_file
+[rank0]:     serialize_file(_flatten(tensors), filename, metadata=metadata)
+[rank0]: safetensors_rust.SafetensorError: Error while serializing: IoError(Os { code: 28, kind: StorageFull, message: "No space left on device" })

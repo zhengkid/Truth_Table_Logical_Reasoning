@@ -2,7 +2,7 @@
 # star_pipeline_all_flags.sh
 # General parameters
 # Model and Datasets
-BASE_MODEL="Qwen/Qwen2.5-7B-Instruct" #"TongZheng1999/gemma-2-9b-it-star-mixed_direct-OP-final_v1_10-2-3Rounds-iter-3" #"google/gemma-2-9b-it"
+BASE_MODEL="Qwen/Qwen2.5-7B-Instruct" #"Qwen/Qwen2.5-7B-Instruct" #"TongZheng1999/gemma-2-9b-it-star-mixed_direct-OP-final_v1_10-2-3Rounds-iter-3" #"google/gemma-2-9b-it"
 DATASET="yale-nlp/FOLIO"
 MODEL_NAME=${BASE_MODEL##*/}
 
@@ -25,7 +25,7 @@ TOP_K=50
 MODES=("nl" "code" "truth_table") 
 PROMPT_MODE='final_v2'
 MIXTURE_MODE='direct'  # direct or other
-STRAREGY="OP"
+STRAREGY="OF"
 
 
 SRC_YAML="alignment-handbook/recipes/star_training/sft/config_full.yaml"
@@ -143,7 +143,7 @@ do
 
   cp "$SRC_YAML" "$ITER_YAML"
    
-  python utils/utils.py $ITER_YAML ${MODEL_OUTPUT_DIR}/${MODEL_NAME}/mixed_${MIXTURE_MODE}/${STRAREGY}_${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}_${EPOCHS}_${N_ROUNDS}Rounds/ft_iter_${round} ${MODEL_NAME}-star-mixed_${MIXTURE_MODE}-${STRAREGY}-${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}-${EPOCHS}-${N_ROUNDS}Rounds-iter-${round} $CURRENT_MODEL $CURRENT_MODEL $PATTERN $OUTPUT_DATASETS
+  python utils/utils.py $ITER_YAML ${MODEL_OUTPUT_DIR}/${MODEL_NAME}/mixed_${MIXTURE_MODE}/${STRAREGY}_${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}_${EPOCHS}_${N_ROUNDS}Rounds/ft_iter_${round} ${MODEL_NAME}-star-mixed_${MIXTURE_MODE}-${STRAREGY}-${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}-${EPOCHS}-${N_ROUNDS}Rounds-iter-${round} $BASE_MODEL $BASE_MODEL $PATTERN $OUTPUT_DATASETS
   
   echo "Updated: $ITER_YAML"
 

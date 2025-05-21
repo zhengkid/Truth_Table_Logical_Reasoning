@@ -2,10 +2,11 @@
 # star_pipeline_all_flags.sh
 # General parameters
 # Model and Datasets
-BASE_MODEL="google/gemma-2-9b-it" #"Qwen/Qwen2.5-7B-Instruct" #"TongZheng1999/gemma-2-9b-it-star-mixed_direct-OP-final_v1_10-2-3Rounds-iter-3" #"google/gemma-2-9b-it"
-DATASET="yale-nlp/FOLIO"
+BASE_MODEL="google/gemma-2-2b-it" #"Qwen/Qwen2.5-7B-Instruct" #"meta-llama/Llama-3.1-8B-Instruct" #"Qwen/Qwen2.5-7B-Instruct" #"unsloth/Meta-Llama-3.1-8B-Instruct" #"google/gemma-2-9b-it" #"TongZheng1999/gemma-2-9b-it-s1" #"Qwen/Qwen2.5-7B-Instruct" #"TongZheng1999/gemma-2-9b-it-star-mixed_direct-OP-final_v1_10-2-3Rounds-iter-3" #"google/gemma-2-9b-it"
+DATASET="yale-nlp/FOLIO" #"TongZheng1999/ProofWriter" #"yale-nlp/FOLIO" #"TongZheng1999/ProofWriter-600" #"TongZheng1999/ProofWriter"
+DATASET_NAME="FL_1000_n"
 MODEL_NAME=${BASE_MODEL##*/}
-
+MODEL_NAME="gemma-2-2b-it"
 
 N_SAMPLES=1000
 N_ROUNDS=3
@@ -22,7 +23,7 @@ TOP_P=0.9
 TOP_K=50
 
 
-MODES=("nl" "code" "truth_table") 
+MODES=("nl" "truth_table" "code") 
 PROMPT_MODE='final_v2'
 MIXTURE_MODE='direct'  # direct or other
 STRAREGY="OP"
@@ -35,12 +36,13 @@ ACC_PATH='alignment-handbook/recipes/accelerate_configs/deepspeed_zero3.yaml'
 PATTERN='TongZheng1999/nl_rationale_1000_round_1'
 
 # Save Path 
-MODEL_OUTPUT_DIR="/beacon-scratch/tongzh24/" 
+MODEL_OUTPUT_DIR="/beacon-scratch/tzheng24/" 
 SAVE_RAW_DATA_PATH='Eval_Rationale_Raw_Data_round_'
 SAVE_RESULT_PATH='Result_round_'
 
 # Recipe file location (used only for --parse)
 MODEL_SHORTNAME=$(basename "$BASE_MODEL")
+
 
 export PYTHONHASHSEED=$SEED
 
@@ -48,7 +50,7 @@ export PYTHONHASHSEED=$SEED
 echo "Phase -1: Evaluating few-shot performance with $BASE_MODEL"
 for MODE in "${MODES[@]}"; do
     echo "Phase -1: Evaluating few-shot performance with $BASE_MODEL in mode: $MODE"
-    OUTPUT_DIR="star_pipeline_outputs/${MODEL_NAME}/MIX_${MIXTURE_MODE}/${MODE}/${STRAREGY}_${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}_${EPOCHS}_${N_ROUNDS}Rounds"
+    OUTPUT_DIR="star_pipeline_outputs/${MODEL_NAME}/${DATASET_NAME}_MIX_${MIXTURE_MODE}/${MODE}/${STRAREGY}_${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}_${EPOCHS}_${N_ROUNDS}Rounds"
     if [ ! -d "$OUTPUT_DIR" ]; then
         echo "Directory does not exist. Creating: $OUTPUT_DIR"
         mkdir -p "$OUTPUT_DIR"
@@ -96,7 +98,7 @@ do
   INPUT_DATASETS=()
   for MODE in "${MODES[@]}"; do
     echo "Stage 1: Generating rationales for round $round using model: $CURRENT_MODEL in mode: $MODE"
-    HF_DATA_ID="${MODEL_NAME}_mixed_${MIXTURE_MODE}_${MODE}_${STRAREGY}_r_${N_SAMPLES}_${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}_${EPOCHS}_${N_ROUNDS}R_round_${round}"
+    HF_DATA_ID="${DATASET_NAME}_${MODEL_NAME}_mixed_${MIXTURE_MODE}_${MODE}_${STRAREGY}_r_${N_SAMPLES}_${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}_${EPOCHS}_${N_ROUNDS}R_round_${round}"
     python generate_rationale.py \
         --model_name_and_path "$CURRENT_MODEL" \
         --dataset_name "$DATASET" \
@@ -118,12 +120,12 @@ do
     INPUT_DATASETS+=("${HF_USER}/${HF_DATA_ID}")
   done
   
-  if [[ "$MIXTURE_MODE" != "direct" && "$MIXTURE_MODE" != "unique_conclusion" ]]; then
+  if [[ "$MIXTURE_MODE" != "direct" && "$MIXTURE_MODE" != "unique" ]]; then
     echo "Error: Invalid MIXTURE_MODE: $MIXTURE_MODE"
     exit 1
   fi
   echo "Stage 2: Mix Generated rationales for round $round"
-  OUTPUT_DATASETS=${HF_USER}/${MODEL_NAME}_mixed_${MIXTURE_MODE}_${STRAREGY}_rationale_${N_SAMPLES}_${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}_${EPOCHS}_${N_ROUNDS}Rounds_round_${round}
+  OUTPUT_DATASETS=${HF_USER}/${DATASET_NAME}_${MODEL_NAME}_mixed_${MIXTURE_MODE}_${STRAREGY}_rationale_${N_SAMPLES}_${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}_${EPOCHS}_${N_ROUNDS}Rounds_round_${round}
   python utils/mix_datasets.py \
     --input_datasets "${INPUT_DATASETS[@]}" \
     --output_dataset "${OUTPUT_DATASETS}" \
@@ -143,7 +145,7 @@ do
 
   cp "$SRC_YAML" "$ITER_YAML"
    
-  python utils/utils.py $ITER_YAML ${MODEL_OUTPUT_DIR}/${MODEL_NAME}/mixed_${MIXTURE_MODE}/${STRAREGY}_${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}_${EPOCHS}_${N_ROUNDS}Rounds/ft_iter_${round} ${MODEL_NAME}-star-mixed_${MIXTURE_MODE}-${STRAREGY}-${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}-${EPOCHS}-${N_ROUNDS}Rounds-iter-${round} $CURRENT_MODEL $CURRENT_MODEL $PATTERN $OUTPUT_DATASETS
+  python utils/utils.py $ITER_YAML ${MODEL_OUTPUT_DIR}/${MODEL_NAME}/${DATASET_NAME}_mixed_${MIXTURE_MODE}/${STRAREGY}_${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}_${EPOCHS}_${N_ROUNDS}Rounds/ft_iter_${round} ${DATASET_NAME}_${MODEL_NAME}-star-mixed_${MIXTURE_MODE}-${STRAREGY}-${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}-${EPOCHS}-${N_ROUNDS}Rounds-iter-${round} $CURRENT_MODEL $CURRENT_MODEL $PATTERN $OUTPUT_DATASETS
   
   echo "Updated: $ITER_YAML"
 
@@ -162,7 +164,7 @@ do
   echo "Stage 4: Evaluating fine-tuned model for round $round using model: $CURRENT_MODEL"
   for MODE in "${MODES[@]}"; do
     echo "Phase 4: Evaluating few-shot performance with $CURRENT_MODEL in mode: $MODE"
-    OUTPUT_DIR="star_pipeline_outputs/${MODEL_NAME}/MIX_${MIXTURE_MODE}/${MODE}/${STRAREGY}_${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}_${EPOCHS}_${N_ROUNDS}Rounds"
+    OUTPUT_DIR="star_pipeline_outputs/${MODEL_NAME}/${DATASET_NAME}_MIX_${MIXTURE_MODE}/${MODE}/${STRAREGY}_${PROMPT_MODE}_${NUM_CANDIDATES_GENERATE}_${EPOCHS}_${N_ROUNDS}Rounds"
     if [ ! -d "$OUTPUT_DIR" ]; then
         echo "Directory does not exist. Creating: $OUTPUT_DIR"
         mkdir -p "$OUTPUT_DIR"

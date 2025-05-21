@@ -1,0 +1,143 @@
+Below are four examples that demonstrate the desired style:
+
+<EXAMPLE 1>
+<premises>
+Peter Parker is either a superhero or a civilian.
+The Hulk is a destroyer.
+The Hulk wakes up when he is angry.
+If the Hulk wakes up, then he will break a bridge.
+Thor is a god.
+Thor will break a bridge when he is happy.
+A god is not a destroyer.
+Peter Parker wears a uniform when he is a superhero.
+Peter Parker is not a civilian if a destroyer is breaking a bridge.
+If Thor is happy, the Hulk is angry.
+</premises>
+<conclusion>
+If Thor is happy, then Peter Parker wears a uniform.
+</conclusion>
+<question>
+Is the following statement true, false, or uncertain? If Thor is happy, then Peter Parker wears a uniform.
+</question> 
+<options>
+(A) True
+(B) False
+(C) Uncertain
+</options>
+<nl_cot>
+Step 1: given premises "If Thor is happy, the Hulk is angry." and "The Hulk wakes up when he is angry.", we can know "If Thor is happy, then hulk wakes up."
+Step 2: given premise "If the Hulk wakes up, then he will break a bridge." and derivation "If Thor is happy, then hulk wakes up.", we can know "If Thor is happy, then hulk will break a bridge."
+Step 3: given premise "The Hulk is a destroyer." and derivation "If Thor is happy, then hulk will break a bridge.", we can know "If Thor is happy, then a destroyer will break a bridge."
+Step 4: given premise "Peter Parker is not a civilian if a destroyer is breaking a bridge." and derivation "If Thor is happy, then a destroyer will break a bridge.", we can know "If Thor is happy, then Peter Parker is not a civilian"
+Step 5: given premise "Peter Parker is either a superhero or a civilian." and derivation "If Thor is happy, then Peter Parker is not a civilian", we can know "If Thor is happy, then Peter Parker is a superhero."
+Step 6: given premise "Peter Parker wears a uniform when he is a superhero." and derivation "If Thor is happy, then Peter Parker is a superhero.", we can know "If Thor is happy, then Peter Parker wears a uniform"
+<end_of_nl_cot>
+<answer>
+The final answer is (A).
+<end_of_answer>
+</EXAMPLE 1>
+
+<EXAMPLE 2>
+<premises>
+All philosophers reason.
+Some sophists reason.
+All who can reason can distinguish truth from falsehood.
+Nobody who can distinguish truth from falsehood is morally perfect.
+The theistic God is morally perfect.
+The theistic God is a sophist.
+</premises>
+<conclusion>
+The theistic God is a sophist and a philosopher.
+</conclusion>
+<question>
+Is the following statement true, false, or uncertain? The theistic God is a sophist and a philosopher.
+</question>
+<options>
+(A) True
+(B) False
+(C) Uncertain
+</options>
+<nl_cot>
+Step 1: From the premise “All philosophers reason,” we know that if someone is a philosopher, then that individual necessarily has the ability to reason.
+Step 2: From the premise “All who can reason can distinguish truth from falsehood,” we conclude that if someone reasons, they will also distinguish truth from falsehood.
+Step 3: The premise “Nobody who can distinguish truth from falsehood is morally perfect” implies that if one does indeed distinguish truth from falsehood, they cannot be morally perfect.
+Step 4: Since the theistic God is stated to be “morally perfect,” if the theistic God were a philosopher, He would have to reason (by Step 1), which would lead to distinguishing truth from falsehood (by Step 2), thereby making Him not morally perfect (by Step 3). This contradicts the premise that the theistic God is morally perfect, so He cannot be a philosopher.
+Step 5: Separately, the premise says “The theistic God is a sophist.” We also know “Some sophists reason,” which does not imply that every sophist necessarily reasons. Hence, there is no guaranteed contradiction in being a sophist while remaining morally perfect—He could be the sort of sophist who does not reason.
+Step 6: Because the theistic God cannot be both morally perfect and a philosopher, the statement “The theistic God is a sophist and a philosopher” is false.
+<end_of_nl_cot>
+<answer>
+The final answer is (B).
+<end_of_answer>
+</EXAMPLE 2>
+
+<EXAMPLE 3>
+<premises>
+William Dickinson was a British politician who sat in the House of Commons William Dickinson attended Westminster school for high school and then the University of Edinburgh. 
+The University of Edinburgh is a university located in the United Kingdom. 
+William Dickinson supported the Portland Whigs. 
+People who supported the Portland Whigs did not get a seat in the Parliament.
+</premises>
+<conclusion>
+William Dickinson went to schools located in the United Kingdom for both high school and university.
+</conclusion>
+<question>
+Is the following statement true, false, or uncertain? William Dickinson went to schools located in the United Kingdom for both high school and university.
+</question> 
+<options>
+(A) True
+(B) False
+(C) Uncertain
+</options>
+<nl_cot>
+Step 1: The premise states that “William Dickinson attended Westminster school for high school and then the University of Edinburgh.” We also know that “The University of Edinburgh is a university located in the United Kingdom,” so we can confirm that William Dickinson’s university education took place in the UK.
+Step 2: However, the premise does not explicitly state that Westminster School is located in the UK. Although many readers might know from general knowledge that Westminster School is in London, the text itself does not provide this information.
+Step 3: Since the conclusion claims that “William Dickinson went to schools located in the United Kingdom for both high school and university,” we can confirm the university part is in the UK but have insufficient information about the high school (Westminster School).
+Step 4: Because the premise does not definitively place Westminster School in the UK, it is impossible to conclude with certainty that both schools he attended were in the UK. We therefore lack enough textual evidence to deem the conclusion strictly true.
+Step 5: There is also no premise suggesting that Westminster School is outside of the UK, so we cannot declare the conclusion false. The conclusion could be true in reality, but the text does not confirm it.
+Step 6: As a result, the statement “William Dickinson went to schools located in the United Kingdom for both high school and university” remains unverified by the given premises and is thus uncertain.
+<end_of_nl_cot>
+<answer>
+The final answer is (C).
+<end_of_answer>
+</EXAMPLE 3>
+
+<EXAMPLE 4>
+<premises>
+All social media applications containing chat features are software.
+All social media applications that allow users to send messages to each other have chat features.
+All social media applications have chat features or video features.
+All social media applications that have video features allow users to upload videos.
+All software that is social media applications are computer programs.
+All social media applications that have high engagement metrics are addictive.
+If a social media application is addictive, then it is not ideal for preteens.
+TikTok is a social media application, and it is not ideal for preteens.
+</premises>
+<conclusion>
+TikTok either has chat features or is a computer program.
+</conclusion>
+<question>
+Is the following statement true, false, or uncertain? TikTok either has chat features or is a computer program.
+</question>
+<options>
+(A) True
+(B) False
+(C) Uncertain
+</options>
+<nl_cot>
+Step 1: From the premise “TikTok is a social media application,” we know TikTok ∈ SocialMediaApp.
+Step 2: Premise 3 states “All social media applications have chat features or video features.”, therefore, TikTok has either chat features or video features.
+Step 3: Case 1: TikTok has chat features.
+	By Premise 1 (“All social media applications containing chat features are software”), TikTok is software.
+	By Premise 5 (“All software that is social media applications are computer programs”), TikTok is a computer program.
+	In this case, the disjunction “TikTok has chat features or is a computer program” holds (in fact, both are true).
+Step 4: Case 2: TikTok has video features but no chat features.
+	By Premise 4 (“All social media applications that have video features allow users to upload videos”), TikTok allows video uploads.
+	There is no premise stating that a video-only social media application must be software or a computer program.
+	Hence, in this case, we cannot infer that TikTok is software or that it is a computer program, nor does it have chat features.
+Step 5: Because there exists a logically consistent scenario (video-only case) in which TikTok is neither chat-enabled nor known to be a computer program, the proposed disjunction fails.
+Step 6: Conclusion: The statement “TikTok either has chat features or is a computer program” is not guaranteed by the premises and is therefore false.
+<end_of_nl_cot>
+<answer>
+The final answer is (B).
+<end_of_answer>
+</EXAMPLE 4>

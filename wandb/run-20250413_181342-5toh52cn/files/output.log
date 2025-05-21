@@ -1,0 +1,52 @@
+100%|██████████| 24/24 [08:47<00:00, 21.93s/it][INFO|trainer.py:2584] 2025-04-13 18:22:29,951 >>
+{'loss': 0.2529, 'grad_norm': 1.125560709064655, 'learning_rate': 4.978612153434527e-06, 'epoch': 0.08}
+{'loss': 0.238, 'grad_norm': 1.8741408693062573, 'learning_rate': 4.4833833507280884e-06, 'epoch': 0.39}
+{'loss': 0.2294, 'grad_norm': 0.7731292821922707, 'learning_rate': 3.147047612756302e-06, 'epoch': 0.78}
+{'loss': 0.2066, 'grad_norm': 0.7164719353297974, 'learning_rate': 1.5432914190872757e-06, 'epoch': 1.18}
+{'loss': 0.1647, 'grad_norm': 0.6310005863030439, 'learning_rate': 3.3493649053890325e-07, 'epoch': 1.57}
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+100%|██████████| 24/24 [08:47<00:00, 21.96s/it]
+{'train_runtime': 528.1257, 'train_samples_per_second': 6.177, 'train_steps_per_second': 0.045, 'train_loss': 0.2025842567284902, 'epoch': 1.88}
+***** train metrics *****
+  epoch                    =     1.8824
+  total_flos               =     5251GF
+  train_loss               =     0.2026
+  train_runtime            = 0:08:48.12
+  train_samples            =       1631
+  train_samples_per_second =      6.177
+  train_steps_per_second   =      0.045
+2025-04-13 18:22:29 - INFO - __main__ - *** Save model ***
+[INFO|trainer.py:3801] 2025-04-13 18:22:34,579 >> Saving model checkpoint to /beacon-scratch/tzheng24//Llama-3.1-8B-It/FL_1000_MoT_mixed_direct/OP_final_v2_1_2_3Rounds/ft_iter_2
+[INFO|configuration_utils.py:414] 2025-04-13 18:22:34,587 >> Configuration saved in /beacon-scratch/tzheng24//Llama-3.1-8B-It/FL_1000_MoT_mixed_direct/OP_final_v2_1_2_3Rounds/ft_iter_2/config.json
+[INFO|configuration_utils.py:865] 2025-04-13 18:22:34,589 >> Configuration saved in /beacon-scratch/tzheng24//Llama-3.1-8B-It/FL_1000_MoT_mixed_direct/OP_final_v2_1_2_3Rounds/ft_iter_2/generation_config.json
+Traceback (most recent call last):
+  File "/ihchomes/tzheng24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 225, in <module>
+    main()
+  File "/ihchomes/tzheng24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 191, in main
+    trainer.save_model(training_args.output_dir)
+  File "/beacon-scratch/tzheng24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 3706, in save_model
+    self._save(output_dir, state_dict=state_dict)
+  File "/beacon-scratch/tzheng24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 3823, in _save
+    self.model.save_pretrained(
+  File "/beacon-scratch/tzheng24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/modeling_utils.py", line 3028, in save_pretrained
+    safe_save_file(shard, os.path.join(save_directory, shard_file), metadata={"format": "pt"})
+  File "/beacon-scratch/tzheng24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/safetensors/torch.py", line 286, in save_file
+    serialize_file(_flatten(tensors), filename, metadata=metadata)
+safetensors_rust.SafetensorError: Error while serializing: IoError(Os { code: 28, kind: StorageFull, message: "No space left on device" })
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/ihchomes/tzheng24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 225, in <module>
+[rank0]:     main()
+[rank0]:   File "/ihchomes/tzheng24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 191, in main
+[rank0]:     trainer.save_model(training_args.output_dir)
+[rank0]:   File "/beacon-scratch/tzheng24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 3706, in save_model
+[rank0]:     self._save(output_dir, state_dict=state_dict)
+[rank0]:   File "/beacon-scratch/tzheng24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 3823, in _save
+[rank0]:     self.model.save_pretrained(
+[rank0]:   File "/beacon-scratch/tzheng24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/modeling_utils.py", line 3028, in save_pretrained
+[rank0]:     safe_save_file(shard, os.path.join(save_directory, shard_file), metadata={"format": "pt"})
+[rank0]:   File "/beacon-scratch/tzheng24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/safetensors/torch.py", line 286, in save_file
+[rank0]:     serialize_file(_flatten(tensors), filename, metadata=metadata)
+[rank0]: safetensors_rust.SafetensorError: Error while serializing: IoError(Os { code: 28, kind: StorageFull, message: "No space left on device" })

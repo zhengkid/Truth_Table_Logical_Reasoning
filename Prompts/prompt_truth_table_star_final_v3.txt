@@ -1,0 +1,157 @@
+<premises>
+Peter Parker is either a superhero or a civilian.
+The Hulk is a destroyer.
+The Hulk wakes up when he is angry.
+If the Hulk wakes up, then he will break a bridge.
+Thor is a god.
+Thor will break a bridge when he is happy.
+A god is not a destroyer.
+Peter Parker wears a uniform when he is a superhero.
+Peter Parker is not a civilian if a destroyer is breaking a bridge.
+If Thor is happy, the Hulk is angry.
+</premises>
+<conclusion>
+If Thor is happy, then Peter Parker wears a uniform.
+</conclusion>
+<question>
+Is the following statement true, false, or uncertain? If Thor is happy, then Peter Parker wears a uniform.
+</question> 
+<options>
+(A) True
+(B) False
+(C) Uncertain
+</options>
+<truth_table>
+Let:
+    T: Thor is happy
+    H: The Hulk is angry
+    A: The Hulk wakes up
+    B: A bridge is broken
+    C: Peter Parker is a civilian
+    S: Peter Parker is a superhero
+    U: Peter Parker wears a uniform
+Premises:
+    S ∨ C
+    The Hulk is a destroyer (assumed true)
+    H → A
+    A → B
+    Thor is a god
+    T → B
+    A god is not a destroyer
+    S → U
+    B → ¬C
+    T → H
+Logical chain (assuming T = True):
+    T = True
+    → From (10): H = True
+    H = True
+    → From (3): A = True
+    A = True
+    → From (4): B = True
+    B = True and given Hulk is a destroyer
+    → From (9): C = False
+    From (1): S ∨ C must be true; since C is False, S = True
+    S = True
+    → From (8): U = True
+Truth Table (for T = True):
+| T (Thor is happy) | H (The Hulk is angry) | A (The Hulk wakes up) | B (A bridge is broken) | C (Peter Parker is a civilian) | S (Peter Parker is a superhero) | U (Peter Parker wears a uniform) |
+|-------------------|-----------------------|-----------------------|------------------------|---------------------------------|-----------------------------------|-----------------------------------|
+| True              | True                  | True                  | True                   | False                           | True                              | True                              |
+<end_of_truth_table>
+<answer>
+The final answer is (A).
+<end_of_answer>
+
+
+<premises>
+All philosophers reason.
+Some sophists reason.
+All who can reason can distinguish truth from falsehood.
+Nobody who can distinguish truth from falsehood is morally perfect.
+The theistic God is morally perfect.
+The theistic God is a sophist.
+</premises>
+<conclusion>
+The theistic God is a sophist and a philosopher.
+</conclusion>
+<question>
+Is the following statement true, false, or uncertain? The theistic God is a sophist and a philosopher.
+</question>
+<options>
+(A) True
+(B) False
+(C) Uncertain
+</options>
+<truth_table>
+Let:
+    P: God is a philosopher
+    R: God reasons
+    D: God can distinguish truth from falsehood
+    M: God is morally perfect
+    S: God is a sophist
+Premises for God:
+    If God is a philosopher, then God reasons. (P → R)
+    (Some sophists reason; does not force God to reason.)
+    If God reasons, then God can distinguish truth from falsehood. (R → D)
+    If God can distinguish truth from falsehood, then God is not morally perfect. (D → ¬M)
+    God is morally perfect. (M is True)
+    God is a sophist. (S is True)
+Logical chain:
+    From (5) M = True.
+    From (4), if D were True then M would be False; therefore, D must be False.
+    From (3), if R were True then D would be True; therefore, R must be False.
+    From (1), if P were True then R would be True; therefore, P must be False.
+    Given (6), S = True.
+Truth Table (for god):
+| P (Philosopher) | R (Reasons) | D (Distinguishes truth) | M (Morally Perfect) | S (Sophist) | S ∧ P (Sophist and Philosopher) |
+|-----------------|-------------|-------------------------|---------------------|-------------|---------------------------------|
+| False           | False       | False                   | True                | True        | False                           |
+<end_of_truth_table>
+<answer>
+The final answer is (B).
+<end_of_answer>
+
+
+<premises>
+William Dickinson was a British politician who sat in the House of Commons William Dickinson attended Westminster school for high school and then the University of Edinburgh. 
+The University of Edinburgh is a university located in the United Kingdom. 
+William Dickinson supported the Portland Whigs. 
+People who supported the Portland Whigs did not get a seat in the Parliament.
+</premises>
+<conclusion>
+William Dickinson went to schools located in the United Kingdom for both high school and university.
+</conclusion>
+<question>
+Is the following statement true, false, or uncertain? William Dickinson went to schools located in the United Kingdom for both high school and university.
+</question> 
+<options>
+(A) True
+(B) False
+(C) Uncertain
+</options>
+<truth_table>
+Let:
+    W: William Dickinson attended Westminster School for high school.
+    E: William Dickinson attended the University of Edinburgh.
+    U: The University of Edinburgh is located in the United Kingdom (Given explicitly, so U = True).
+    L: Westminster School is located in the United Kingdom (Not explicitly stated; uncertain).
+Premises:
+    William Dickinson attended Westminster School for high school and then the University of Edinburgh.
+    The University of Edinburgh is a university located in the United Kingdom.
+    William Dickinson supported the Portland Whigs.
+    People who supported the Portland Whigs did not get a seat in the Parliament.
+Conclusion to Evaluate: 
+    William Dickinson went to schools located in the United Kingdom for both high school and university, which translates to L ∧ U.
+Logical Chain:
+    From (2), we know U = True.
+    However, L is not explicitly given by the premises; although implied by context, it remains uncertain.
+    Therefore, since U = True but L is uncertain, the conjunction L ∧ U is uncertain.
+Truth Table (Key Possibilities):
+| L (Westminster School in UK) | U (University of Edinburgh in UK) | L ∧ U (Both in UK) |
+|------------------------------|------------------------------------|--------------------|
+| True                         | True                               | True               |
+| False                        | True                               | False              |
+<end_of_truth_table>
+<answer>
+The final answer is (C).
+<end_of_answer>

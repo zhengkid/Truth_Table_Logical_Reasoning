@@ -1,0 +1,56 @@
+100%|██████████| 42/42 [15:10<00:00, 21.68s/it][INFO|trainer.py:2584] 2025-03-21 06:36:06,827 >>
+{'loss': 1.3401, 'grad_norm': 28.44154812963601, 'learning_rate': 4.993009492952951e-06, 'epoch': 0.05}
+[2025-03-21 06:21:41,056] [WARNING] [stage3.py:2114:step] 1 pytorch allocator cache flushes since last step. this happens when there is high memory pressure and is detrimental to performance. if this is happening frequently consider adjusting settings to reduce memory consumption. If you are unable to make the cache flushes go away consider adding get_accelerator().empty_cache() calls in your training loop to ensure that all ranks flush their caches at the same time
+{'loss': 0.7885, 'grad_norm': 11.640664381570499, 'learning_rate': 4.827184371610511e-06, 'epoch': 0.24}
+{'loss': 0.3209, 'grad_norm': 1.4167178164453798, 'learning_rate': 4.332629679574566e-06, 'epoch': 0.47}
+{'loss': 0.2256, 'grad_norm': 1.8367584545795288, 'learning_rate': 3.5847093477938955e-06, 'epoch': 0.71}
+{'loss': 0.2045, 'grad_norm': 0.5490001746876175, 'learning_rate': 2.686825233966061e-06, 'epoch': 0.95}
+{'loss': 0.2322, 'grad_norm': 0.6198259479176204, 'learning_rate': 1.7631120639727396e-06, 'epoch': 1.19}
+{'loss': 0.1825, 'grad_norm': 0.5011495002099454, 'learning_rate': 9.412754953531664e-07, 'epoch': 1.42}
+{'loss': 0.1688, 'grad_norm': 0.46243255672820877, 'learning_rate': 3.3493649053890325e-07, 'epoch': 1.66}
+{'loss': 0.17, 'grad_norm': 0.46753226032236006, 'learning_rate': 2.7922934437178695e-08, 'epoch': 1.9}
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+100%|██████████| 42/42 [15:10<00:00, 21.68s/it]
+{'train_runtime': 911.5889, 'train_samples_per_second': 5.902, 'train_steps_per_second': 0.046, 'train_loss': 0.29397213742846534, 'epoch': 1.99}
+***** train metrics *****
+  epoch                    =     1.9941
+  total_flos               =    10561GF
+  train_loss               =      0.294
+  train_runtime            = 0:15:11.58
+  train_samples            =       2690
+  train_samples_per_second =      5.902
+  train_steps_per_second   =      0.046
+2025-03-21 06:36:06 - INFO - __main__ - *** Save model ***
+[INFO|trainer.py:3801] 2025-03-21 06:36:11,067 >> Saving model checkpoint to /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/mixed_direct/OF_final_v2_10_2_3Rounds/ft_iter_2
+[INFO|configuration_utils.py:414] 2025-03-21 06:36:11,075 >> Configuration saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/mixed_direct/OF_final_v2_10_2_3Rounds/ft_iter_2/config.json
+[INFO|configuration_utils.py:865] 2025-03-21 06:36:11,077 >> Configuration saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/mixed_direct/OF_final_v2_10_2_3Rounds/ft_iter_2/generation_config.json
+[INFO|modeling_utils.py:3042] 2025-03-21 06:37:25,528 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/mixed_direct/OF_final_v2_10_2_3Rounds/ft_iter_2/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2646] 2025-03-21 06:37:25,532 >> tokenizer config file saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/mixed_direct/OF_final_v2_10_2_3Rounds/ft_iter_2/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2025-03-21 06:37:25,534 >> Special tokens file saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/mixed_direct/OF_final_v2_10_2_3Rounds/ft_iter_2/special_tokens_map.json
+[INFO|trainer.py:3801] 2025-03-21 06:37:30,988 >> Saving model checkpoint to /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/mixed_direct/OF_final_v2_10_2_3Rounds/ft_iter_2
+[INFO|configuration_utils.py:414] 2025-03-21 06:37:30,995 >> Configuration saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/mixed_direct/OF_final_v2_10_2_3Rounds/ft_iter_2/config.json
+[INFO|configuration_utils.py:865] 2025-03-21 06:37:30,997 >> Configuration saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/mixed_direct/OF_final_v2_10_2_3Rounds/ft_iter_2/generation_config.json
+[INFO|modeling_utils.py:3042] 2025-03-21 06:38:41,862 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/mixed_direct/OF_final_v2_10_2_3Rounds/ft_iter_2/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2646] 2025-03-21 06:38:41,865 >> tokenizer config file saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/mixed_direct/OF_final_v2_10_2_3Rounds/ft_iter_2/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2025-03-21 06:38:41,867 >> Special tokens file saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/mixed_direct/OF_final_v2_10_2_3Rounds/ft_iter_2/special_tokens_map.json
+events.out.tfevents.1742552455.h1compute00.ihc.umd.edu.59628.0: 100%|██████████| 8.06k/8.06k [00:00<00:00, 31.2kB/s]
+tokenizer.json: 100%|██████████| 11.4M/11.4M [00:00<00:00, 60.8MB/s]0<01:34, 51.4MB/s]
+training_args.bin: 100%|██████████| 7.10k/7.10k [00:00<00:00, 96.3kB/s]1:26, 55.7MB/s]
+model-00004-of-00004.safetensors: 100%|██████████| 1.09G/1.09G [00:21<00:00, 49.9MB/s]
+model-00003-of-00004.safetensors: 100%|██████████| 4.33G/4.33G [01:28<00:00, 48.9MB/s]
+model-00001-of-00004.safetensors: 100%|██████████| 4.87G/4.87G [01:34<00:00, 51.6MB/s]8.06k [00:00<?, ?B/s]
+model-00002-of-00004.safetensors: 100%|██████████| 4.93G/4.93G [01:37<00:00, 50.8MB/s]
+Upload 7 LFS files: 100%|██████████| 7/7 [01:37<00:00, 13.89s/it]1:36<00:00, 44.3MB/s]
+[INFO|configuration_utils.py:414] 2025-03-21 06:41:03,787 >> Configuration saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/mixed_direct/OF_final_v2_10_2_3Rounds/ft_iter_2/config.json
+[INFO|trainer.py:3801] 2025-03-21 06:41:07,614 >> Saving model checkpoint to /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/mixed_direct/OF_final_v2_10_2_3Rounds/ft_iter_2
+[INFO|configuration_utils.py:414] 2025-03-21 06:41:07,620 >> Configuration saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/mixed_direct/OF_final_v2_10_2_3Rounds/ft_iter_2/config.json
+2025-03-21 06:41:03 - INFO - __main__ - Model saved to /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/mixed_direct/OF_final_v2_10_2_3Rounds/ft_iter_2
+2025-03-21 06:41:03 - INFO - __main__ - Pushing to hub...
+[INFO|configuration_utils.py:865] 2025-03-21 06:41:07,623 >> Configuration saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/mixed_direct/OF_final_v2_10_2_3Rounds/ft_iter_2/generation_config.json
+[INFO|modeling_utils.py:3042] 2025-03-21 06:42:20,351 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/mixed_direct/OF_final_v2_10_2_3Rounds/ft_iter_2/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2646] 2025-03-21 06:42:20,354 >> tokenizer config file saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/mixed_direct/OF_final_v2_10_2_3Rounds/ft_iter_2/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2025-03-21 06:42:20,356 >> Special tokens file saved in /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/mixed_direct/OF_final_v2_10_2_3Rounds/ft_iter_2/special_tokens_map.json
+2025-03-21 06:43:00 - INFO - __main__ - *** Training complete ***

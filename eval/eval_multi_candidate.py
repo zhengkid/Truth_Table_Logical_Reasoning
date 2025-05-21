@@ -48,6 +48,8 @@ def evaluation_batch(model_path, model, dataset, output_dir, raw_data_path, accu
         for premise, conclusion, label  in zip(batch_premises, batch_conclusions, batch_labels):
             if True: #"gemma" in model_path:
                 for rationale_prompt in rationale_prompt_list:
+                    if mixture_mode != "multi_candidate":
+                        rationale_prompt = rationale_prompt[0]
                     prompt = rationale_prompt.format(Premises=premise, Conclusions=conclusion)
                     if is_chat_model:
                         prompt = [{"role": "user","content": prompt}]
@@ -59,7 +61,7 @@ def evaluation_batch(model_path, model, dataset, output_dir, raw_data_path, accu
                     prompt = [{"role": "system", "content": sys_prompt},{"role": "user","content": user_prompt}]
                 batch_prompts.append(prompt)
             batch_items.append({'premises':premise, 'conclusion': conclusion, 'label': label})
-        print(batch_prompts[0])
+
         # Process batch data via LLM
         try:
             with torch.no_grad():
@@ -78,10 +80,10 @@ def evaluation_batch(model_path, model, dataset, output_dir, raw_data_path, accu
             print(f"Error generating responses for batch starting at index {batch_start}: {e}")
             tqdm.tqdm.update(1)
             continue 
-        batch_prompts_reshape = [batch_prompts[i: i+len(rationale_prompt_list)] for i in range(0, len(batch_prompts), len(len(rationale_prompt_list)))]
-        batch_responses_reshape = [batch_responses[i: i+len(rationale_prompt_list)] for i in range(0, len(batch_responses), len(len(rationale_prompt_list)))]
+        batch_prompts_reshape = [batch_prompts[i: i+len(rationale_prompt_list)] for i in range(0, len(batch_prompts), len(rationale_prompt_list))]
+        batch_responses_reshape = [batch_responses[i: i+len(rationale_prompt_list)] for i in range(0, len(batch_responses), len(rationale_prompt_list))]
 
-        batch_rationales, correct_num, total_num, accuracy = post_process_batch_data_eval(batch_prompts_reshape, batch_items, batch_responses_reshape, mode, total_num, correct_num, model, max_tokens, temperature, top_p, top_k, stop, is_chat_model, prompt_mode=prompt_mode, mode_indicaters=mode_indicater)
+        batch_rationales, correct_num, total_num, accuracy = post_process_batch_data_eval_multi_candidate(batch_prompts_reshape, batch_items, batch_responses_reshape, mode, total_num, correct_num, model, max_tokens, temperature, top_p, top_k, stop, is_chat_model, prompt_mode=prompt_mode, mode_indicaters=mode_indicater)
         rationales.extend(batch_rationales)
 
     with open(os.path.join(output_dir, raw_data_path), 'w') as f:

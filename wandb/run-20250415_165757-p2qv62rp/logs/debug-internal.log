@@ -1,0 +1,16 @@
+{"time":"2025-04-15T16:57:57.030161598-04:00","level":"INFO","msg":"stream: starting","core version":"0.19.7","symlink path":"/ihchomes/tzheng24/logical_reasoning/Truth_Table_Logical_Reasoning/wandb/run-20250415_165757-p2qv62rp/logs/debug-core.log"}
+{"time":"2025-04-15T16:57:57.247113418-04:00","level":"INFO","msg":"created new stream","id":"p2qv62rp"}
+{"time":"2025-04-15T16:57:57.247131059-04:00","level":"INFO","msg":"stream: started","id":"p2qv62rp"}
+{"time":"2025-04-15T16:57:57.247878797-04:00","level":"INFO","msg":"sender: started","stream_id":"p2qv62rp"}
+{"time":"2025-04-15T16:57:57.247898182-04:00","level":"INFO","msg":"handler: started","stream_id":"p2qv62rp"}
+{"time":"2025-04-15T16:57:57.247908617-04:00","level":"INFO","msg":"writer: Do: started","stream_id":"p2qv62rp"}
+{"time":"2025-04-15T16:57:57.671568866-04:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-04-15T17:01:57.956535556-04:00","level":"INFO","msg":"api: retrying HTTP error","status":502,"url":"https://api.wandb.ai/files/kidzheng/huggingface/p2qv62rp/file_stream","body":"\n<html><head>\n<meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">\n<title>502 Server Error</title>\n</head>\n<body text=#000000 bgcolor=#ffffff>\n<h1>Error: Server Error</h1>\n<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>\n<h2></h2>\n</body></html>\n"}
+{"time":"2025-04-15T17:41:58.105194177-04:00","level":"INFO","msg":"stream: closing","id":"p2qv62rp"}
+{"time":"2025-04-15T17:41:58.105221542-04:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-04-15T17:41:58.105673637-04:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-04-15T17:41:58.388316998-04:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-04-15T17:41:58.60441027-04:00","level":"INFO","msg":"handler: closed","stream_id":"p2qv62rp"}
+{"time":"2025-04-15T17:41:58.604422346-04:00","level":"INFO","msg":"writer: Close: closed","stream_id":"p2qv62rp"}
+{"time":"2025-04-15T17:41:58.604442634-04:00","level":"INFO","msg":"sender: closed","stream_id":"p2qv62rp"}
+{"time":"2025-04-15T17:41:58.606202662-04:00","level":"INFO","msg":"stream: closed","id":"p2qv62rp"}

@@ -1,0 +1,72 @@
+  0%|          | 0/38 [00:00<?, ?it/s][WARNING|logging.py:328] 2025-04-06 03:28:08,959 >> It is strongly recommended to train Gemma2 models with the `eager` attention implementation instead of `flash_attention_2`. Use `eager` with `AutoModelForCausalLM.from_pretrained('<path-to-checkpoint>', attn_implementation='eager')`.
+100%|██████████| 38/38 [33:39<00:00, 52.86s/it][INFO|trainer.py:2584] 2025-04-06 04:01:48,152 >>
+{'loss': 1.1908, 'grad_norm': 24.40506464235783, 'learning_rate': 4.991461232516675e-06, 'epoch': 0.05}
+{'loss': 0.4651, 'grad_norm': 2.1247892789816585, 'learning_rate': 4.789433316637644e-06, 'epoch': 0.25}
+{'loss': 0.224, 'grad_norm': 0.7337691437866072, 'learning_rate': 4.1932039290643534e-06, 'epoch': 0.5}
+{'loss': 0.2009, 'grad_norm': 0.6596440689119426, 'learning_rate': 3.3117486730117092e-06, 'epoch': 0.75}
+{'loss': 0.2058, 'grad_norm': 0.7279746285310469, 'learning_rate': 2.2935516363191695e-06, 'epoch': 1.01}
+{'loss': 0.1797, 'grad_norm': 0.5442366534779628, 'learning_rate': 1.3101315174073162e-06, 'epoch': 1.26}
+{'loss': 0.1784, 'grad_norm': 0.5347902396672872, 'learning_rate': 5.271487265090163e-07, 'epoch': 1.51}
+{'loss': 0.183, 'grad_norm': 0.5115403188333801, 'learning_rate': 7.649933515167407e-08, 'epoch': 1.76}
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+100%|██████████| 38/38 [33:39<00:00, 53.14s/it]
+{'train_runtime': 2022.8392, 'train_samples_per_second': 2.524, 'train_steps_per_second': 0.019, 'train_loss': 0.2478369537152742, 'epoch': 1.91}
+***** train metrics *****
+  epoch                    =     1.9124
+  total_flos               =    19715GF
+  train_loss               =     0.2478
+  train_runtime            = 0:33:42.83
+  train_samples            =       2553
+  train_samples_per_second =      2.524
+  train_steps_per_second   =      0.019
+2025-04-06 04:01:48 - INFO - __main__ - *** Save model ***
+[INFO|trainer.py:3801] 2025-04-06 04:01:53,592 >> Saving model checkpoint to /beacon-scratch/tongzh24//gemma-2-9b-it/ProofWriter_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_1
+[INFO|configuration_utils.py:414] 2025-04-06 04:01:53,599 >> Configuration saved in /beacon-scratch/tongzh24//gemma-2-9b-it/ProofWriter_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_1/config.json
+[INFO|configuration_utils.py:865] 2025-04-06 04:01:53,602 >> Configuration saved in /beacon-scratch/tongzh24//gemma-2-9b-it/ProofWriter_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_1/generation_config.json
+[INFO|modeling_utils.py:3042] 2025-04-06 04:03:21,376 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /beacon-scratch/tongzh24//gemma-2-9b-it/ProofWriter_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_1/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2646] 2025-04-06 04:03:21,381 >> tokenizer config file saved in /beacon-scratch/tongzh24//gemma-2-9b-it/ProofWriter_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_1/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2025-04-06 04:03:21,384 >> Special tokens file saved in /beacon-scratch/tongzh24//gemma-2-9b-it/ProofWriter_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_1/special_tokens_map.json
+[INFO|trainer.py:3801] 2025-04-06 04:03:27,443 >> Saving model checkpoint to /beacon-scratch/tongzh24//gemma-2-9b-it/ProofWriter_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_1
+[INFO|configuration_utils.py:414] 2025-04-06 04:03:27,449 >> Configuration saved in /beacon-scratch/tongzh24//gemma-2-9b-it/ProofWriter_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_1/config.json
+[INFO|configuration_utils.py:865] 2025-04-06 04:03:27,451 >> Configuration saved in /beacon-scratch/tongzh24//gemma-2-9b-it/ProofWriter_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_1/generation_config.json
+[INFO|modeling_utils.py:3042] 2025-04-06 04:04:54,863 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /beacon-scratch/tongzh24//gemma-2-9b-it/ProofWriter_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_1/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2646] 2025-04-06 04:04:54,868 >> tokenizer config file saved in /beacon-scratch/tongzh24//gemma-2-9b-it/ProofWriter_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_1/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2025-04-06 04:04:54,870 >> Special tokens file saved in /beacon-scratch/tongzh24//gemma-2-9b-it/ProofWriter_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_1/special_tokens_map.json
+events.out.tfevents.1743764527.h1compute00.ihc.umd.edu.537271.0: 100%|██████████| 7.26k/7.26k [00:00<00:00, 45.5kB/s]
+events.out.tfevents.1743924485.h1compute00.ihc.umd.edu.683505.0: 100%|██████████| 8.23k/8.23k [00:00<00:00, 145kB/s]
+tokenizer.json: 100%|██████████| 34.4M/34.4M [00:00<00:00, 48.4MB/s]1<02:27, 32.9MB/s]/7.26k [00:00<?, ?B/s]
+tokenizer.model: 100%|██████████| 4.24M/4.24M [00:00<00:00, 25.2MB/s]<01:50, 43.9MB/s]/8.23k [00:00<?, ?B/s]
+training_args.bin: 100%|██████████| 7.35k/7.35k [00:00<00:00, 151kB/s]01:36, 50.1MB/s]
+model-00004-of-00004.safetensors: 100%|██████████| 3.67G/3.67G [01:03<00:00, 57.6MB/s]
+model-00001-of-00004.safetensors: 100%|██████████| 4.90G/4.90G [01:24<00:00, 58.2MB/s]
+model-00003-of-00004.safetensors: 100%|██████████| 4.96G/4.96G [01:25<00:00, 57.8MB/s]
+model-00002-of-00004.safetensors: 100%|██████████| 4.95G/4.95G [01:30<00:00, 54.7MB/s]
+Upload 9 LFS files: 100%|██████████| 9/9 [01:30<00:00, 10.08s/it]1:30<00:00, 66.7MB/s]
+[INFO|configuration_utils.py:414] 2025-04-06 04:07:20,082 >> Configuration saved in /beacon-scratch/tongzh24//gemma-2-9b-it/ProofWriter_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_1/config.json
+[INFO|trainer.py:3801] 2025-04-06 04:07:24,405 >> Saving model checkpoint to /beacon-scratch/tongzh24//gemma-2-9b-it/ProofWriter_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_1
+[INFO|configuration_utils.py:414] 2025-04-06 04:07:24,410 >> Configuration saved in /beacon-scratch/tongzh24//gemma-2-9b-it/ProofWriter_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_1/config.json
+[INFO|configuration_utils.py:865] 2025-04-06 04:07:24,413 >> Configuration saved in /beacon-scratch/tongzh24//gemma-2-9b-it/ProofWriter_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_1/generation_config.json
+2025-04-06 04:07:20 - INFO - __main__ - Model saved to /beacon-scratch/tongzh24//gemma-2-9b-it/ProofWriter_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_1
+2025-04-06 04:07:20 - INFO - __main__ - Pushing to hub...
+[INFO|modeling_utils.py:3042] 2025-04-06 04:08:55,840 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /beacon-scratch/tongzh24//gemma-2-9b-it/ProofWriter_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_1/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2646] 2025-04-06 04:08:55,845 >> tokenizer config file saved in /beacon-scratch/tongzh24//gemma-2-9b-it/ProofWriter_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_1/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2025-04-06 04:08:55,847 >> Special tokens file saved in /beacon-scratch/tongzh24//gemma-2-9b-it/ProofWriter_mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_1/special_tokens_map.json
+Traceback (most recent call last):
+  File "/ihchomes/tongzh24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 225, in <module>
+    main()
+  File "/ihchomes/tongzh24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 219, in main
+    trainer.push_to_hub(private=True,**kwargs)
+  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 4647, in push_to_hub
+    self.create_model_card(model_name=model_name, **kwargs)
+TypeError: SFTTrainer.create_model_card() got an unexpected keyword argument 'private'
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/ihchomes/tongzh24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 225, in <module>
+[rank0]:     main()
+[rank0]:   File "/ihchomes/tongzh24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 219, in main
+[rank0]:     trainer.push_to_hub(private=True,**kwargs)
+[rank0]:   File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/trainer.py", line 4647, in push_to_hub
+[rank0]:     self.create_model_card(model_name=model_name, **kwargs)
+[rank0]: TypeError: SFTTrainer.create_model_card() got an unexpected keyword argument 'private'

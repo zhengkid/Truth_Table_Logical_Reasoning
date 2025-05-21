@@ -1,0 +1,15 @@
+{"time":"2025-04-06T17:59:30.197576817-04:00","level":"INFO","msg":"stream: starting","core version":"0.19.7","symlink path":"/ihchomes/tongzh24/logical_reasoning/Truth_Table_Logical_Reasoning/wandb/run-20250406_175930-sfi1r19v/logs/debug-core.log"}
+{"time":"2025-04-06T17:59:30.42263621-04:00","level":"INFO","msg":"created new stream","id":"sfi1r19v"}
+{"time":"2025-04-06T17:59:30.422652331-04:00","level":"INFO","msg":"stream: started","id":"sfi1r19v"}
+{"time":"2025-04-06T17:59:30.422709357-04:00","level":"INFO","msg":"writer: Do: started","stream_id":"sfi1r19v"}
+{"time":"2025-04-06T17:59:30.422755019-04:00","level":"INFO","msg":"handler: started","stream_id":"sfi1r19v"}
+{"time":"2025-04-06T17:59:30.423611045-04:00","level":"INFO","msg":"sender: started","stream_id":"sfi1r19v"}
+{"time":"2025-04-06T17:59:30.572959798-04:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-04-06T18:17:14.726722724-04:00","level":"INFO","msg":"stream: closing","id":"sfi1r19v"}
+{"time":"2025-04-06T18:17:14.726753866-04:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-04-06T18:17:14.727202142-04:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-04-06T18:17:15.075168781-04:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-04-06T18:17:15.167056939-04:00","level":"INFO","msg":"handler: closed","stream_id":"sfi1r19v"}
+{"time":"2025-04-06T18:17:15.167082695-04:00","level":"INFO","msg":"writer: Close: closed","stream_id":"sfi1r19v"}
+{"time":"2025-04-06T18:17:15.167135425-04:00","level":"INFO","msg":"sender: closed","stream_id":"sfi1r19v"}
+{"time":"2025-04-06T18:17:15.168910367-04:00","level":"INFO","msg":"stream: closed","id":"sfi1r19v"}

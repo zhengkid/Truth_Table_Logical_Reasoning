@@ -182,7 +182,7 @@ def generate_responses_batch(model, user_prompts, max_tokens, temperature, top_p
         outputs = model.chat(user_prompts, sampling_params)
     else:
         outputs = model.generate(user_prompts, sampling_params)
-
+    print(outputs)
     responses = [[candidate.text for candidate in output.outputs] for output in outputs]
     return responses
 
@@ -261,7 +261,7 @@ def parse_answer(rationale_response, mode, prompt_mode):
         rationale_response = rationale_response.split("<end_of_answer>")[0] + "<end_of_answer>"
         answer_match = re.search(r'<answer>(.*?)<end_of_answer>', rationale_response, re.DOTALL)
         answer_response = answer_match.group(1).strip() if answer_match else ""
-        
+        print(answer_response) 
         match = re.search(r'\(?([A-D])\)?', answer_response)
         if match:
             extracted_answer = match.group(1)
@@ -271,6 +271,15 @@ def parse_answer(rationale_response, mode, prompt_mode):
                 "C": "Uncertain",
             }
             predict = predict_mapping.get(extracted_answer, "Unknown")
+        elif "true" in answer_response.lower() or "false" in answer_response.lower() or "uncertain" in answer_response.lower():
+            if "true" in answer_response.lower():
+                predict = "True"
+            elif "false" in answer_response.lower():
+                predict = "False"
+            elif "uncertain" in answer_response.lower():
+                predict = "Uncertain"
+            else:
+                predict = 'Unknown'
 
         #answer_response = rationale_response.split("<Answer>")[-1]
         #if "(A)" in answer_response:
@@ -476,12 +485,15 @@ def post_process_batch_data_generate_rationale(
         # Collect all error messages and failed responses for potential refinement
         all_error_messages = []
         all_error_programs = []
-
+        print(label)
+        max_count = 0
         # 1) Try each candidate response
         for j in range(len(rationale_response)):
             response_text = rationale_response[j]
             parsed_rationale, predict_j, error_message = parse_answer(response_text, mode, prompt_mode)
-
+            print(predict_j)
+            if max_count == 1:
+                    break
             if predict_j == label:
                 found_correct = True
                 correct += 1
@@ -497,7 +509,8 @@ def post_process_batch_data_generate_rationale(
                         {"role": "assistant", "content": parsed_rationale.strip()}
                     ],
                 })
-                break
+                max_count += 1
+
             else:
                 # Store errors and incorrect candidates for potential refinement
                 all_error_messages.append(error_message)
@@ -643,7 +656,7 @@ def post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mo
         final_rationale = rationale_response_sample_j.strip()
 
 
-        print(final_rationale)
+
         # # If all candidates fail to match the correct answer
         # if not found_correct:
         #     # Call self_refine to generate a corrected version
@@ -705,6 +718,41 @@ def post_process_batch_data_eval_multi_candidate(batch_prompts, batch_items, bat
             "user_prompt": prompt,
         })
 
+        total_num += 1
+        print(f"{correct} out of {total_num} is correct!")
+        accuracy = correct / total_num if total_num > 0 else 0.0
+
+    return rationales, correct, total_num, accuracy
+
+def post_process_batch_data_eval_sample_multiple_times(batch_prompts, batch_items, batch_responses, mode, total_num, correct, model, max_tokens=2048, temperature=0.7, top_p=0.9, top_k=40, stop=None, is_chat_model=False, max_refine=0, prompt_mode='v1'):
+    rationales = []
+    for prompt, item, rationale_response in zip(batch_prompts, batch_items, batch_responses):
+        label = item['label']
+        predictions = []
+        all_rationales = []
+
+
+        for i in range(len(rationale_response)):
+            rationale_response_sample_i = rationale_response[i]
+            rationale_response_sample_i, predict_i, error_message = parse_answer(rationale_response_sample_i, mode, prompt_mode=prompt_mode)
+            predictions.append(predict_i)
+            all_rationales.append(rationale_response_sample_i.strip())
+
+        # vote for correctness
+        print(label)
+        print(predictions)
+        if label in predictions:
+            correct += 1
+
+        rationales.append({
+            "premises": item['premises'],
+            "conclusions": item['conclusion'],
+            "rationales": all_rationales,
+            "label": item['label'],
+            "predictions": predictions,
+            "user_prompt": prompt,
+        })
+        print(len(all_rationales))
         total_num += 1
         print(f"{correct} out of {total_num} is correct!")
         accuracy = correct / total_num if total_num > 0 else 0.0

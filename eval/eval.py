@@ -39,13 +39,14 @@ def evaluation_batch(model_path, model, dataset, output_dir, raw_data_path, accu
                 if is_chat_model:
                     prompt = [{"role": "user","content": prompt}]
             else:
-                sys_prompt, user_prompt = rationale_prompt
-                user_prompt = user_prompt.format(Premises=premise, Conclusions=conclusion)
+                prompt = rationale_prompt.format(Premises=premise, Conclusions=conclusion)
+                split_marker = "The following is the problem you need to solve."
+                sys_prompt, user_prompt = prompt.split(split_marker)
                 if is_chat_model:
-                    prompt = [{"role": "system", "content": sys_prompt},{"role": "user","content": user_prompt}]
+                    prompt = [{"role": "system", "content": sys_prompt.strip()},{"role": "user","content": user_prompt.strip()}]
             batch_prompts.append(prompt)
             batch_items.append({'premises':premise, 'conclusion': conclusion, 'label': label})
-        print(batch_prompts[0])
+
         # Process batch data via LLM
         try:
             with torch.no_grad():
@@ -60,13 +61,14 @@ def evaluation_batch(model_path, model, dataset, output_dir, raw_data_path, accu
                     is_chat_model=is_chat_model,
                     number_candidates=number_candidates,
                 )
+
         except Exception as e:
             print(f"Error generating responses for batch starting at index {batch_start}: {e}")
             tqdm.tqdm.update(1)
             continue 
         batch_rationales, correct_num, total_num, accuracy = post_process_batch_data_eval(batch_prompts, batch_items, batch_responses, mode, total_num, correct_num, model, max_tokens, temperature, top_p, top_k, stop, is_chat_model, prompt_mode=prompt_mode)
         rationales.extend(batch_rationales)
-
+        print(batch_responses[0])
     # for batch_start in tqdm.tqdm(range(0, len(dataset_list), batch_size)):
     #     batch_prompts = prompts[batch_start: batch_start + batch_size]
     #     batch_items = dataset_list[batch_start: batch_start + batch_size]

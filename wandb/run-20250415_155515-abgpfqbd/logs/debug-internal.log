@@ -1,0 +1,7 @@
+{"time":"2025-04-15T15:55:15.775201821-04:00","level":"INFO","msg":"stream: starting","core version":"0.19.7","symlink path":"/ihchomes/tzheng24/logical_reasoning/Truth_Table_Logical_Reasoning/wandb/run-20250415_155515-abgpfqbd/logs/debug-core.log"}
+{"time":"2025-04-15T15:55:15.994553005-04:00","level":"INFO","msg":"created new stream","id":"abgpfqbd"}
+{"time":"2025-04-15T15:55:15.994580807-04:00","level":"INFO","msg":"stream: started","id":"abgpfqbd"}
+{"time":"2025-04-15T15:55:15.994597965-04:00","level":"INFO","msg":"writer: Do: started","stream_id":"abgpfqbd"}
+{"time":"2025-04-15T15:55:15.994675516-04:00","level":"INFO","msg":"sender: started","stream_id":"abgpfqbd"}
+{"time":"2025-04-15T15:55:15.994697854-04:00","level":"INFO","msg":"handler: started","stream_id":"abgpfqbd"}
+{"time":"2025-04-15T15:55:16.299066423-04:00","level":"INFO","msg":"Starting system monitor"}

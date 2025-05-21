@@ -1,0 +1,16 @@
+{"time":"2025-03-21T08:24:33.003072472-04:00","level":"INFO","msg":"stream: starting","core version":"0.19.7","symlink path":"/ihchomes/tongzh24/logical_reasoning/Truth_Table_Logical_Reasoning/wandb/run-20250321_082432-erqugmbs/logs/debug-core.log"}
+{"time":"2025-03-21T08:24:33.213066609-04:00","level":"INFO","msg":"created new stream","id":"erqugmbs"}
+{"time":"2025-03-21T08:24:33.213091061-04:00","level":"INFO","msg":"stream: started","id":"erqugmbs"}
+{"time":"2025-03-21T08:24:33.213099941-04:00","level":"INFO","msg":"writer: Do: started","stream_id":"erqugmbs"}
+{"time":"2025-03-21T08:24:33.213117519-04:00","level":"INFO","msg":"handler: started","stream_id":"erqugmbs"}
+{"time":"2025-03-21T08:24:33.213133375-04:00","level":"INFO","msg":"sender: started","stream_id":"erqugmbs"}
+{"time":"2025-03-21T08:24:33.364752259-04:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-03-21T08:50:00.99960613-04:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/kidzheng/huggingface/erqugmbs/file_stream\": dial tcp 35.186.228.49:443: connect: connection timed out"}
+{"time":"2025-03-21T08:50:40.137981633-04:00","level":"INFO","msg":"stream: closing","id":"erqugmbs"}
+{"time":"2025-03-21T08:50:40.138008255-04:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-03-21T08:50:40.138420567-04:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-03-21T08:50:40.45067106-04:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-03-21T08:50:40.5374046-04:00","level":"INFO","msg":"handler: closed","stream_id":"erqugmbs"}
+{"time":"2025-03-21T08:50:40.537418994-04:00","level":"INFO","msg":"sender: closed","stream_id":"erqugmbs"}
+{"time":"2025-03-21T08:50:40.537416443-04:00","level":"INFO","msg":"writer: Close: closed","stream_id":"erqugmbs"}
+{"time":"2025-03-21T08:50:40.539276846-04:00","level":"INFO","msg":"stream: closed","id":"erqugmbs"}

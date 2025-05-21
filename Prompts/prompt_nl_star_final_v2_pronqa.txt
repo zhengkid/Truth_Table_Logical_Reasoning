@@ -1,0 +1,69 @@
+Below are three examples that demonstrate the desired style:
+
+<EXAMPLE 1>
+<premises>
+Peter Parker is either a superhero or a civilian.
+The Hulk is a destroyer.
+The Hulk wakes up when he is angry.
+If the Hulk wakes up, then he will break a bridge.
+Thor is a god.
+Thor will break a bridge when he is happy.
+A god is not a destroyer.
+Peter Parker wears a uniform when he is a superhero.
+Peter Parker is not a civilian if a destroyer is breaking a bridge.
+If Thor is happy, the Hulk is angry.
+</premises>
+<conclusion>
+If Thor is happy, then Peter Parker wears a uniform.
+</conclusion>
+<question>
+Is the following statement true or false? If Thor is happy, then Peter Parker wears a uniform.
+</question> 
+<options>
+(A) True
+(B) False
+</options>
+<nl_cot>
+Step 1: given premises "If Thor is happy, the Hulk is angry." and "The Hulk wakes up when he is angry.", we can know "If Thor is happy, then hulk wakes up."
+Step 2: given premise "If the Hulk wakes up, then he will break a bridge." and derivation "If Thor is happy, then hulk wakes up.", we can know "If Thor is happy, then hulk will break a bridge."
+Step 3: given premise "The Hulk is a destroyer." and derivation "If Thor is happy, then hulk will break a bridge.", we can know "If Thor is happy, then a destroyer will break a bridge."
+Step 4: given premise "Peter Parker is not a civilian if a destroyer is breaking a bridge." and derivation "If Thor is happy, then a destroyer will break a bridge.", we can know "If Thor is happy, then Peter Parker is not a civilian"
+Step 5: given premise "Peter Parker is either a superhero or a civilian." and derivation "If Thor is happy, then Peter Parker is not a civilian", we can know "If Thor is happy, then Peter Parker is a superhero."
+Step 6: given premise "Peter Parker wears a uniform when he is a superhero." and derivation "If Thor is happy, then Peter Parker is a superhero.", we can know "If Thor is happy, then Peter Parker wears a uniform"
+<end_of_nl_cot>
+<answer>
+The final answer is (A).
+<end_of_answer>
+</EXAMPLE 1>
+
+<EXAMPLE 2>
+<premises>
+All philosophers reason.
+Some sophists reason.
+All who can reason can distinguish truth from falsehood.
+Nobody who can distinguish truth from falsehood is morally perfect.
+The theistic God is morally perfect.
+The theistic God is a sophist.
+</premises>
+<conclusion>
+The theistic God is a sophist and a philosopher.
+</conclusion>
+<question>
+Is the following statement true or false? The theistic God is a sophist and a philosopher.
+</question>
+<options>
+(A) True
+(B) False
+</options>
+<nl_cot>
+Step 1: From the premise “All philosophers reason,” we know that if someone is a philosopher, then that individual necessarily has the ability to reason.
+Step 2: From the premise “All who can reason can distinguish truth from falsehood,” we conclude that if someone reasons, they will also distinguish truth from falsehood.
+Step 3: The premise “Nobody who can distinguish truth from falsehood is morally perfect” implies that if one does indeed distinguish truth from falsehood, they cannot be morally perfect.
+Step 4: Since the theistic God is stated to be “morally perfect,” if the theistic God were a philosopher, He would have to reason (by Step 1), which would lead to distinguishing truth from falsehood (by Step 2), thereby making Him not morally perfect (by Step 3). This contradicts the premise that the theistic God is morally perfect, so He cannot be a philosopher.
+Step 5: Separately, the premise says “The theistic God is a sophist.” We also know “Some sophists reason,” which does not imply that every sophist necessarily reasons. Hence, there is no guaranteed contradiction in being a sophist while remaining morally perfect—He could be the sort of sophist who does not reason.
+Step 6: Because the theistic God cannot be both morally perfect and a philosopher, the statement “The theistic God is a sophist and a philosopher” is false.
+<end_of_nl_cot>
+<answer>
+The final answer is (B).
+<end_of_answer>
+</EXAMPLE 2>

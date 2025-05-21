@@ -1,0 +1,15 @@
+<premises>
+{Premises}
+</premises>
+<conclusion>
+{Conclusions}
+</conclusion>
+<question>
+Is the following statement true, false, or uncertain? {Conclusions}
+</question>
+<options>
+(A) True
+(B) False
+(C) Uncertain
+</options>
+<truth_table>

@@ -1,5 +1,0 @@
-Accuracy: 0.0584
-Executable Rate: 0.7586
-Total samples that is executable: 154
-Total samples: 203
-Correct predictions: 9

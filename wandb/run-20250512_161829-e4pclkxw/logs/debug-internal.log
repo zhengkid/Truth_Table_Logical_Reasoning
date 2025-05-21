@@ -1,0 +1,16 @@
+{"time":"2025-05-12T16:18:29.471861239-04:00","level":"INFO","msg":"stream: starting","core version":"0.19.7","symlink path":"/ihchomes/tzheng24/logical_reasoning/Truth_Table_Logical_Reasoning/wandb/run-20250512_161829-e4pclkxw/logs/debug-core.log"}
+{"time":"2025-05-12T16:18:29.586509163-04:00","level":"INFO","msg":"created new stream","id":"e4pclkxw"}
+{"time":"2025-05-12T16:18:29.586550664-04:00","level":"INFO","msg":"stream: started","id":"e4pclkxw"}
+{"time":"2025-05-12T16:18:29.586617694-04:00","level":"INFO","msg":"writer: Do: started","stream_id":"e4pclkxw"}
+{"time":"2025-05-12T16:18:29.586680995-04:00","level":"INFO","msg":"handler: started","stream_id":"e4pclkxw"}
+{"time":"2025-05-12T16:18:29.586696885-04:00","level":"INFO","msg":"sender: started","stream_id":"e4pclkxw"}
+{"time":"2025-05-12T16:18:29.780674362-04:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-05-12T16:25:16.044995528-04:00","level":"INFO","msg":"stream: closing","id":"e4pclkxw"}
+{"time":"2025-05-12T16:25:16.045105559-04:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-05-12T16:25:16.045728827-04:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-05-12T16:25:16.393770039-04:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-05-12T16:27:25.166683957-04:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/kidzheng/huggingface/e4pclkxw/file_stream\": dial tcp 35.186.228.49:443: connect: connection timed out"}
+{"time":"2025-05-12T16:27:27.867095842-04:00","level":"INFO","msg":"handler: closed","stream_id":"e4pclkxw"}
+{"time":"2025-05-12T16:27:27.867138773-04:00","level":"INFO","msg":"writer: Close: closed","stream_id":"e4pclkxw"}
+{"time":"2025-05-12T16:27:27.867150463-04:00","level":"INFO","msg":"sender: closed","stream_id":"e4pclkxw"}
+{"time":"2025-05-12T16:27:27.869330298-04:00","level":"INFO","msg":"stream: closed","id":"e4pclkxw"}

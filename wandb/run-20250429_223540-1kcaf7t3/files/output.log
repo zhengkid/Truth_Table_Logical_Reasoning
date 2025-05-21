@@ -1,0 +1,50 @@
+  0%|          | 0/14 [00:00<?, ?it/s][WARNING|logging.py:328] 2025-04-29 22:35:40,831 >> It is strongly recommended to train Gemma2 models with the `eager` attention implementation instead of `flash_attention_2`. Use `eager` with `AutoModelForCausalLM.from_pretrained('<path-to-checkpoint>', attn_implementation='eager')`.
+100%|██████████| 14/14 [03:14<00:00, 13.84s/it][INFO|trainer.py:2584] 2025-04-29 22:38:55,013 >>
+{'loss': 0.2946, 'grad_norm': 1.1682307236750866, 'learning_rate': 4.937319780454559e-06, 'epoch': 0.14}
+{'loss': 0.2957, 'grad_norm': 2.1944788672808513, 'learning_rate': 3.5847093477938955e-06, 'epoch': 0.7}
+[2025-04-29 22:37:32,112] [WARNING] [stage3.py:2114:step] 1 pytorch allocator cache flushes since last step. this happens when there is high memory pressure and is detrimental to performance. if this is happening frequently consider adjusting settings to reduce memory consumption. If you are unable to make the cache flushes go away consider adding get_accelerator().empty_cache() calls in your training loop to ensure that all ranks flush their caches at the same time
+{'loss': 0.294, 'grad_norm': 1.20186701925911, 'learning_rate': 9.412754953531664e-07, 'epoch': 1.4}
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+100%|██████████| 14/14 [03:14<00:00, 13.87s/it]
+{'train_runtime': 195.0961, 'train_samples_per_second': 9.37, 'train_steps_per_second': 0.072, 'train_loss': 0.2748700976371765, 'epoch': 1.96}
+***** train metrics *****
+  epoch                    =     1.9565
+  total_flos               =     1975GF
+  train_loss               =     0.2749
+  train_runtime            = 0:03:15.09
+  train_samples            =        914
+  train_samples_per_second =       9.37
+  train_steps_per_second   =      0.072
+2025-04-29 22:38:55 - INFO - __main__ - *** Save model ***
+[INFO|trainer.py:3801] 2025-04-29 22:38:56,430 >> Saving model checkpoint to /beacon-scratch/tzheng24//gemma-2-2b-it/nl/OP_DIS_final_v2_10_2_3Rounds/ft_iter_3
+[INFO|configuration_utils.py:414] 2025-04-29 22:38:56,437 >> Configuration saved in /beacon-scratch/tzheng24//gemma-2-2b-it/nl/OP_DIS_final_v2_10_2_3Rounds/ft_iter_3/config.json
+[INFO|configuration_utils.py:865] 2025-04-29 22:38:56,440 >> Configuration saved in /beacon-scratch/tzheng24//gemma-2-2b-it/nl/OP_DIS_final_v2_10_2_3Rounds/ft_iter_3/generation_config.json
+[INFO|modeling_utils.py:3042] 2025-04-29 22:39:21,613 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 2 checkpoint shards. You can find where each parameters has been saved in the index located at /beacon-scratch/tzheng24//gemma-2-2b-it/nl/OP_DIS_final_v2_10_2_3Rounds/ft_iter_3/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2646] 2025-04-29 22:39:21,618 >> tokenizer config file saved in /beacon-scratch/tzheng24//gemma-2-2b-it/nl/OP_DIS_final_v2_10_2_3Rounds/ft_iter_3/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2025-04-29 22:39:21,620 >> Special tokens file saved in /beacon-scratch/tzheng24//gemma-2-2b-it/nl/OP_DIS_final_v2_10_2_3Rounds/ft_iter_3/special_tokens_map.json
+[INFO|trainer.py:3801] 2025-04-29 22:39:23,515 >> Saving model checkpoint to /beacon-scratch/tzheng24//gemma-2-2b-it/nl/OP_DIS_final_v2_10_2_3Rounds/ft_iter_3
+[INFO|configuration_utils.py:414] 2025-04-29 22:39:23,521 >> Configuration saved in /beacon-scratch/tzheng24//gemma-2-2b-it/nl/OP_DIS_final_v2_10_2_3Rounds/ft_iter_3/config.json
+[INFO|configuration_utils.py:865] 2025-04-29 22:39:23,523 >> Configuration saved in /beacon-scratch/tzheng24//gemma-2-2b-it/nl/OP_DIS_final_v2_10_2_3Rounds/ft_iter_3/generation_config.json
+[INFO|modeling_utils.py:3042] 2025-04-29 22:39:49,257 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 2 checkpoint shards. You can find where each parameters has been saved in the index located at /beacon-scratch/tzheng24//gemma-2-2b-it/nl/OP_DIS_final_v2_10_2_3Rounds/ft_iter_3/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2646] 2025-04-29 22:39:49,263 >> tokenizer config file saved in /beacon-scratch/tzheng24//gemma-2-2b-it/nl/OP_DIS_final_v2_10_2_3Rounds/ft_iter_3/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2025-04-29 22:39:49,265 >> Special tokens file saved in /beacon-scratch/tzheng24//gemma-2-2b-it/nl/OP_DIS_final_v2_10_2_3Rounds/ft_iter_3/special_tokens_map.json
+events.out.tfevents.1745980539.ada6compute02.ihc.umd.edu.3130932.0: 100%|██████████| 7.18k/7.18k [00:00<00:00, 61.9kB/s]
+training_args.bin: 100%|██████████| 7.35k/7.35k [00:00<00:00, 170kB/s]0:22, 10.6MB/s]
+tokenizer.model: 100%|██████████| 4.24M/4.24M [00:00<00:00, 15.0MB/s]00:02, 87.9MB/s]0.00/7.18k [00:00<?, ?B/s]
+tokenizer.json: 100%|██████████| 34.4M/34.4M [00:01<00:00, 32.0MB/s]0<01:32, 53.5MB/s]
+model-00002-of-00002.safetensors: 100%|██████████| 241M/241M [00:05<00:00, 44.0MB/s]] 
+model-00001-of-00002.safetensors: 100%|██████████| 4.99G/4.99G [01:58<00:00, 42.3MB/s]
+Upload 6 LFS files: 100%|██████████| 6/6 [01:58<00:00, 19.78s/it] s]]
+[INFO|configuration_utils.py:414] 2025-04-29 22:42:02,520 >> Configuration saved in /beacon-scratch/tzheng24//gemma-2-2b-it/nl/OP_DIS_final_v2_10_2_3Rounds/ft_iter_3/config.json
+[INFO|trainer.py:3801] 2025-04-29 22:42:03,861 >> Saving model checkpoint to /beacon-scratch/tzheng24//gemma-2-2b-it/nl/OP_DIS_final_v2_10_2_3Rounds/ft_iter_3
+[INFO|configuration_utils.py:414] 2025-04-29 22:42:03,868 >> Configuration saved in /beacon-scratch/tzheng24//gemma-2-2b-it/nl/OP_DIS_final_v2_10_2_3Rounds/ft_iter_3/config.json
+[INFO|configuration_utils.py:865] 2025-04-29 22:42:03,870 >> Configuration saved in /beacon-scratch/tzheng24//gemma-2-2b-it/nl/OP_DIS_final_v2_10_2_3Rounds/ft_iter_3/generation_config.json
+2025-04-29 22:42:02 - INFO - __main__ - Model saved to /beacon-scratch/tzheng24//gemma-2-2b-it/nl/OP_DIS_final_v2_10_2_3Rounds/ft_iter_3
+2025-04-29 22:42:02 - INFO - __main__ - Pushing to hub...
+[INFO|modeling_utils.py:3042] 2025-04-29 22:42:29,382 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 2 checkpoint shards. You can find where each parameters has been saved in the index located at /beacon-scratch/tzheng24//gemma-2-2b-it/nl/OP_DIS_final_v2_10_2_3Rounds/ft_iter_3/model.safetensors.index.json.
+[INFO|tokenization_utils_base.py:2646] 2025-04-29 22:42:29,387 >> tokenizer config file saved in /beacon-scratch/tzheng24//gemma-2-2b-it/nl/OP_DIS_final_v2_10_2_3Rounds/ft_iter_3/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2655] 2025-04-29 22:42:29,389 >> Special tokens file saved in /beacon-scratch/tzheng24//gemma-2-2b-it/nl/OP_DIS_final_v2_10_2_3Rounds/ft_iter_3/special_tokens_map.json
+2025-04-29 22:42:43 - INFO - __main__ - *** Training complete ***

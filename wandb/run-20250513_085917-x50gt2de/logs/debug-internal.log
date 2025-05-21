@@ -1,0 +1,15 @@
+{"time":"2025-05-13T08:59:17.235480234-04:00","level":"INFO","msg":"stream: starting","core version":"0.19.7","symlink path":"/ihchomes/tzheng24/logical_reasoning/Truth_Table_Logical_Reasoning/wandb/run-20250513_085917-x50gt2de/logs/debug-core.log"}
+{"time":"2025-05-13T08:59:17.349076273-04:00","level":"INFO","msg":"created new stream","id":"x50gt2de"}
+{"time":"2025-05-13T08:59:17.349112734-04:00","level":"INFO","msg":"stream: started","id":"x50gt2de"}
+{"time":"2025-05-13T08:59:17.349156505-04:00","level":"INFO","msg":"writer: Do: started","stream_id":"x50gt2de"}
+{"time":"2025-05-13T08:59:17.349224896-04:00","level":"INFO","msg":"handler: started","stream_id":"x50gt2de"}
+{"time":"2025-05-13T08:59:17.349245187-04:00","level":"INFO","msg":"sender: started","stream_id":"x50gt2de"}
+{"time":"2025-05-13T08:59:17.615197884-04:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-05-13T09:06:25.847504187-04:00","level":"INFO","msg":"stream: closing","id":"x50gt2de"}
+{"time":"2025-05-13T09:06:25.847555318-04:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-05-13T09:06:25.84822047-04:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-05-13T09:06:26.20907079-04:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-05-13T09:06:26.326462118-04:00","level":"INFO","msg":"handler: closed","stream_id":"x50gt2de"}
+{"time":"2025-05-13T09:06:26.326505799-04:00","level":"INFO","msg":"writer: Close: closed","stream_id":"x50gt2de"}
+{"time":"2025-05-13T09:06:26.32654826-04:00","level":"INFO","msg":"sender: closed","stream_id":"x50gt2de"}
+{"time":"2025-05-13T09:06:26.328632339-04:00","level":"INFO","msg":"stream: closed","id":"x50gt2de"}

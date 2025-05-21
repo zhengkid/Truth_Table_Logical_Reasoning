@@ -1,0 +1,15 @@
+{"time":"2025-04-11T07:54:08.230663568-04:00","level":"INFO","msg":"stream: starting","core version":"0.19.7","symlink path":"/ihchomes/tzheng24/logical_reasoning/Truth_Table_Logical_Reasoning/wandb/run-20250411_075408-oka3esln/logs/debug-core.log"}
+{"time":"2025-04-11T07:54:08.441515126-04:00","level":"INFO","msg":"created new stream","id":"oka3esln"}
+{"time":"2025-04-11T07:54:08.441535196-04:00","level":"INFO","msg":"stream: started","id":"oka3esln"}
+{"time":"2025-04-11T07:54:08.44161265-04:00","level":"INFO","msg":"writer: Do: started","stream_id":"oka3esln"}
+{"time":"2025-04-11T07:54:08.441644322-04:00","level":"INFO","msg":"handler: started","stream_id":"oka3esln"}
+{"time":"2025-04-11T07:54:08.441657501-04:00","level":"INFO","msg":"sender: started","stream_id":"oka3esln"}
+{"time":"2025-04-11T07:54:08.606342382-04:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-04-11T08:08:17.295077825-04:00","level":"INFO","msg":"stream: closing","id":"oka3esln"}
+{"time":"2025-04-11T08:08:17.295125606-04:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-04-11T08:08:17.295515989-04:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-04-11T08:08:17.623509431-04:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-04-11T08:08:17.70848826-04:00","level":"INFO","msg":"handler: closed","stream_id":"oka3esln"}
+{"time":"2025-04-11T08:08:17.70849846-04:00","level":"INFO","msg":"writer: Close: closed","stream_id":"oka3esln"}
+{"time":"2025-04-11T08:08:17.70852655-04:00","level":"INFO","msg":"sender: closed","stream_id":"oka3esln"}
+{"time":"2025-04-11T08:08:17.710493112-04:00","level":"INFO","msg":"stream: closed","id":"oka3esln"}

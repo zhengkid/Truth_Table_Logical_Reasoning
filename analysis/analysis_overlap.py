@@ -26,7 +26,7 @@ def main():
     data_list1 = read_json(file1)
     data_list2 = read_json(file2)
     data_list3 = read_json(file3)
-
+    print(len(data_list1))
     # 提取“预测正确”且用 'conclusions' 作为“标识”的集合
     set_correct_1 = get_correct_conclusions(data_list1)
     set_correct_2 = get_correct_conclusions(data_list2)
@@ -34,6 +34,16 @@ def main():
 
     # 计算交集（同时出现在 1、2、3 中）
     intersect_123 = set_correct_1 & set_correct_2 & set_correct_3
+    
+    intersect_12 = set_correct_1 & set_correct_2 
+    
+    intersect_13 = set_correct_1 & set_correct_3
+    
+    intersect_23 = set_correct_2 & set_correct_3
+
+    print("1 in 2",len(intersect_12))
+    print("1 in 3",len(intersect_13))
+    print("2 in 3",len(intersect_23))
 
     # 计算并集（只要出现在 1、2、3 中任意一个就算）
     union_123 = set_correct_1 | set_correct_2 | set_correct_3
@@ -95,7 +105,7 @@ def main():
     print("\n=== 只在 file3 中正确 (而不在 file1 或 file2) 的 'conclusions' ===")
     #print(only_in_file3)
     print("个数:", len(only_in_file3))
-
+    print(only_in_file3)
 def read_json(file_path):
     """读取并解析 JSON 文件，返回一个 Python 列表或字典。"""
     with open(file_path, 'r', encoding='utf-8') as f:
@@ -111,7 +121,8 @@ def get_correct_conclusions(data_list):
         label = record.get("label", "").strip()
         predict = record.get("predict", "").strip()
         conclusion_text = record.get("conclusions", "").strip()
-
+        premise = record.get("premises", "").strip()
+        conclusion_text = conclusion_text + "\nPremises:\n" + premise
         # 只在 label == predict 且 conclusion_text 不为空时，将其加入集合
         if label == predict and conclusion_text:
             correct_conclusion_set.add(conclusion_text)

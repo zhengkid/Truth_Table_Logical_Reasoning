@@ -40,7 +40,7 @@ def main():
         ground_truth = record1.get("label", None)
 
         majority_pred, tie_info = majority_vote(pred1, pred2, pred3)
-
+        print("g", ground_truth)
         # 如果存在真实标签，就可以判断投票是否正确
         if ground_truth is not None:
             if majority_pred == ground_truth:
@@ -58,6 +58,7 @@ def main():
         results.append(result_item)
 
     # 计算并打印准确率（若 ground_truth 都存在）
+    print(correct_count)
     accuracy = correct_count / total_samples if total_samples > 0 else 0
     print(f"投票后的准确率：{accuracy:.2%}")
 
@@ -73,24 +74,18 @@ def majority_vote(pred1, pred2, pred3):
     preds = [pred1, pred2, pred3]
     counter = Counter(preds)
     top_label, top_count = counter.most_common(1)[0]
-
+    print(preds)
     tie_info = ""
     all_sorted = counter.most_common()
 
     # 三方各不相同（例如 A,B,C）
+    print(all_sorted)
     if len(all_sorted) == 3 and all_sorted[0][1] == 1:
         tie_info = f"Three-way tie among {preds}"
         # 自定义打破平局，这里示例：按字母顺序选最小
         majority_label = sorted(preds)[0]
         return (majority_label, tie_info)
-
-    # 并列情况（例如 A,B 各 1 次，如果 A,B 的count相同且最高）
-    if len(all_sorted) >= 2 and all_sorted[1][1] == top_count:
-        tie_info = f"Multi-way tie for top: {all_sorted}"
-        candidates = [t[0] for t in all_sorted if t[1] == top_count]
-        majority_label = sorted(candidates)[0]
-        return (majority_label, tie_info)
-
+    print(top_label)
     return (top_label, tie_info)
 
 if __name__ == "__main__":

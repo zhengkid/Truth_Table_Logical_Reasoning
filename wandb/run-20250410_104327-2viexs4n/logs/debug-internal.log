@@ -1,0 +1,16 @@
+{"time":"2025-04-10T10:43:27.846998476-04:00","level":"INFO","msg":"stream: starting","core version":"0.19.7","symlink path":"/ihchomes/tzheng24/logical_reasoning/Truth_Table_Logical_Reasoning/wandb/run-20250410_104327-2viexs4n/logs/debug-core.log"}
+{"time":"2025-04-10T10:43:28.058446346-04:00","level":"INFO","msg":"created new stream","id":"2viexs4n"}
+{"time":"2025-04-10T10:43:28.058470684-04:00","level":"INFO","msg":"stream: started","id":"2viexs4n"}
+{"time":"2025-04-10T10:43:28.058481557-04:00","level":"INFO","msg":"writer: Do: started","stream_id":"2viexs4n"}
+{"time":"2025-04-10T10:43:28.058495838-04:00","level":"INFO","msg":"sender: started","stream_id":"2viexs4n"}
+{"time":"2025-04-10T10:43:28.058507226-04:00","level":"INFO","msg":"handler: started","stream_id":"2viexs4n"}
+{"time":"2025-04-10T10:43:28.268625945-04:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-04-10T11:06:28.547140228-04:00","level":"INFO","msg":"api: retrying HTTP error","status":502,"url":"https://api.wandb.ai/files/kidzheng/huggingface/2viexs4n/file_stream","body":"\n<html><head>\n<meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">\n<title>502 Server Error</title>\n</head>\n<body text=#000000 bgcolor=#ffffff>\n<h1>Error: Server Error</h1>\n<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>\n<h2></h2>\n</body></html>\n"}
+{"time":"2025-04-10T11:21:00.219272598-04:00","level":"INFO","msg":"stream: closing","id":"2viexs4n"}
+{"time":"2025-04-10T11:21:00.219304968-04:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-04-10T11:21:00.219767958-04:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-04-10T11:21:00.566670115-04:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-04-10T11:21:00.706456194-04:00","level":"INFO","msg":"handler: closed","stream_id":"2viexs4n"}
+{"time":"2025-04-10T11:21:00.706471536-04:00","level":"INFO","msg":"writer: Close: closed","stream_id":"2viexs4n"}
+{"time":"2025-04-10T11:21:00.70647618-04:00","level":"INFO","msg":"sender: closed","stream_id":"2viexs4n"}
+{"time":"2025-04-10T11:21:00.708458833-04:00","level":"INFO","msg":"stream: closed","id":"2viexs4n"}

@@ -7,7 +7,7 @@ attn_implementation: flash_attention_2
 
 # Data training arguments
 dataset_mixer:
-  TongZheng1999/Qwen2.5-7B-Instruct_mixed_direct_OP_rationale_1000_final_v2_10_2_3Rounds_round_1: 1.0
+  TongZheng1999/FL_1000_MoT_5epoch_Qwen2.5-7B-Instruct_mixed_direct_OP_rationale_1000_final_v2_10_5_3Rounds_round_1: 1.0
 dataset_splits:
 - train
 auto_insert_empty_system_msg: false
@@ -24,7 +24,7 @@ gradient_accumulation_steps: 16
 gradient_checkpointing: true
 gradient_checkpointing_kwargs:
   use_reentrant: false
-hub_model_id: Qwen2.5-7B-Instruct-star-mixed_direct-OP-final_v2_10-2-3Rounds-iter-1
+hub_model_id: FL_1000_MoT_5epoch_Qwen2.5-7B-Instruct-star-mixed_direct-OP-final_v2_10-5-3Rounds-iter-1
 hub_strategy: every_save
 learning_rate: 5.0e-06
 log_level: info
@@ -33,8 +33,8 @@ logging_strategy: steps
 lr_scheduler_type: cosine
 max_seq_length: 4096
 max_steps: -1
-num_train_epochs: 2
-output_dir: /beacon-scratch/tongzh24//Qwen2.5-7B-Instruct/mixed_direct/OP_final_v2_10_2_3Rounds/ft_iter_1
+num_train_epochs: 5
+output_dir: /beacon-scratch/tzheng24//Qwen2.5-7B-Instruct/FL_1000_MoT_5epoch_mixed_direct/OP_final_v2_10_5_3Rounds/ft_iter_1
 overwrite_output_dir: true
 per_device_eval_batch_size: 4
 per_device_train_batch_size: 2

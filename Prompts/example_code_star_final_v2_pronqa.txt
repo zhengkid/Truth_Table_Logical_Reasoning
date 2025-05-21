@@ -1,0 +1,16 @@
+The following is the problem you need to solve.
+
+<premises>
+{Premises}
+</premises>
+<conclusion>
+{Conclusions}
+</conclusion>
+<question>
+Is the following statement true or false? {Conclusions}
+</question>
+<options>
+(A) True
+(B) False
+</options>
+<code>

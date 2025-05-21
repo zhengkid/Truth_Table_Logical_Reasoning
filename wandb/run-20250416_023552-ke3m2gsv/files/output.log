@@ -1,0 +1,9 @@
+  0%|          | 0/85 [00:00<?, ?it/s][WARNING|logging.py:328] 2025-04-16 02:35:53,234 >> It is strongly recommended to train Gemma2 models with the `eager` attention implementation instead of `flash_attention_2`. Use `eager` with `AutoModelForCausalLM.from_pretrained('<path-to-checkpoint>', attn_implementation='eager')`.
+ 34%|███▍      | 29/85 [04:43<09:01,  9.66s/it]
+{'loss': 1.2766, 'grad_norm': 20.852909140263957, 'learning_rate': 4.998292650357558e-06, 'epoch': 0.06}
+[2025-04-16 02:36:45,851] [WARNING] [stage3.py:2114:step] 1 pytorch allocator cache flushes since last step. this happens when there is high memory pressure and is detrimental to performance. if this is happening frequently consider adjusting settings to reduce memory consumption. If you are unable to make the cache flushes go away consider adding get_accelerator().empty_cache() calls in your training loop to ensure that all ranks flush their caches at the same time
+{'loss': 0.68, 'grad_norm': 4.5325693660300646, 'learning_rate': 4.957432749209755e-06, 'epoch': 0.29}
+{'loss': 0.2874, 'grad_norm': 1.3168311099055807, 'learning_rate': 4.83118057351089e-06, 'epoch': 0.57}
+{'loss': 0.2342, 'grad_norm': 1.0185549673086332, 'learning_rate': 4.625542839324036e-06, 'epoch': 0.86}
+{'loss': 0.2407, 'grad_norm': 0.7689643448594542, 'learning_rate': 4.3475222930516484e-06, 'epoch': 1.14}
+{'loss': 0.2098, 'grad_norm': 0.71503577090696, 'learning_rate': 4.006586590948141e-06, 'epoch': 1.43}

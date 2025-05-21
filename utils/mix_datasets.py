@@ -10,7 +10,7 @@ def parse_args():
                         help="List of Hugging Face datasets to mix (e.g., hf_user/dataset_nl_cot hf_user/dataset_code hf_user/dataset_answer)")
     parser.add_argument("--output_dataset", type=str, required=True,
                         help="Output Hugging Face dataset ID (e.g., hf_user/mixed_dataset)")
-    parser.add_argument("--mix_mode", type=str, choices=["direct", "uniq"], default="uniq",
+    parser.add_argument("--mix_mode", type=str, choices=["direct", "unique"], default="unique",
                         help="Mixing mode: 'direct' (add all data) or 'unique_conclusion' (filter by unique conclusions)")
     parser.add_argument("--seed", type=int, default=42,
                         help="Random seed for reproducibility")
@@ -84,7 +84,7 @@ def ensure_dataset_format(data):
 
 def save_dataset(data, output_path):
     dataset = ensure_dataset_format(data)
-    dataset.push_to_hub(output_path)
+    dataset.push_to_hub(output_path,private=True)
     print(f"Dataset successfully uploaded to: {output_path}")
 
 def main():
