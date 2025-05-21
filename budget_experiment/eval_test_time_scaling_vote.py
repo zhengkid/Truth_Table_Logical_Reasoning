@@ -110,9 +110,9 @@ def sample_acc_metric_multimode(responses1, responses2, responses3, label, sampl
       4. 比对最终预测与真实 label，正确返回 1，否则返回 0。
     """
     #sample_size_mode = sample_size_total // 3
-    sample_size_mode1 = sample_size_total * 1 // 6
-    sample_size_mode2 = sample_size_total* 4 // 6
-    sample_size_mode3 = sample_size_total * 1 // 6
+    sample_size_mode1 = sample_size_total * 1 // 3
+    sample_size_mode2 = sample_size_total* 1 // 3
+    sample_size_mode3 = sample_size_total * 1 // 3
     if len(responses1) < sample_size_mode1 or len(responses2) < sample_size_mode2 or len(responses3) < sample_size_mode3:
         raise ValueError("某个模式的响应数量不足以进行抽样")
     sample1 = random.sample(responses1, sample_size_mode1)
@@ -261,7 +261,7 @@ def main():
         save_results_to_file("baseline_code_vote_results.dat", baseline_single_mode_results['code'])
         save_results_to_file("baseline_nl_vote_results.dat", baseline_single_mode_results['nl'])
         save_results_to_file("baseline_tt_vote_results.dat", baseline_single_mode_results['tt'])
-        save_results_to_file("baseline_mix3_vote_results.dat", baseline_mix_results)
+        # save_results_to_file("baseline_mix3_vote_results.dat", baseline_mix_results)
     else:
         print("未提供完整的基线方法数据（需要 --baseline_mode1, --baseline_mode2, --baseline_mode3）。")
 
@@ -305,13 +305,13 @@ def main():
             print(f"[Our Method] Pass@{s}: code = {m_mean1:.3f}, nl = {m_mean2:.3f}, tt = {m_mean3:.3f}, mix3 = {m_mean_mix3:.3f}, mixcodenl = {m_mean_12:.3f}, mixcodett = {m_mean_13:.3f}, mixnltt = {m_mean_23:.3f}")
             
         # 保存结果
-        save_results_to_file("method_code_results.dat", method_single_mode_results['code'])
-        save_results_to_file("method_nl_results.dat", method_single_mode_results['nl'])
-        save_results_to_file("method_tt_results.dat", method_single_mode_results['tt'])
+        # save_results_to_file("method_code_results.dat", method_single_mode_results['code'])
+        # save_results_to_file("method_nl_results.dat", method_single_mode_results['nl'])
+        # save_results_to_file("method_tt_results.dat", method_single_mode_results['tt'])
         save_results_to_file("method_mix3_results.dat", method_mix3_results)
-        save_results_to_file("method_mix2_code+nl_results.dat", method_mix2_results['code+nl'])
-        save_results_to_file("method_mix2_code+tt_results.dat", method_mix2_results['code+tt'])
-        save_results_to_file("method_mix2_nl+tt_results.dat", method_mix2_results['nl+tt'])
+        # save_results_to_file("method_mix2_code+nl_results.dat", method_mix2_results['code+nl'])
+        # save_results_to_file("method_mix2_code+tt_results.dat", method_mix2_results['code+tt'])
+        # save_results_to_file("method_mix2_nl+tt_results.dat", method_mix2_results['nl+tt'])
     else:
         print("未提供完整的我们方法数据（需要 --method_mode1, --method_mode2, --method_mode3）。")
 

@@ -1,834 +1,0 @@
-[2025-03-16 10:10:35,602] [INFO] [real_accelerator.py:219:get_accelerator] Setting ds_accelerator to cuda (auto detect)
-W0316 10:10:40.724000 2520723 site-packages/torch/distributed/run.py:792] 
-W0316 10:10:40.724000 2520723 site-packages/torch/distributed/run.py:792] *****************************************
-W0316 10:10:40.724000 2520723 site-packages/torch/distributed/run.py:792] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
-W0316 10:10:40.724000 2520723 site-packages/torch/distributed/run.py:792] *****************************************
-[2025-03-16 10:10:51,097] [INFO] [real_accelerator.py:219:get_accelerator] Setting ds_accelerator to cuda (auto detect)
-Warning: The cache directory for DeepSpeed Triton autotune, /beacon-scratch/tongzh24/.cache, appears to be on an NFS system. While this is generally acceptable, if you experience slowdowns or hanging when DeepSpeed exits, it is recommended to set the TRITON_CACHE_DIR environment variable to a non-NFS path.
-[2025-03-16 10:10:51,335] [INFO] [real_accelerator.py:219:get_accelerator] Setting ds_accelerator to cuda (auto detect)
-Warning: The cache directory for DeepSpeed Triton autotune, /beacon-scratch/tongzh24/.cache, appears to be on an NFS system. While this is generally acceptable, if you experience slowdowns or hanging when DeepSpeed exits, it is recommended to set the TRITON_CACHE_DIR environment variable to a non-NFS path.
-[2025-03-16 10:10:51,522] [INFO] [real_accelerator.py:219:get_accelerator] Setting ds_accelerator to cuda (auto detect)
-Warning: The cache directory for DeepSpeed Triton autotune, /beacon-scratch/tongzh24/.cache, appears to be on an NFS system. While this is generally acceptable, if you experience slowdowns or hanging when DeepSpeed exits, it is recommended to set the TRITON_CACHE_DIR environment variable to a non-NFS path.
-[2025-03-16 10:10:52,152] [INFO] [real_accelerator.py:219:get_accelerator] Setting ds_accelerator to cuda (auto detect)
-Warning: The cache directory for DeepSpeed Triton autotune, /beacon-scratch/tongzh24/.cache, appears to be on an NFS system. While this is generally acceptable, if you experience slowdowns or hanging when DeepSpeed exits, it is recommended to set the TRITON_CACHE_DIR environment variable to a non-NFS path.
-[2025-03-16 10:10:52,518] [INFO] [comm.py:652:init_distributed] cdb=None
-[2025-03-16 10:10:52,636] [INFO] [comm.py:652:init_distributed] cdb=None
-[2025-03-16 10:10:52,668] [INFO] [comm.py:652:init_distributed] cdb=None
-2025-03-16 10:10:53 - WARNING - __main__ - Process rank: 2, device: cuda:2, n_gpu: 1 distributed training: True, 16-bits training: False
-[2025-03-16 10:10:53,312] [INFO] [comm.py:652:init_distributed] cdb=None
-[2025-03-16 10:10:53,312] [INFO] [comm.py:683:init_distributed] Initializing TorchBackend in DeepSpeed with backend nccl
-2025-03-16 10:10:53 - WARNING - __main__ - Process rank: 3, device: cuda:3, n_gpu: 1 distributed training: True, 16-bits training: False
-2025-03-16 10:10:53 - WARNING - __main__ - Process rank: 1, device: cuda:1, n_gpu: 1 distributed training: True, 16-bits training: False
-2025-03-16 10:10:53 - WARNING - __main__ - Process rank: 0, device: cuda:0, n_gpu: 1 distributed training: True, 16-bits training: False
-2025-03-16 10:10:53 - INFO - __main__ - Model parameters ModelArguments(base_model_revision=None, model_name_or_path='google/gemma-2-9b-it', model_revision='main', model_code_revision=None, torch_dtype='bfloat16', tokenizer_name_or_path='google/gemma-2-9b-it', trust_remote_code=False, attn_implementation='flash_attention_2', use_peft=False, lora_r=16, lora_alpha=32, lora_dropout=0.05, lora_target_modules=None, lora_modules_to_save=None, load_in_8bit=False, load_in_4bit=False, bnb_4bit_quant_type='nf4', use_bnb_nested_quant=False, bnb_4bit_quant_storage='uint8')
-2025-03-16 10:10:53 - INFO - __main__ - Data parameters DataArguments(chat_template=None, dataset_mixer={'TongZheng1999/gemma-2-9b-it_truth_table_OP_rationale_1000_final_10_2_3Rounds_round_3': 1.0, 'TongZheng1999/gemma-2-9b-it_nl_OP_rationale_1000_final_1_2_3Rounds_round_3': 1.0, 'TongZheng1999/gemma-2-9b-it_code_OP_rationale_1000_final_10_2_3Rounds_round_2': 1.0}, text_column='text', dataset_splits=['train'], dataset_configs=None, preprocessing_num_workers=12, truncation_side=None, auto_insert_empty_system_msg=False)
-2025-03-16 10:10:53 - INFO - __main__ - Training/evaluation parameters SFTConfig(
-_n_gpu=1,
-accelerator_config={'split_batches': False, 'dispatch_batches': None, 'even_batches': True, 'use_seedable_sampler': True, 'non_blocking': False, 'gradient_accumulation_kwargs': None, 'use_configured_state': False},
-adafactor=False,
-adam_beta1=0.9,
-adam_beta2=0.999,
-adam_epsilon=1e-08,
-auto_find_batch_size=False,
-batch_eval_metrics=False,
-bf16=True,
-bf16_full_eval=False,
-chars_per_token=<CHARS_PER_TOKEN>,
-data_seed=None,
-dataloader_drop_last=False,
-dataloader_num_workers=0,
-dataloader_persistent_workers=False,
-dataloader_pin_memory=True,
-dataloader_prefetch_factor=None,
-dataset_batch_size=1000,
-dataset_kwargs={'add_special_tokens': False, 'append_concat_token': False},
-dataset_num_proc=None,
-dataset_text_field=text,
-ddp_backend=None,
-ddp_broadcast_buffers=None,
-ddp_bucket_cap_mb=None,
-ddp_find_unused_parameters=None,
-ddp_timeout=1800,
-debug=[],
-deepspeed=None,
-disable_tqdm=False,
-dispatch_batches=None,
-do_eval=False,
-do_predict=False,
-do_train=False,
-eval_accumulation_steps=None,
-eval_delay=0,
-eval_do_concat_batches=True,
-eval_on_start=False,
-eval_packing=None,
-eval_steps=None,
-eval_strategy=IntervalStrategy.NO,
-eval_use_gather_object=False,
-evaluation_strategy=None,
-fp16=False,
-fp16_backend=auto,
-fp16_full_eval=False,
-fp16_opt_level=O1,
-fsdp=[],
-fsdp_config={'min_num_params': 0, 'xla': False, 'xla_fsdp_v2': False, 'xla_fsdp_grad_ckpt': False},
-fsdp_min_num_params=0,
-fsdp_transformer_layer_cls_to_wrap=None,
-full_determinism=False,
-gradient_accumulation_steps=16,
-gradient_checkpointing=True,
-gradient_checkpointing_kwargs={'use_reentrant': False},
-greater_is_better=None,
-group_by_length=False,
-half_precision_backend=auto,
-hub_always_push=False,
-hub_model_id=TongZheng1999/gemma-2-9b-it-mix-new-5-epoch,
-hub_model_revision=main,
-hub_private_repo=False,
-hub_strategy=HubStrategy.EVERY_SAVE,
-hub_token=<HUB_TOKEN>,
-ignore_data_skip=False,
-include_for_metrics=[],
-include_inputs_for_metrics=False,
-include_num_input_tokens_seen=False,
-include_tokens_per_second=False,
-jit_mode_eval=False,
-label_names=None,
-label_smoothing_factor=0.0,
-learning_rate=5e-06,
-length_column_name=length,
-load_best_model_at_end=False,
-local_rank=0,
-log_level=info,
-log_level_replica=warning,
-log_on_each_node=True,
-logging_dir=/beacon-scratch/tongzh24/gemma-2-9b-it/mix-new-5-epoch/runs/Mar16_10-10-53_h1compute00.ihc.umd.edu,
-logging_first_step=True,
-logging_nan_inf_filter=True,
-logging_steps=5,
-logging_strategy=IntervalStrategy.STEPS,
-lr_scheduler_kwargs={},
-lr_scheduler_type=SchedulerType.COSINE,
-max_grad_norm=1.0,
-max_seq_length=4096,
-max_steps=-1,
-metric_for_best_model=None,
-model_init_kwargs=None,
-mp_parameters=,
-neftune_noise_alpha=None,
-no_cuda=False,
-num_of_sequences=1024,
-num_train_epochs=5,
-optim=OptimizerNames.ADAMW_TORCH,
-optim_args=None,
-optim_target_modules=None,
-output_dir=/beacon-scratch/tongzh24/gemma-2-9b-it/mix-new-5-epoch,
-overwrite_output_dir=True,
-packing=False,
-past_index=-1,
-per_device_eval_batch_size=4,
-per_device_train_batch_size=2,
-prediction_loss_only=False,
-push_to_hub=False,
-push_to_hub_model_id=None,
-push_to_hub_organization=None,
-push_to_hub_token=<PUSH_TO_HUB_TOKEN>,
-ray_scope=last,
-remove_unused_columns=True,
-report_to=['tensorboard', 'wandb'],
-restore_callback_states_from_checkpoint=False,
-resume_from_checkpoint=None,
-run_name=/beacon-scratch/tongzh24/gemma-2-9b-it/mix-new-5-epoch,
-save_on_each_node=False,
-save_only_model=False,
-save_safetensors=True,
-save_steps=500,
-save_strategy=IntervalStrategy.NO,
-save_total_limit=None,
-seed=42,
-skip_memory_metrics=True,
-split_batches=None,
-tf32=None,
-torch_compile=False,
-torch_compile_backend=None,
-torch_compile_mode=None,
-torch_empty_cache_steps=None,
-torchdynamo=None,
-tpu_metrics_debug=False,
-tpu_num_cores=None,
-use_cpu=False,
-use_ipex=False,
-use_legacy_prediction_loop=False,
-use_liger=False,
-use_liger_kernel=False,
-use_mps_device=False,
-warmup_ratio=0,
-warmup_steps=0,
-weight_decay=0.0,
-)
-Overwrite dataset info from restored data version if exists.
-2025-03-16 10:10:55 - INFO - datasets.builder - Overwrite dataset info from restored data version if exists.
-Loading Dataset info from /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a
-2025-03-16 10:10:55 - INFO - datasets.info - Loading Dataset info from /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a
-Found cached dataset gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3 (/beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a)
-2025-03-16 10:10:55 - INFO - datasets.builder - Found cached dataset gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3 (/beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a)
-Loading Dataset info from /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a
-2025-03-16 10:10:55 - INFO - datasets.info - Loading Dataset info from /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a
-Overwrite dataset info from restored data version if exists.
-2025-03-16 10:10:56 - INFO - datasets.builder - Overwrite dataset info from restored data version if exists.
-Loading Dataset info from /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_nl_op_rationale_1000_final_1_2_3_rounds_round_3/default/0.0.0/0950c01e43148c231755918c915a5fa6c2cfe7ca
-2025-03-16 10:10:56 - INFO - datasets.info - Loading Dataset info from /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_nl_op_rationale_1000_final_1_2_3_rounds_round_3/default/0.0.0/0950c01e43148c231755918c915a5fa6c2cfe7ca
-Found cached dataset gemma-2-9b-it_nl_op_rationale_1000_final_1_2_3_rounds_round_3 (/beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_nl_op_rationale_1000_final_1_2_3_rounds_round_3/default/0.0.0/0950c01e43148c231755918c915a5fa6c2cfe7ca)
-2025-03-16 10:10:56 - INFO - datasets.builder - Found cached dataset gemma-2-9b-it_nl_op_rationale_1000_final_1_2_3_rounds_round_3 (/beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_nl_op_rationale_1000_final_1_2_3_rounds_round_3/default/0.0.0/0950c01e43148c231755918c915a5fa6c2cfe7ca)
-Loading Dataset info from /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_nl_op_rationale_1000_final_1_2_3_rounds_round_3/default/0.0.0/0950c01e43148c231755918c915a5fa6c2cfe7ca
-2025-03-16 10:10:56 - INFO - datasets.info - Loading Dataset info from /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_nl_op_rationale_1000_final_1_2_3_rounds_round_3/default/0.0.0/0950c01e43148c231755918c915a5fa6c2cfe7ca
-Overwrite dataset info from restored data version if exists.
-2025-03-16 10:10:57 - INFO - datasets.builder - Overwrite dataset info from restored data version if exists.
-Loading Dataset info from /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_code_op_rationale_1000_final_10_2_3_rounds_round_2/default/0.0.0/0b48f0e507b7bfc564693b11ddb8c50a9915beba
-2025-03-16 10:10:57 - INFO - datasets.info - Loading Dataset info from /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_code_op_rationale_1000_final_10_2_3_rounds_round_2/default/0.0.0/0b48f0e507b7bfc564693b11ddb8c50a9915beba
-Found cached dataset gemma-2-9b-it_code_op_rationale_1000_final_10_2_3_rounds_round_2 (/beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_code_op_rationale_1000_final_10_2_3_rounds_round_2/default/0.0.0/0b48f0e507b7bfc564693b11ddb8c50a9915beba)
-2025-03-16 10:10:57 - INFO - datasets.builder - Found cached dataset gemma-2-9b-it_code_op_rationale_1000_final_10_2_3_rounds_round_2 (/beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_code_op_rationale_1000_final_10_2_3_rounds_round_2/default/0.0.0/0b48f0e507b7bfc564693b11ddb8c50a9915beba)
-Loading Dataset info from /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_code_op_rationale_1000_final_10_2_3_rounds_round_2/default/0.0.0/0b48f0e507b7bfc564693b11ddb8c50a9915beba
-2025-03-16 10:10:57 - INFO - datasets.info - Loading Dataset info from /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_code_op_rationale_1000_final_10_2_3_rounds_round_2/default/0.0.0/0b48f0e507b7bfc564693b11ddb8c50a9915beba
-Loading cached shuffled indices for dataset at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-e6e01acace3b5466.arrow
-2025-03-16 10:10:57 - INFO - datasets.arrow_dataset - Loading cached shuffled indices for dataset at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-e6e01acace3b5466.arrow
-2025-03-16 10:10:57 - INFO - __main__ - Training on the following datasets and their proportions: ['train : 2514']
-[INFO|tokenization_utils_base.py:2211] 2025-03-16 10:10:57,122 >> loading file tokenizer.model from cache at /beacon-scratch/tongzh24/.cache/hub/models--google--gemma-2-9b-it/snapshots/11c9b309abf73637e4b6f9a3fa1e92e615547819/tokenizer.model
-[INFO|tokenization_utils_base.py:2211] 2025-03-16 10:10:57,122 >> loading file tokenizer.json from cache at /beacon-scratch/tongzh24/.cache/hub/models--google--gemma-2-9b-it/snapshots/11c9b309abf73637e4b6f9a3fa1e92e615547819/tokenizer.json
-[INFO|tokenization_utils_base.py:2211] 2025-03-16 10:10:57,122 >> loading file added_tokens.json from cache at None
-[INFO|tokenization_utils_base.py:2211] 2025-03-16 10:10:57,122 >> loading file special_tokens_map.json from cache at /beacon-scratch/tongzh24/.cache/hub/models--google--gemma-2-9b-it/snapshots/11c9b309abf73637e4b6f9a3fa1e92e615547819/special_tokens_map.json
-[INFO|tokenization_utils_base.py:2211] 2025-03-16 10:10:57,122 >> loading file tokenizer_config.json from cache at /beacon-scratch/tongzh24/.cache/hub/models--google--gemma-2-9b-it/snapshots/11c9b309abf73637e4b6f9a3fa1e92e615547819/tokenizer_config.json
-2025-03-16 10:10:57 - INFO - __main__ - *** Load pretrained model ***
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_deprecation.py:100: FutureWarning: Deprecated argument(s) used in '__init__': model_init_kwargs, dataset_text_field, max_seq_length, dataset_kwargs. Will not be supported from version '0.13.0'.
-
-Deprecated positional argument(s) used in SFTTrainer, please use the SFTConfig to set these arguments instead.
-  warnings.warn(message, FutureWarning)
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:175: UserWarning: You passed `model_init_kwargs` to the SFTTrainer, the value you passed will override the one in the `SFTConfig`.
-  warnings.warn(
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:202: UserWarning: You passed a model_id to the SFTTrainer. This will automatically create an `AutoModelForCausalLM` or a `PeftModel` (if you passed a `peft_config`) for you.
-  warnings.warn(
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_deprecation.py:100: FutureWarning: Deprecated argument(s) used in '__init__': model_init_kwargs, dataset_text_field, max_seq_length, dataset_kwargs. Will not be supported from version '0.13.0'.
-
-Deprecated positional argument(s) used in SFTTrainer, please use the SFTConfig to set these arguments instead.
-  warnings.warn(message, FutureWarning)
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:175: UserWarning: You passed `model_init_kwargs` to the SFTTrainer, the value you passed will override the one in the `SFTConfig`.
-  warnings.warn(
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:202: UserWarning: You passed a model_id to the SFTTrainer. This will automatically create an `AutoModelForCausalLM` or a `PeftModel` (if you passed a `peft_config`) for you.
-  warnings.warn(
-[2025-03-16 10:10:58,002] [INFO] [config.py:733:__init__] Config mesh_device None world_size = 4
-[2025-03-16 10:10:58,002] [INFO] [config.py:733:__init__] Config mesh_device None world_size = 4
-[WARNING|logging.py:328] 2025-03-16 10:10:58,005 >> You are attempting to use Flash Attention 2.0 with a model not initialized on GPU. Make sure to move the model to GPU after initializing it on CPU with `model.to('cuda')`.
-[WARNING|logging.py:328] 2025-03-16 10:10:58,005 >> You are attempting to use Flash Attention 2.0 with a model not initialized on GPU. Make sure to move the model to GPU after initializing it on CPU with `model.to('cuda')`.
---- Logging error ---
---- Logging error ---
-Traceback (most recent call last):
-Traceback (most recent call last):
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/logging/__init__.py", line 1110, in emit
-    msg = self.format(record)
-          ^^^^^^^^^^^^^^^^^^^
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/logging/__init__.py", line 953, in format
-    return fmt.format(record)
-           ^^^^^^^^^^^^^^^^^^
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/logging/__init__.py", line 687, in format
-    record.message = record.getMessage()
-                     ^^^^^^^^^^^^^^^^^^^
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/logging/__init__.py", line 377, in getMessage
-    msg = msg % self.args
-          ~~~~^~~~~~~~~~~
-TypeError: not all arguments converted during string formatting
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/logging/__init__.py", line 1110, in emit
-    msg = self.format(record)
-          ^^^^^^^^^^^^^^^^^^^
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/logging/__init__.py", line 953, in format
-    return fmt.format(record)
-           ^^^^^^^^^^^^^^^^^^
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/logging/__init__.py", line 687, in format
-    record.message = record.getMessage()
-                     ^^^^^^^^^^^^^^^^^^^
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/logging/__init__.py", line 377, in getMessage
-    msg = msg % self.args
-          ~~~~^~~~~~~~~~~
-TypeError: not all arguments converted during string formatting
-Call stack:
-Call stack:
-  File "/ihchomes/tongzh24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 225, in <module>
-    main()
-  File "/ihchomes/tongzh24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 225, in <module>
-    main()
-  File "/ihchomes/tongzh24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 157, in main
-    trainer = SFTTrainer(
-  File "/ihchomes/tongzh24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 157, in main
-    trainer = SFTTrainer(
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_deprecation.py", line 101, in inner_f
-    return f(*args, **kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_deprecation.py", line 101, in inner_f
-    return f(*args, **kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/deprecation.py", line 165, in wrapped_func
-    return func(*args, **kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/deprecation.py", line 165, in wrapped_func
-    return func(*args, **kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py", line 209, in __init__
-    model = AutoModelForCausalLM.from_pretrained(model, **model_init_kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py", line 209, in __init__
-    model = AutoModelForCausalLM.from_pretrained(model, **model_init_kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 564, in from_pretrained
-    return model_class.from_pretrained(
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 564, in from_pretrained
-    return model_class.from_pretrained(
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4096, in from_pretrained
-    model = cls(config, *model_args, **model_kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4096, in from_pretrained
-    model = cls(config, *model_args, **model_kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/deepspeed/runtime/zero/partition_parameters.py", line 511, in wrapper
-    f(module, *args, **kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/deepspeed/runtime/zero/partition_parameters.py", line 511, in wrapper
-    f(module, *args, **kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/models/gemma2/modeling_gemma2.py", line 963, in __init__
-    super().__init__(config)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/models/gemma2/modeling_gemma2.py", line 963, in __init__
-    super().__init__(config)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/deepspeed/runtime/zero/partition_parameters.py", line 511, in wrapper
-    f(module, *args, **kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/deepspeed/runtime/zero/partition_parameters.py", line 511, in wrapper
-    f(module, *args, **kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/modeling_utils.py", line 1431, in __init__
-    self.generation_config = GenerationConfig.from_model_config(config) if self.can_generate() else None
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/generation/configuration_utils.py", line 1235, in from_model_config
-    generation_config = cls.from_dict(config_dict, return_unused_kwargs=False, _from_model_config=True)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/modeling_utils.py", line 1431, in __init__
-    self.generation_config = GenerationConfig.from_model_config(config) if self.can_generate() else None
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/generation/configuration_utils.py", line 1093, in from_dict
-    config = cls(**{**config_dict, **kwargs})
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/generation/configuration_utils.py", line 1235, in from_model_config
-    generation_config = cls.from_dict(config_dict, return_unused_kwargs=False, _from_model_config=True)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/generation/configuration_utils.py", line 475, in __init__
-    self.validate(is_init=True)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/generation/configuration_utils.py", line 1093, in from_dict
-    config = cls(**{**config_dict, **kwargs})
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/generation/configuration_utils.py", line 751, in validate
-    logger.warning_once(
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/generation/configuration_utils.py", line 475, in __init__
-    self.validate(is_init=True)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/logging.py", line 328, in warning_once
-    self.warning(*args, **kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/generation/configuration_utils.py", line 751, in validate
-    logger.warning_once(
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/logging.py", line 328, in warning_once
-    self.warning(*args, **kwargs)
-Message: 'You have set `use_cache` to `False`, but cache_implementation is set to hybrid. cache_implementation will have no effect.'
-Arguments: (<class 'UserWarning'>,)
-Message: 'You have set `use_cache` to `False`, but cache_implementation is set to hybrid. cache_implementation will have no effect.'
-Arguments: (<class 'UserWarning'>,)
-Process #0 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00000_of_00012.arrow
-2025-03-16 10:10:58 - INFO - datasets.arrow_dataset - Process #0 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00000_of_00012.arrow
-Process #1 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00001_of_00012.arrow
-2025-03-16 10:10:58 - INFO - datasets.arrow_dataset - Process #1 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00001_of_00012.arrow
-Process #2 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00002_of_00012.arrow
-2025-03-16 10:10:58 - INFO - datasets.arrow_dataset - Process #2 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00002_of_00012.arrow
-Process #3 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00003_of_00012.arrow
-2025-03-16 10:10:58 - INFO - datasets.arrow_dataset - Process #3 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00003_of_00012.arrow
-Process #4 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00004_of_00012.arrow
-2025-03-16 10:10:58 - INFO - datasets.arrow_dataset - Process #4 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00004_of_00012.arrow
-Process #5 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00005_of_00012.arrow
-2025-03-16 10:10:58 - INFO - datasets.arrow_dataset - Process #5 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00005_of_00012.arrow
-Process #6 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00006_of_00012.arrow
-2025-03-16 10:10:58 - INFO - datasets.arrow_dataset - Process #6 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00006_of_00012.arrow
-Process #7 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00007_of_00012.arrow
-2025-03-16 10:10:58 - INFO - datasets.arrow_dataset - Process #7 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00007_of_00012.arrow
-Process #8 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00008_of_00012.arrow
-2025-03-16 10:10:58 - INFO - datasets.arrow_dataset - Process #8 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00008_of_00012.arrow
-Process #9 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00009_of_00012.arrow
-2025-03-16 10:10:58 - INFO - datasets.arrow_dataset - Process #9 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00009_of_00012.arrow
-Process #10 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00010_of_00012.arrow
-2025-03-16 10:10:58 - INFO - datasets.arrow_dataset - Process #10 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00010_of_00012.arrow
-Process #11 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00011_of_00012.arrow
-2025-03-16 10:10:58 - INFO - datasets.arrow_dataset - Process #11 will write at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_00011_of_00012.arrow
-Loading cached processed dataset at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_*_of_00012.arrow
-2025-03-16 10:10:58 - INFO - datasets.arrow_dataset - Loading cached processed dataset at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-837346341b891d7c_*_of_00012.arrow
-Concatenating 12 shards
-2025-03-16 10:10:58 - INFO - datasets.arrow_dataset - Concatenating 12 shards
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_deprecation.py:100: FutureWarning: Deprecated argument(s) used in '__init__': model_init_kwargs, dataset_text_field, max_seq_length, dataset_kwargs. Will not be supported from version '0.13.0'.
-
-Deprecated positional argument(s) used in SFTTrainer, please use the SFTConfig to set these arguments instead.
-  warnings.warn(message, FutureWarning)
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:175: UserWarning: You passed `model_init_kwargs` to the SFTTrainer, the value you passed will override the one in the `SFTConfig`.
-  warnings.warn(
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:202: UserWarning: You passed a model_id to the SFTTrainer. This will automatically create an `AutoModelForCausalLM` or a `PeftModel` (if you passed a `peft_config`) for you.
-  warnings.warn(
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_deprecation.py:100: FutureWarning: Deprecated argument(s) used in '__init__': model_init_kwargs, dataset_text_field, max_seq_length, dataset_kwargs. Will not be supported from version '0.13.0'.
-
-Deprecated positional argument(s) used in SFTTrainer, please use the SFTConfig to set these arguments instead.
-  warnings.warn(message, FutureWarning)
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:175: UserWarning: You passed `model_init_kwargs` to the SFTTrainer, the value you passed will override the one in the `SFTConfig`.
-  warnings.warn(
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:202: UserWarning: You passed a model_id to the SFTTrainer. This will automatically create an `AutoModelForCausalLM` or a `PeftModel` (if you passed a `peft_config`) for you.
-  warnings.warn(
-[INFO|configuration_utils.py:679] 2025-03-16 10:10:58,155 >> loading configuration file config.json from cache at /beacon-scratch/tongzh24/.cache/hub/models--google--gemma-2-9b-it/snapshots/11c9b309abf73637e4b6f9a3fa1e92e615547819/config.json
-[INFO|configuration_utils.py:746] 2025-03-16 10:10:58,155 >> Model config Gemma2Config {
-  "_name_or_path": "google/gemma-2-9b-it",
-  "architectures": [
-    "Gemma2ForCausalLM"
-  ],
-  "attention_bias": false,
-  "attention_dropout": 0.0,
-  "attn_logit_softcapping": 50.0,
-  "bos_token_id": 2,
-  "cache_implementation": "hybrid",
-  "eos_token_id": 1,
-  "final_logit_softcapping": 30.0,
-  "head_dim": 256,
-  "hidden_act": "gelu_pytorch_tanh",
-  "hidden_activation": "gelu_pytorch_tanh",
-  "hidden_size": 3584,
-  "initializer_range": 0.02,
-  "intermediate_size": 14336,
-  "max_position_embeddings": 8192,
-  "model_type": "gemma2",
-  "num_attention_heads": 16,
-  "num_hidden_layers": 42,
-  "num_key_value_heads": 8,
-  "pad_token_id": 0,
-  "query_pre_attn_scalar": 256,
-  "rms_norm_eps": 1e-06,
-  "rope_theta": 10000.0,
-  "sliding_window": 4096,
-  "sliding_window_size": 4096,
-  "torch_dtype": "bfloat16",
-  "transformers_version": "4.46.0",
-  "use_cache": false,
-  "vocab_size": 256000
-}
-
-[INFO|modeling_utils.py:3936] 2025-03-16 10:10:58,157 >> loading weights file model.safetensors from cache at /beacon-scratch/tongzh24/.cache/hub/models--google--gemma-2-9b-it/snapshots/11c9b309abf73637e4b6f9a3fa1e92e615547819/model.safetensors.index.json
-[INFO|modeling_utils.py:1669] 2025-03-16 10:10:58,159 >> Instantiating Gemma2ForCausalLM model under default dtype torch.bfloat16.
-[INFO|modeling_utils.py:4079] 2025-03-16 10:10:58,159 >> Detected DeepSpeed ZeRO-3: activating zero.init() for this model
-[2025-03-16 10:10:58,159] [INFO] [config.py:733:__init__] Config mesh_device None world_size = 4
-[WARNING|logging.py:328] 2025-03-16 10:10:58,161 >> You are attempting to use Flash Attention 2.0 with a model not initialized on GPU. Make sure to move the model to GPU after initializing it on CPU with `model.to('cuda')`.
---- Logging error ---
-Traceback (most recent call last):
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/logging/__init__.py", line 1110, in emit
-    msg = self.format(record)
-          ^^^^^^^^^^^^^^^^^^^
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/logging/__init__.py", line 953, in format
-    return fmt.format(record)
-           ^^^^^^^^^^^^^^^^^^
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/logging/__init__.py", line 687, in format
-    record.message = record.getMessage()
-                     ^^^^^^^^^^^^^^^^^^^
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/logging/__init__.py", line 377, in getMessage
-    msg = msg % self.args
-          ~~~~^~~~~~~~~~~
-TypeError: not all arguments converted during string formatting
-Call stack:
-[2025-03-16 10:10:58,168] [INFO] [config.py:733:__init__] Config mesh_device None world_size = 4
-  File "/ihchomes/tongzh24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 225, in <module>
-    main()
-  File "/ihchomes/tongzh24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 157, in main
-    trainer = SFTTrainer(
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_deprecation.py", line 101, in inner_f
-    return f(*args, **kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/deprecation.py", line 165, in wrapped_func
-    return func(*args, **kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py", line 209, in __init__
-    model = AutoModelForCausalLM.from_pretrained(model, **model_init_kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 564, in from_pretrained
-    return model_class.from_pretrained(
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4096, in from_pretrained
-    model = cls(config, *model_args, **model_kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/deepspeed/runtime/zero/partition_parameters.py", line 511, in wrapper
-    f(module, *args, **kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/models/gemma2/modeling_gemma2.py", line 963, in __init__
-    super().__init__(config)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/deepspeed/runtime/zero/partition_parameters.py", line 511, in wrapper
-    f(module, *args, **kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/modeling_utils.py", line 1431, in __init__
-    self.generation_config = GenerationConfig.from_model_config(config) if self.can_generate() else None
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/generation/configuration_utils.py", line 1235, in from_model_config
-    generation_config = cls.from_dict(config_dict, return_unused_kwargs=False, _from_model_config=True)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/generation/configuration_utils.py", line 1093, in from_dict
-    config = cls(**{**config_dict, **kwargs})
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/generation/configuration_utils.py", line 475, in __init__
-    self.validate(is_init=True)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/generation/configuration_utils.py", line 751, in validate
-    logger.warning_once(
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/logging.py", line 328, in warning_once
-    self.warning(*args, **kwargs)
-Message: 'You have set `use_cache` to `False`, but cache_implementation is set to hybrid. cache_implementation will have no effect.'
-Arguments: (<class 'UserWarning'>,)
-[INFO|configuration_utils.py:1096] 2025-03-16 10:10:58,169 >> Generate config GenerationConfig {
-  "bos_token_id": 2,
-  "cache_implementation": "hybrid",
-  "eos_token_id": 1,
-  "pad_token_id": 0,
-  "use_cache": false
-}
-
-[WARNING|logging.py:328] 2025-03-16 10:10:58,170 >> You are attempting to use Flash Attention 2.0 with a model not initialized on GPU. Make sure to move the model to GPU after initializing it on CPU with `model.to('cuda')`.
---- Logging error ---
-Traceback (most recent call last):
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/logging/__init__.py", line 1110, in emit
-    msg = self.format(record)
-          ^^^^^^^^^^^^^^^^^^^
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/logging/__init__.py", line 953, in format
-    return fmt.format(record)
-           ^^^^^^^^^^^^^^^^^^
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/logging/__init__.py", line 687, in format
-    record.message = record.getMessage()
-                     ^^^^^^^^^^^^^^^^^^^
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/logging/__init__.py", line 377, in getMessage
-    msg = msg % self.args
-          ~~~~^~~~~~~~~~~
-TypeError: not all arguments converted during string formatting
-Call stack:
-  File "/ihchomes/tongzh24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 225, in <module>
-    main()
-  File "/ihchomes/tongzh24/logical_reasoning/Truth_Table_Logical_Reasoning/alignment-handbook/scripts/run_sft.py", line 157, in main
-    trainer = SFTTrainer(
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/huggingface_hub/utils/_deprecation.py", line 101, in inner_f
-    return f(*args, **kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/deprecation.py", line 165, in wrapped_func
-    return func(*args, **kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py", line 209, in __init__
-    model = AutoModelForCausalLM.from_pretrained(model, **model_init_kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 564, in from_pretrained
-    return model_class.from_pretrained(
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4096, in from_pretrained
-    model = cls(config, *model_args, **model_kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/deepspeed/runtime/zero/partition_parameters.py", line 511, in wrapper
-    f(module, *args, **kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/models/gemma2/modeling_gemma2.py", line 963, in __init__
-    super().__init__(config)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/deepspeed/runtime/zero/partition_parameters.py", line 511, in wrapper
-    f(module, *args, **kwargs)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/modeling_utils.py", line 1431, in __init__
-    self.generation_config = GenerationConfig.from_model_config(config) if self.can_generate() else None
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/generation/configuration_utils.py", line 1235, in from_model_config
-    generation_config = cls.from_dict(config_dict, return_unused_kwargs=False, _from_model_config=True)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/generation/configuration_utils.py", line 1093, in from_dict
-    config = cls(**{**config_dict, **kwargs})
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/generation/configuration_utils.py", line 475, in __init__
-    self.validate(is_init=True)
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/generation/configuration_utils.py", line 751, in validate
-    logger.warning_once(
-  File "/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/transformers/utils/logging.py", line 328, in warning_once
-    self.warning(*args, **kwargs)
-Message: 'You have set `use_cache` to `False`, but cache_implementation is set to hybrid. cache_implementation will have no effect.'
-Arguments: (<class 'UserWarning'>,)
-[2025-03-16 10:11:00,840] [INFO] [partition_parameters.py:348:__exit__] finished initializing model - num_params = 465, num_elems = 10.16B
-Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:00<00:00,  3.44it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:00<00:00,  3.34it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:00<00:00,  3.24it/s]Loading checkpoint shards:  50%|█████     | 2/4 [00:06<00:07,  3.71s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:06<00:07,  3.72s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:06<00:07,  3.73s/it]Loading checkpoint shards:  25%|██▌       | 1/4 [00:07<00:23,  7.72s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:12<00:04,  4.75s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:12<00:04,  4.77s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:12<00:04,  4.81s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:14<00:13,  6.91s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:17<00:00,  4.77s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:17<00:00,  4.30s/it]
-Loading checkpoint shards: 100%|██████████| 4/4 [00:17<00:00,  4.78s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:17<00:00,  4.30s/it]
-Loading checkpoint shards: 100%|██████████| 4/4 [00:17<00:00,  4.77s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:17<00:00,  4.31s/it]
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:300: UserWarning: You passed a `max_seq_length` argument to the SFTTrainer, the value you passed will override the one in the `SFTConfig`.
-  warnings.warn(
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:328: UserWarning: You passed a `dataset_text_field` argument to the SFTTrainer, the value you passed will override the one in the `SFTConfig`.
-  warnings.warn(
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:334: UserWarning: You passed a `dataset_kwargs` argument to the SFTTrainer, the value you passed will override the one in the `SFTConfig`.
-  warnings.warn(
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:300: UserWarning: You passed a `max_seq_length` argument to the SFTTrainer, the value you passed will override the one in the `SFTConfig`.
-  warnings.warn(
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:328: UserWarning: You passed a `dataset_text_field` argument to the SFTTrainer, the value you passed will override the one in the `SFTConfig`.
-  warnings.warn(
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:334: UserWarning: You passed a `dataset_kwargs` argument to the SFTTrainer, the value you passed will override the one in the `SFTConfig`.
-  warnings.warn(
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:300: UserWarning: You passed a `max_seq_length` argument to the SFTTrainer, the value you passed will override the one in the `SFTConfig`.
-  warnings.warn(
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:328: UserWarning: You passed a `dataset_text_field` argument to the SFTTrainer, the value you passed will override the one in the `SFTConfig`.
-  warnings.warn(
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:334: UserWarning: You passed a `dataset_kwargs` argument to the SFTTrainer, the value you passed will override the one in the `SFTConfig`.
-  warnings.warn(
-Loading checkpoint shards:  75%|███████▌  | 3/4 [00:20<00:06,  6.50s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:24<00:00,  5.81s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:24<00:00,  6.21s/it]
-[INFO|modeling_utils.py:4799] 2025-03-16 10:11:25,706 >> All model checkpoint weights were used when initializing Gemma2ForCausalLM.
-
-[INFO|modeling_utils.py:4807] 2025-03-16 10:11:25,706 >> All the weights of Gemma2ForCausalLM were initialized from the model checkpoint at google/gemma-2-9b-it.
-If your task is similar to the task the model of the checkpoint was trained on, you can already use Gemma2ForCausalLM for predictions without further training.
-[INFO|configuration_utils.py:1051] 2025-03-16 10:11:25,747 >> loading configuration file generation_config.json from cache at /beacon-scratch/tongzh24/.cache/hub/models--google--gemma-2-9b-it/snapshots/11c9b309abf73637e4b6f9a3fa1e92e615547819/generation_config.json
-[INFO|configuration_utils.py:1096] 2025-03-16 10:11:25,747 >> Generate config GenerationConfig {
-  "bos_token_id": 2,
-  "cache_implementation": "hybrid",
-  "eos_token_id": 1,
-  "pad_token_id": 0
-}
-
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:300: UserWarning: You passed a `max_seq_length` argument to the SFTTrainer, the value you passed will override the one in the `SFTConfig`.
-  warnings.warn(
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:328: UserWarning: You passed a `dataset_text_field` argument to the SFTTrainer, the value you passed will override the one in the `SFTConfig`.
-  warnings.warn(
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:334: UserWarning: You passed a `dataset_kwargs` argument to the SFTTrainer, the value you passed will override the one in the `SFTConfig`.
-  warnings.warn(
-Loading cached processed dataset at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-e9d3f24cfc9174ef.arrow
-2025-03-16 10:11:25 - INFO - datasets.arrow_dataset - Loading cached processed dataset at /beacon-scratch/tongzh24/.cache/datasets/TongZheng1999___gemma-2-9b-it_truth_table_op_rationale_1000_final_10_2_3_rounds_round_3/default/0.0.0/dee74924b45ece217681d9d3d378abb47bdcbd3a/cache-e9d3f24cfc9174ef.arrow
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:403: UserWarning: You passed a processing_class with `padding_side` not equal to `right` to the SFTTrainer. This might lead to some unexpected behaviour due to overflow issues when training a model in half-precision. You might consider adding `processing_class.padding_side = 'right'` to your code.
-  warnings.warn(
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:403: UserWarning: You passed a processing_class with `padding_side` not equal to `right` to the SFTTrainer. This might lead to some unexpected behaviour due to overflow issues when training a model in half-precision. You might consider adding `processing_class.padding_side = 'right'` to your code.
-  warnings.warn(
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:403: UserWarning: You passed a processing_class with `padding_side` not equal to `right` to the SFTTrainer. This might lead to some unexpected behaviour due to overflow issues when training a model in half-precision. You might consider adding `processing_class.padding_side = 'right'` to your code.
-  warnings.warn(
-/beacon-scratch/tongzh24/miniconda3/envs/logical_reasoning/lib/python3.11/site-packages/trl/trainer/sft_trainer.py:403: UserWarning: You passed a processing_class with `padding_side` not equal to `right` to the SFTTrainer. This might lead to some unexpected behaviour due to overflow issues when training a model in half-precision. You might consider adding `processing_class.padding_side = 'right'` to your code.
-  warnings.warn(
-[INFO|trainer.py:698] 2025-03-16 10:11:26,251 >> Using auto half precision backend
-2025-03-16 10:11:26 - INFO - __main__ - *** Train ***
-[2025-03-16 10:11:26,439] [INFO] [logging.py:128:log_dist] [Rank 0] DeepSpeed info: version=0.15.4, git-hash=unknown, git-branch=unknown
-[2025-03-16 10:11:26,439] [INFO] [config.py:733:__init__] Config mesh_device None world_size = 4
-[2025-03-16 10:11:26,447] [INFO] [logging.py:128:log_dist] [Rank 0] DeepSpeed Flops Profiler Enabled: False
-[2025-03-16 10:11:26,448] [INFO] [logging.py:128:log_dist] [Rank 0] Using client Optimizer as basic optimizer
-[2025-03-16 10:11:26,448] [INFO] [logging.py:128:log_dist] [Rank 0] Removing param_group that has no 'params' in the basic Optimizer
-[2025-03-16 10:11:26,464] [INFO] [logging.py:128:log_dist] [Rank 0] DeepSpeed Basic Optimizer = AdamW
-[2025-03-16 10:11:26,464] [INFO] [utils.py:59:is_zero_supported_optimizer] Checking ZeRO support for optimizer=AdamW type=<class 'torch.optim.adamw.AdamW'>
-[2025-03-16 10:11:26,464] [INFO] [logging.py:128:log_dist] [Rank 0] Creating fp16 ZeRO stage 3 optimizer, MiCS is enabled False, Hierarchical params gather False
-[2025-03-16 10:11:26,464] [INFO] [logging.py:128:log_dist] [Rank 0] Creating torch.bfloat16 ZeRO stage 3 optimizer
-[2025-03-16 10:11:26,627] [INFO] [utils.py:781:see_memory_usage] Stage 3 initialize beginning
-[2025-03-16 10:11:26,627] [INFO] [utils.py:782:see_memory_usage] MA 4.3 GB         Max_MA 7.72 GB         CA 4.36 GB         Max_CA 10 GB 
-[2025-03-16 10:11:26,627] [INFO] [utils.py:789:see_memory_usage] CPU Virtual Memory:  used = 18.12 GB, percent = 1.8%
-[2025-03-16 10:11:26,629] [INFO] [stage3.py:166:__init__] Reduce bucket size 500000000
-[2025-03-16 10:11:26,629] [INFO] [stage3.py:167:__init__] Prefetch bucket size 50000000
-[2025-03-16 10:11:26,770] [INFO] [utils.py:781:see_memory_usage] DeepSpeedZeRoOffload initialize [begin]
-[2025-03-16 10:11:26,770] [INFO] [utils.py:782:see_memory_usage] MA 4.3 GB         Max_MA 4.3 GB         CA 4.36 GB         Max_CA 4 GB 
-[2025-03-16 10:11:26,770] [INFO] [utils.py:789:see_memory_usage] CPU Virtual Memory:  used = 18.13 GB, percent = 1.8%
-Parameter Offload: Total persistent parameters: 605696 in 169 params
-[2025-03-16 10:11:26,931] [INFO] [utils.py:781:see_memory_usage] DeepSpeedZeRoOffload initialize [end]
-[2025-03-16 10:11:26,931] [INFO] [utils.py:782:see_memory_usage] MA 4.3 GB         Max_MA 4.3 GB         CA 4.36 GB         Max_CA 4 GB 
-[2025-03-16 10:11:26,931] [INFO] [utils.py:789:see_memory_usage] CPU Virtual Memory:  used = 18.13 GB, percent = 1.8%
-[2025-03-16 10:11:27,072] [INFO] [utils.py:781:see_memory_usage] Before creating fp16 partitions
-[2025-03-16 10:11:27,072] [INFO] [utils.py:782:see_memory_usage] MA 4.3 GB         Max_MA 4.3 GB         CA 4.36 GB         Max_CA 4 GB 
-[2025-03-16 10:11:27,072] [INFO] [utils.py:789:see_memory_usage] CPU Virtual Memory:  used = 18.13 GB, percent = 1.8%
-[2025-03-16 10:11:28,932] [INFO] [utils.py:781:see_memory_usage] After creating fp16 partitions: 3
-[2025-03-16 10:11:28,933] [INFO] [utils.py:782:see_memory_usage] MA 4.3 GB         Max_MA 4.3 GB         CA 4.31 GB         Max_CA 4 GB 
-[2025-03-16 10:11:28,933] [INFO] [utils.py:789:see_memory_usage] CPU Virtual Memory:  used = 20.31 GB, percent = 2.0%
-[2025-03-16 10:11:29,075] [INFO] [utils.py:781:see_memory_usage] Before creating fp32 partitions
-[2025-03-16 10:11:29,075] [INFO] [utils.py:782:see_memory_usage] MA 4.3 GB         Max_MA 4.3 GB         CA 4.31 GB         Max_CA 4 GB 
-[2025-03-16 10:11:29,075] [INFO] [utils.py:789:see_memory_usage] CPU Virtual Memory:  used = 20.31 GB, percent = 2.0%
-[2025-03-16 10:11:29,220] [INFO] [utils.py:781:see_memory_usage] After creating fp32 partitions
-[2025-03-16 10:11:29,220] [INFO] [utils.py:782:see_memory_usage] MA 12.91 GB         Max_MA 13.67 GB         CA 13.69 GB         Max_CA 14 GB 
-[2025-03-16 10:11:29,220] [INFO] [utils.py:789:see_memory_usage] CPU Virtual Memory:  used = 20.28 GB, percent = 2.0%
-[2025-03-16 10:11:29,361] [INFO] [utils.py:781:see_memory_usage] Before initializing optimizer states
-[2025-03-16 10:11:29,362] [INFO] [utils.py:782:see_memory_usage] MA 12.91 GB         Max_MA 12.91 GB         CA 13.69 GB         Max_CA 14 GB 
-[2025-03-16 10:11:29,362] [INFO] [utils.py:789:see_memory_usage] CPU Virtual Memory:  used = 20.28 GB, percent = 2.0%
-[2025-03-16 10:11:29,503] [INFO] [utils.py:781:see_memory_usage] After initializing optimizer states
-[2025-03-16 10:11:29,504] [INFO] [utils.py:782:see_memory_usage] MA 12.91 GB         Max_MA 16.67 GB         CA 17.45 GB         Max_CA 17 GB 
-[2025-03-16 10:11:29,504] [INFO] [utils.py:789:see_memory_usage] CPU Virtual Memory:  used = 20.28 GB, percent = 2.0%
-[2025-03-16 10:11:29,504] [INFO] [stage3.py:521:_setup_for_real_optimizer] optimizer state initialized
-[2025-03-16 10:11:30,022] [INFO] [utils.py:781:see_memory_usage] After initializing ZeRO optimizer
-[2025-03-16 10:11:30,023] [INFO] [utils.py:782:see_memory_usage] MA 18.15 GB         Max_MA 21.56 GB         CA 23.46 GB         Max_CA 23 GB 
-[2025-03-16 10:11:30,023] [INFO] [utils.py:789:see_memory_usage] CPU Virtual Memory:  used = 20.25 GB, percent = 2.0%
-[2025-03-16 10:11:30,023] [INFO] [logging.py:128:log_dist] [Rank 0] DeepSpeed Final Optimizer = DeepSpeedZeroOptimizer_Stage3
-[2025-03-16 10:11:30,023] [INFO] [logging.py:128:log_dist] [Rank 0] DeepSpeed using configured LR scheduler = None
-[2025-03-16 10:11:30,023] [INFO] [logging.py:128:log_dist] [Rank 0] DeepSpeed LR Scheduler = None
-[2025-03-16 10:11:30,023] [INFO] [logging.py:128:log_dist] [Rank 0] step=0, skipped=0, lr=[5e-06], mom=[(0.9, 0.999)]
-[2025-03-16 10:11:30,024] [INFO] [config.py:999:print] DeepSpeedEngine configuration:
-[2025-03-16 10:11:30,024] [INFO] [config.py:1003:print]   activation_checkpointing_config  {
-    "partition_activations": false, 
-    "contiguous_memory_optimization": false, 
-    "cpu_checkpointing": false, 
-    "number_checkpoints": null, 
-    "synchronize_checkpoint_boundary": false, 
-    "profile": false
-}
-[2025-03-16 10:11:30,024] [INFO] [config.py:1003:print]   aio_config ................... {'block_size': 1048576, 'queue_depth': 8, 'thread_count': 1, 'single_submit': False, 'overlap_events': True, 'use_gds': False}
-[2025-03-16 10:11:30,024] [INFO] [config.py:1003:print]   amp_enabled .................. False
-[2025-03-16 10:11:30,024] [INFO] [config.py:1003:print]   amp_params ................... False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   autotuning_config ............ {
-    "enabled": false, 
-    "start_step": null, 
-    "end_step": null, 
-    "metric_path": null, 
-    "arg_mappings": null, 
-    "metric": "throughput", 
-    "model_info": null, 
-    "results_dir": "autotuning_results", 
-    "exps_dir": "autotuning_exps", 
-    "overwrite": true, 
-    "fast": true, 
-    "start_profile_step": 3, 
-    "end_profile_step": 5, 
-    "tuner_type": "gridsearch", 
-    "tuner_early_stopping": 5, 
-    "tuner_num_trials": 50, 
-    "model_info_path": null, 
-    "mp_size": 1, 
-    "max_train_batch_size": null, 
-    "min_train_batch_size": 1, 
-    "max_train_micro_batch_size_per_gpu": 1.024000e+03, 
-    "min_train_micro_batch_size_per_gpu": 1, 
-    "num_tuning_micro_batch_sizes": 3
-}
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   bfloat16_enabled ............. True
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   bfloat16_immediate_grad_update  False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   checkpoint_parallel_write_pipeline  False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   checkpoint_tag_validation_enabled  True
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   checkpoint_tag_validation_fail  False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   comms_config ................. <deepspeed.comm.config.DeepSpeedCommsConfig object at 0x7f22802ec1d0>
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   communication_data_type ...... None
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   compression_config ........... {'weight_quantization': {'shared_parameters': {'enabled': False, 'quantizer_kernel': False, 'schedule_offset': 0, 'quantize_groups': 1, 'quantize_verbose': False, 'quantization_type': 'symmetric', 'quantize_weight_in_forward': False, 'rounding': 'nearest', 'fp16_mixed_quantize': False, 'quantize_change_ratio': 0.001}, 'different_groups': {}}, 'activation_quantization': {'shared_parameters': {'enabled': False, 'quantization_type': 'symmetric', 'range_calibration': 'dynamic', 'schedule_offset': 1000}, 'different_groups': {}}, 'sparse_pruning': {'shared_parameters': {'enabled': False, 'method': 'l1', 'schedule_offset': 1000}, 'different_groups': {}}, 'row_pruning': {'shared_parameters': {'enabled': False, 'method': 'l1', 'schedule_offset': 1000}, 'different_groups': {}}, 'head_pruning': {'shared_parameters': {'enabled': False, 'method': 'topk', 'schedule_offset': 1000}, 'different_groups': {}}, 'channel_pruning': {'shared_parameters': {'enabled': False, 'method': 'l1', 'schedule_offset': 1000}, 'different_groups': {}}, 'layer_reduction': {'enabled': False}}
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   curriculum_enabled_legacy .... False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   curriculum_params_legacy ..... False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   data_efficiency_config ....... {'enabled': False, 'seed': 1234, 'data_sampling': {'enabled': False, 'num_epochs': 1000, 'num_workers': 0, 'curriculum_learning': {'enabled': False}}, 'data_routing': {'enabled': False, 'random_ltd': {'enabled': False, 'layer_token_lr_schedule': {'enabled': False}}}}
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   data_efficiency_enabled ...... False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   dataloader_drop_last ......... False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   disable_allgather ............ False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   dump_state ................... False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   dynamic_loss_scale_args ...... None
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   eigenvalue_enabled ........... False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   eigenvalue_gas_boundary_resolution  1
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   eigenvalue_layer_name ........ bert.encoder.layer
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   eigenvalue_layer_num ......... 0
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   eigenvalue_max_iter .......... 100
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   eigenvalue_stability ......... 1e-06
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   eigenvalue_tol ............... 0.01
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   eigenvalue_verbose ........... False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   elasticity_enabled ........... False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   flops_profiler_config ........ {
-    "enabled": false, 
-    "recompute_fwd_factor": 0.0, 
-    "profile_step": 1, 
-    "module_depth": -1, 
-    "top_modules": 1, 
-    "detailed": true, 
-    "output_file": null
-}
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   fp16_auto_cast ............... None
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   fp16_enabled ................. False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   fp16_master_weights_and_gradients  False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   global_rank .................. 0
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   grad_accum_dtype ............. None
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   gradient_accumulation_steps .. 16
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   gradient_clipping ............ 1.0
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   gradient_predivide_factor .... 1.0
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   graph_harvesting ............. False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   hybrid_engine ................ enabled=False max_out_tokens=512 inference_tp_size=1 release_inference_cache=False pin_parameters=True tp_gather_partition_size=8
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   initial_dynamic_scale ........ 1
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   load_universal_checkpoint .... False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   loss_scale ................... 1.0
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   memory_breakdown ............. False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   mics_hierarchial_params_gather  False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   mics_shard_size .............. -1
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   monitor_config ............... tensorboard=TensorBoardConfig(enabled=False, output_path='', job_name='DeepSpeedJobName') comet=CometConfig(enabled=False, samples_log_interval=100, project=None, workspace=None, api_key=None, experiment_name=None, experiment_key=None, online=None, mode=None) wandb=WandbConfig(enabled=False, group=None, team=None, project='deepspeed') csv_monitor=CSVConfig(enabled=False, output_path='', job_name='DeepSpeedJobName')
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   nebula_config ................ {
-    "enabled": false, 
-    "persistent_storage_path": null, 
-    "persistent_time_interval": 100, 
-    "num_of_version_in_retention": 2, 
-    "enable_nebula_load": true, 
-    "load_path": null
-}
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   optimizer_legacy_fusion ...... False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   optimizer_name ............... None
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   optimizer_params ............. None
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   pipeline ..................... {'stages': 'auto', 'partition': 'best', 'seed_layers': False, 'activation_checkpoint_interval': 0, 'pipe_partitioned': True, 'grad_partitioned': True}
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   pld_enabled .................. False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   pld_params ................... False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   prescale_gradients ........... False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   scheduler_name ............... None
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   scheduler_params ............. None
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   seq_parallel_communication_data_type  torch.float32
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   sparse_attention ............. None
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   sparse_gradients_enabled ..... False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   steps_per_print .............. inf
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   timers_config ................ enabled=True synchronized=True
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   train_batch_size ............. 128
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   train_micro_batch_size_per_gpu  2
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   use_data_before_expert_parallel_  False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   use_node_local_storage ....... False
-[2025-03-16 10:11:30,025] [INFO] [config.py:1003:print]   wall_clock_breakdown ......... False
-[2025-03-16 10:11:30,026] [INFO] [config.py:1003:print]   weight_quantization_config ... None
-[2025-03-16 10:11:30,026] [INFO] [config.py:1003:print]   world_size ................... 4
-[2025-03-16 10:11:30,026] [INFO] [config.py:1003:print]   zero_allow_untested_optimizer  True
-[2025-03-16 10:11:30,026] [INFO] [config.py:1003:print]   zero_config .................. stage=3 contiguous_gradients=True reduce_scatter=True reduce_bucket_size=500000000 use_multi_rank_bucket_allreduce=True allgather_partitions=True allgather_bucket_size=500000000 overlap_comm=True load_from_fp32_weights=True elastic_checkpoint=False offload_param=DeepSpeedZeroOffloadParamConfig(device='none', nvme_path=None, buffer_count=5, buffer_size=100000000, max_in_cpu=1000000000, pin_memory=False) offload_optimizer=DeepSpeedZeroOffloadOptimizerConfig(device='none', nvme_path=None, buffer_count=4, pin_memory=False, pipeline_read=False, pipeline_write=False, fast_init=False, ratio=1.0) sub_group_size=1000000000 cpu_offload_param=None cpu_offload_use_pin_memory=None cpu_offload=None prefetch_bucket_size=50000000 param_persistence_threshold=100000 model_persistence_threshold=9223372036854775807 max_live_parameters=1000000000 max_reuse_distance=1000000000 gather_16bit_weights_on_model_save=True use_all_reduce_for_fetch_params=False stage3_gather_fp16_weights_on_model_save=False ignore_unused_parameters=True legacy_stage1=False round_robin_gradients=False zero_hpz_partition_size=1 zero_quantized_weights=False zero_quantized_nontrainable_weights=False zero_quantized_gradients=False mics_shard_size=-1 mics_hierarchical_params_gather=False memory_efficient_linear=True pipeline_loading_checkpoint=False override_module_apply=True
-[2025-03-16 10:11:30,026] [INFO] [config.py:1003:print]   zero_enabled ................. True
-[2025-03-16 10:11:30,026] [INFO] [config.py:1003:print]   zero_force_ds_cpu_optimizer .. True
-[2025-03-16 10:11:30,026] [INFO] [config.py:1003:print]   zero_optimization_stage ...... 3
-[2025-03-16 10:11:30,026] [INFO] [config.py:989:print_user_config]   json = {
-    "train_batch_size": 128, 
-    "train_micro_batch_size_per_gpu": 2, 
-    "gradient_accumulation_steps": 16, 
-    "zero_optimization": {
-        "stage": 3, 
-        "offload_optimizer": {
-            "device": "none", 
-            "nvme_path": null
-        }, 
-        "offload_param": {
-            "device": "none", 
-            "nvme_path": null
-        }, 
-        "stage3_gather_16bit_weights_on_model_save": true
-    }, 
-    "gradient_clipping": 1.0, 
-    "steps_per_print": inf, 
-    "bf16": {
-        "enabled": true
-    }, 
-    "fp16": {
-        "enabled": false
-    }, 
-    "zero_allow_untested_optimizer": true
-}
-[INFO|trainer.py:2313] 2025-03-16 10:11:30,027 >> ***** Running training *****
-[INFO|trainer.py:2314] 2025-03-16 10:11:30,027 >>   Num examples = 2,514
-[INFO|trainer.py:2315] 2025-03-16 10:11:30,027 >>   Num Epochs = 5
-[INFO|trainer.py:2316] 2025-03-16 10:11:30,027 >>   Instantaneous batch size per device = 2
-[INFO|trainer.py:2319] 2025-03-16 10:11:30,027 >>   Total train batch size (w. parallel, distributed & accumulation) = 128
-[INFO|trainer.py:2320] 2025-03-16 10:11:30,027 >>   Gradient Accumulation steps = 16
-[INFO|trainer.py:2321] 2025-03-16 10:11:30,027 >>   Total optimization steps = 95
-[INFO|trainer.py:2322] 2025-03-16 10:11:30,029 >>   Number of trainable parameters = 9,241,705,984
-[INFO|integration_utils.py:812] 2025-03-16 10:11:30,070 >> Automatic Weights & Biases logging enabled, to disable set os.environ["WANDB_DISABLED"] = "true"
-wandb: WARNING The `run_name` is currently set to the same value as `TrainingArguments.output_dir`. If this was not intended, please specify a different run name by setting the `TrainingArguments.run_name` parameter.
-wandb: Using wandb-core as the SDK backend.  Please refer to https://wandb.me/wandb-core for more information.
-[WARNING|logging.py:328] 2025-03-16 10:11:30,166 >> It is strongly recommended to train Gemma2 models with the `eager` attention implementation instead of `flash_attention_2`. Use `eager` with `AutoModelForCausalLM.from_pretrained('<path-to-checkpoint>', attn_implementation='eager')`.
-[WARNING|logging.py:328] 2025-03-16 10:11:30,167 >> It is strongly recommended to train Gemma2 models with the `eager` attention implementation instead of `flash_attention_2`. Use `eager` with `AutoModelForCausalLM.from_pretrained('<path-to-checkpoint>', attn_implementation='eager')`.
-[WARNING|logging.py:328] 2025-03-16 10:11:30,167 >> It is strongly recommended to train Gemma2 models with the `eager` attention implementation instead of `flash_attention_2`. Use `eager` with `AutoModelForCausalLM.from_pretrained('<path-to-checkpoint>', attn_implementation='eager')`.
-wandb: Currently logged in as: kidzheng to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
-wandb: Tracking run with wandb version 0.19.7
-wandb: Run data is saved locally in /ihchomes/tongzh24/logical_reasoning/Truth_Table_Logical_Reasoning/wandb/run-20250316_101130-6jmxqiec
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run /beacon-scratch/tongzh24/gemma-2-9b-it/mix-new-5-epoch
-wandb: ⭐️ View project at https://wandb.ai/kidzheng/huggingface
-wandb: 🚀 View run at https://wandb.ai/kidzheng/huggingface/runs/6jmxqiec
-  0%|          | 0/95 [00:00<?, ?it/s][WARNING|logging.py:328] 2025-03-16 10:11:31,343 >> It is strongly recommended to train Gemma2 models with the `eager` attention implementation instead of `flash_attention_2`. Use `eager` with `AutoModelForCausalLM.from_pretrained('<path-to-checkpoint>', attn_implementation='eager')`.
-  1%|          | 1/95 [00:28<45:06, 28.79s/it]                                              {'loss': 1.4949, 'grad_norm': 28.945498855859235, 'learning_rate': 4.998633143352315e-06, 'epoch': 0.05}
-  1%|          | 1/95 [00:28<45:06, 28.79s/it]  2%|▏         | 2/95 [00:55<42:41, 27.54s/it]  3%|▎         | 3/95 [01:22<41:37, 27.15s/it]  4%|▍         | 4/95 [01:48<40:47, 26.89s/it]  5%|▌         | 5/95 [02:15<40:09, 26.78s/it]                                              {'loss': 0.5977, 'grad_norm': 3.47513850906006, 'learning_rate': 4.965903258506806e-06, 'epoch': 0.25}
-  5%|▌         | 5/95 [02:15<40:09, 26.78s/it]  6%|▋         | 6/95 [02:41<39:37, 26.72s/it]  7%|▋         | 7/95 [03:08<39:05, 26.65s/it]  8%|▊         | 8/95 [03:34<38:36, 26.62s/it]  9%|▉         | 9/95 [04:01<38:07, 26.60s/it] 11%|█         | 10/95 [04:27<37:39, 26.58s/it]                                               {'loss': 0.3425, 'grad_norm': 1.0102239031967417, 'learning_rate': 4.864543104251587e-06, 'epoch': 0.51}
- 11%|█         | 10/95 [04:27<37:39, 26.58s/it] 12%|█▏        | 11/95 [04:54<37:10, 26.56s/it] 13%|█▎        | 12/95 [05:21<36:44, 26.56s/it] 14%|█▎        | 13/95 [05:47<36:18, 26.57s/it] 15%|█▍        | 14/95 [06:14<35:51, 26.56s/it] 16%|█▌        | 15/95 [06:40<35:25, 26.57s/it]                                               {'loss': 0.2784, 'grad_norm': 0.995255235542247, 'learning_rate': 4.698684378016223e-06, 'epoch': 0.76}
- 16%|█▌        | 15/95 [06:40<35:25, 26.57s/it] 17%|█▋        | 16/95 [07:07<34:59, 26.57s/it] 18%|█▊        | 17/95 [07:33<34:30, 26.55s/it] 19%|█▉        | 18/95 [08:00<34:03, 26.54s/it] 20%|██        | 19/95 [08:26<33:36, 26.54s/it] 21%|██        | 20/95 [08:53<33:09, 26.52s/it]                                               {'loss': 0.2397, 'grad_norm': 2.6919538999315895, 'learning_rate': 4.472851273490985e-06, 'epoch': 1.04}
- 21%|██        | 20/95 [08:53<33:09, 26.52s/it] 22%|██▏       | 21/95 [09:19<32:43, 26.53s/it] 23%|██▎       | 22/95 [09:46<32:17, 26.54s/it] 24%|██▍       | 23/95 [10:13<31:51, 26.55s/it] 25%|██▌       | 24/95 [10:39<31:24, 26.55s/it] 26%|██▋       | 25/95 [11:06<30:59, 26.56s/it]                                               {'loss': 0.148, 'grad_norm': 0.9697424669249834, 'learning_rate': 4.1932039290643534e-06, 'epoch': 1.3}
- 26%|██▋       | 25/95 [11:06<30:59, 26.56s/it] 27%|██▋       | 26/95 [11:32<30:33, 26.58s/it] 28%|██▊       | 27/95 [11:59<30:06, 26.57s/it] 29%|██▉       | 28/95 [12:25<29:39, 26.55s/it] 31%|███       | 29/95 [12:52<29:12, 26.55s/it] 32%|███▏      | 30/95 [13:18<28:43, 26.52s/it]                                               {'loss': 0.1277, 'grad_norm': 0.9319590597123495, 'learning_rate': 3.8673703953060685e-06, 'epoch': 1.55}
- 32%|███▏      | 30/95 [13:18<28:43, 26.52s/it] 33%|███▎      | 31/95 [13:45<28:19, 26.56s/it] 34%|███▎      | 32/95 [14:12<27:53, 26.57s/it] 35%|███▍      | 33/95 [14:38<27:28, 26.59s/it] 36%|███▌      | 34/95 [15:05<27:00, 26.57s/it] 37%|███▋      | 35/95 [15:31<26:33, 26.56s/it]                                               {'loss': 0.1128, 'grad_norm': 0.8797746677993109, 'learning_rate': 3.5042385616324243e-06, 'epoch': 1.81}
- 37%|███▋      | 35/95 [15:31<26:33, 26.56s/it] 38%|███▊      | 36/95 [15:58<26:06, 26.55s/it] 39%|███▉      | 37/95 [16:24<25:39, 26.53s/it] 40%|████      | 38/95 [16:51<25:12, 26.54s/it] 41%|████      | 39/95 [17:17<24:45, 26.53s/it] 42%|████▏     | 40/95 [17:44<24:16, 26.49s/it]                                               {'loss': 0.1179, 'grad_norm': 0.7334808465138624, 'learning_rate': 3.1137137178519983e-06, 'epoch': 2.09}
- 42%|████▏     | 40/95 [17:44<24:16, 26.49s/it] 43%|████▎     | 41/95 [18:11<23:54, 26.56s/it] 44%|████▍     | 42/95 [18:37<23:27, 26.56s/it] 45%|████▌     | 43/95 [19:04<23:03, 26.60s/it] 46%|████▋     | 44/95 [19:30<22:34, 26.56s/it] 47%|████▋     | 45/95 [19:57<22:06, 26.54s/it]                                               {'loss': 0.0766, 'grad_norm': 0.7983231446564301, 'learning_rate': 2.7064483636808314e-06, 'epoch': 2.34}
- 47%|████▋     | 45/95 [19:57<22:06, 26.54s/it] 48%|████▊     | 46/95 [20:23<21:41, 26.57s/it] 49%|████▉     | 47/95 [20:50<21:16, 26.59s/it] 51%|█████     | 48/95 [21:17<20:49, 26.59s/it] 52%|█████▏    | 49/95 [21:43<20:22, 26.58s/it] 53%|█████▎    | 50/95 [22:10<19:54, 26.54s/it]                                               {'loss': 0.0711, 'grad_norm': 0.7064558518031734, 'learning_rate': 2.2935516363191695e-06, 'epoch': 2.6}
- 53%|█████▎    | 50/95 [22:10<19:54, 26.54s/it] 54%|█████▎    | 51/95 [22:36<19:29, 26.58s/it] 55%|█████▍    | 52/95 [23:03<19:03, 26.59s/it] 56%|█████▌    | 53/95 [23:29<18:36, 26.59s/it] 57%|█████▋    | 54/95 [23:56<18:09, 26.58s/it] 58%|█████▊    | 55/95 [24:23<17:42, 26.57s/it]                                               {'loss': 0.0661, 'grad_norm': 0.5952440503500375, 'learning_rate': 1.8862862821480023e-06, 'epoch': 2.85}
- 58%|█████▊    | 55/95 [24:23<17:42, 26.57s/it] 59%|█████▉    | 56/95 [24:49<17:16, 26.56s/it] 60%|██████    | 57/95 [25:16<16:49, 26.57s/it] 61%|██████    | 58/95 [25:42<16:23, 26.57s/it] 62%|██████▏   | 59/95 [26:09<15:56, 26.58s/it] 63%|██████▎   | 60/95 [26:35<15:28, 26.52s/it]                                               {'loss': 0.0678, 'grad_norm': 0.4824471148729065, 'learning_rate': 1.495761438367577e-06, 'epoch': 3.13}
- 63%|██████▎   | 60/95 [26:35<15:28, 26.52s/it] 64%|██████▍   | 61/95 [27:02<15:03, 26.58s/it] 65%|██████▌   | 62/95 [27:29<14:37, 26.58s/it] 66%|██████▋   | 63/95 [27:55<14:11, 26.60s/it] 67%|██████▋   | 64/95 [28:22<13:43, 26.57s/it] 68%|██████▊   | 65/95 [28:48<13:16, 26.55s/it]                                               {'loss': 0.0492, 'grad_norm': 0.5811859162262435, 'learning_rate': 1.1326296046939334e-06, 'epoch': 3.39}
- 68%|██████▊   | 65/95 [28:48<13:16, 26.55s/it] 69%|██████▉   | 66/95 [29:15<12:50, 26.55s/it] 71%|███████   | 67/95 [29:41<12:23, 26.55s/it] 72%|███████▏  | 68/95 [30:08<11:56, 26.55s/it] 73%|███████▎  | 69/95 [30:34<11:30, 26.55s/it] 74%|███████▎  | 70/95 [31:01<11:02, 26.51s/it]                                               {'loss': 0.0516, 'grad_norm': 0.6005906627553482, 'learning_rate': 8.067960709356479e-07, 'epoch': 3.64}
- 74%|███████▎  | 70/95 [31:01<11:02, 26.51s/it] 75%|███████▍  | 71/95 [31:28<10:37, 26.56s/it] 76%|███████▌  | 72/95 [31:54<10:11, 26.57s/it] 77%|███████▋  | 73/95 [32:21<09:44, 26.58s/it] 78%|███████▊  | 74/95 [32:47<09:18, 26.59s/it] 79%|███████▉  | 75/95 [33:14<08:51, 26.56s/it]                                               {'loss': 0.0485, 'grad_norm': 0.5332630672069735, 'learning_rate': 5.271487265090163e-07, 'epoch': 3.9}
- 79%|███████▉  | 75/95 [33:14<08:51, 26.56s/it] 80%|████████  | 76/95 [33:40<08:24, 26.54s/it] 81%|████████  | 77/95 [34:07<07:57, 26.54s/it] 82%|████████▏ | 78/95 [34:33<07:31, 26.57s/it] 83%|████████▎ | 79/95 [35:00<07:04, 26.56s/it] 84%|████████▍ | 80/95 [35:26<06:37, 26.50s/it]                                               {'loss': 0.0544, 'grad_norm': 0.4190830484366178, 'learning_rate': 3.0131562198377763e-07, 'epoch': 4.18}
- 84%|████████▍ | 80/95 [35:26<06:37, 26.50s/it] 85%|████████▌ | 81/95 [35:53<06:11, 26.55s/it] 86%|████████▋ | 82/95 [36:20<05:45, 26.57s/it] 87%|████████▋ | 83/95 [36:46<05:19, 26.59s/it] 88%|████████▊ | 84/95 [37:13<04:52, 26.58s/it] 89%|████████▉ | 85/95 [37:39<04:25, 26.58s/it]                                               {'loss': 0.0435, 'grad_norm': 0.40524852808436834, 'learning_rate': 1.3545689574841341e-07, 'epoch': 4.43}
- 89%|████████▉ | 85/95 [37:39<04:25, 26.58s/it] 91%|█████████ | 86/95 [38:06<03:59, 26.57s/it] 92%|█████████▏| 87/95 [38:33<03:32, 26.55s/it] 93%|█████████▎| 88/95 [38:59<03:05, 26.54s/it] 94%|█████████▎| 89/95 [39:26<02:39, 26.56s/it] 95%|█████████▍| 90/95 [39:52<02:12, 26.51s/it]                                               {'loss': 0.0423, 'grad_norm': 0.40817273996319053, 'learning_rate': 3.4096741493194196e-08, 'epoch': 4.69}
- 95%|█████████▍| 90/95 [39:52<02:12, 26.51s/it] 96%|█████████▌| 91/95 [40:19<01:46, 26.56s/it] 97%|█████████▋| 92/95 [40:45<01:19, 26.57s/it] 98%|█████████▊| 93/95 [41:12<00:53, 26.56s/it] 99%|█████████▉| 94/95 [41:38<00:26, 26.56s/it]100%|██████████| 95/95 [42:05<00:00, 26.55s/it]                                               {'loss': 0.0429, 'grad_norm': 0.43667163039891715, 'learning_rate': 0.0, 'epoch': 4.94}
-100%|██████████| 95/95 [42:05<00:00, 26.55s/it][INFO|trainer.py:2584] 2025-03-16 10:53:36,725 >> 
-
-Training completed. Do not forget to share your model on huggingface.co/models =)
-
-
-                                               {'train_runtime': 2526.6964, 'train_samples_per_second': 4.975, 'train_steps_per_second': 0.038, 'train_loss': 0.14516751609350506, 'epoch': 4.94}
-100%|██████████| 95/95 [42:05<00:00, 26.55s/it]100%|██████████| 95/95 [42:05<00:00, 26.58s/it]
-***** train metrics *****
-  epoch                    =     4.9397
-  total_flos               =    35404GF
-  train_loss               =     0.1452
-  train_runtime            = 0:42:06.69
-  train_samples            =       2514
-  train_samples_per_second =      4.975
-  train_steps_per_second   =      0.038
-2025-03-16 10:53:36 - INFO - __main__ - *** Save model ***
-[INFO|trainer.py:3801] 2025-03-16 10:53:42,133 >> Saving model checkpoint to /beacon-scratch/tongzh24/gemma-2-9b-it/mix-new-5-epoch
-[INFO|configuration_utils.py:414] 2025-03-16 10:53:42,140 >> Configuration saved in /beacon-scratch/tongzh24/gemma-2-9b-it/mix-new-5-epoch/config.json
-[INFO|configuration_utils.py:865] 2025-03-16 10:53:42,143 >> Configuration saved in /beacon-scratch/tongzh24/gemma-2-9b-it/mix-new-5-epoch/generation_config.json
-[INFO|modeling_utils.py:3042] 2025-03-16 10:55:07,178 >> The model is bigger than the maximum size per checkpoint (5GB) and is going to be split in 4 checkpoint shards. You can find where each parameters has been saved in the index located at /beacon-scratch/tongzh24/gemma-2-9b-it/mix-new-5-epoch/model.safetensors.index.json.
-[INFO|tokenization_utils_base.py:2646] 2025-03-16 10:55:07,183 >> tokenizer config file saved in /beacon-scratch/tongzh24/gemma-2-9b-it/mix-new-5-epoch/tokenizer_config.json
-[INFO|tokenization_utils_base.py:2655] 2025-03-16 10:55:07,185 >> Special tokens file saved in /beacon-scratch/tongzh24/gemma-2-9b-it/mix-new-5-epoch/special_tokens_map.json
-2025-03-16 10:55:07 - INFO - __main__ - Model saved to /beacon-scratch/tongzh24/gemma-2-9b-it/mix-new-5-epoch
-[INFO|configuration_utils.py:414] 2025-03-16 10:55:07,887 >> Configuration saved in /beacon-scratch/tongzh24/gemma-2-9b-it/mix-new-5-epoch/config.json
-2025-03-16 10:55:07 - INFO - __main__ - *** Training complete ***
-[1;34mwandb[0m: 
-[1;34mwandb[0m: 🚀 View run [33m/beacon-scratch/tongzh24/gemma-2-9b-it/mix-new-5-epoch[0m at: [34mhttps://wandb.ai/kidzheng/huggingface/runs/6jmxqiec[0m
-[1;34mwandb[0m: Find logs at: [1;35mwandb/run-20250316_101130-6jmxqiec/logs[0m
-Warning: The cache directory for DeepSpeed Triton autotune, /beacon-scratch/tongzh24/.cache, appears to be on an NFS system. While this is generally acceptable, if you experience slowdowns or hanging when DeepSpeed exits, it is recommended to set the TRITON_CACHE_DIR environment variable to a non-NFS path.

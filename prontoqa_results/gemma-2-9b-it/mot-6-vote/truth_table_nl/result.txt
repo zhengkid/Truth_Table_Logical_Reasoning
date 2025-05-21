@@ -1,3 +1,0 @@
-Accuracy: 0.9680
-Total samples: 500
-Correct predictions: 484
