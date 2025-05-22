@@ -2,9 +2,9 @@
 # star_pipeline_all_flags.sh
 # General parameters
 # Model and Datasets
-BASE_MODEL="google/gemma-2-2b-it" #"Qwen/Qwen2.5-7B-Instruct" #"meta-llama/Llama-3.1-8B-Instruct" #"Qwen/Qwen2.5-7B-Instruct" #"unsloth/Meta-Llama-3.1-8B-Instruct" #"google/gemma-2-9b-it" #"TongZheng1999/gemma-2-9b-it-s1" #"Qwen/Qwen2.5-7B-Instruct" #"TongZheng1999/gemma-2-9b-it-star-mixed_direct-OP-final_v1_10-2-3Rounds-iter-3" #"google/gemma-2-9b-it"
-DATASET="yale-nlp/FOLIO" #"TongZheng1999/ProofWriter" #"yale-nlp/FOLIO" #"TongZheng1999/ProofWriter-600" #"TongZheng1999/ProofWriter"
-DATASET_NAME="FL_1000_n"
+BASE_MODEL="google/gemma-2-2b-it" #"Qwen/Qwen2.5-7B-Instruct" or "google/gemma-2-9b-it" 
+DATASET="yale-nlp/FOLIO" #"TongZheng1999/ProofWriter" #"yale-nlp/FOLIO" 
+DATASET_NAME=""
 MODEL_NAME=${BASE_MODEL##*/}
 MODEL_NAME="gemma-2-2b-it"
 

@@ -1,9 +1,7 @@
 #!/bin/bash
-# star_pipeline_all_flags.sh
-# General parameters
-# Model and Datasets
-BASE_MODEL="google/gemma-2-2b-it" #"Qwen/Qwen2.5-7B-Instruct" #"TongZheng1999/gemma-2-9b-it-star-mixed_direct-OP-final_v1_10-2-3Rounds-iter-3" #"google/gemma-2-9b-it"
-DATASET="yale-nlp/FOLIO"
+
+BASE_MODEL="google/gemma-2-2b-it" #"Qwen/Qwen2.5-7B-Instruct" or "google/gemma-2-9b-it"
+DATASET="yale-nlp/FOLIO" # "TongZheng1999/ProofWriter"
 MODEL_NAME=${BASE_MODEL##*/}
 
 
