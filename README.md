@@ -127,9 +127,10 @@ python analysis_overlap.py [file_1] [file_2] [file_3]
 If you use this code or the MoT methodology, please cite:
 
 ```bibtex
-@inproceedings{zheng2025mot,
-  title     = {Learning to Reason via Mixture-of-Thought for Logical Reasoning},
-  author    = {Zheng, Tong and Chen, Lichang and Han, Simeng and McCoy, R. Thomas and Huang, Heng},
-  year      = {2025}
+@article{zheng2025learning,
+  title={Learning to Reason via Mixture-of-Thought for Logical Reasoning},
+  author={Zheng, Tong and Chen, Lichang and Han, Simeng and McCoy, R Thomas and Huang, Heng},
+  journal={arXiv preprint arXiv:2505.15817},
+  year={2025}
 }
 ```
